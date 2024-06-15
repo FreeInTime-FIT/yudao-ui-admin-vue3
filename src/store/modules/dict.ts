@@ -46,6 +46,10 @@ export const useDictStore = defineStore('dict', {
         this.isSetDict = true
       } else {
         const res = await getSimpleDictDataList()
+        console.log(res);
+        if (!res) {
+          return
+        }
         // 设置数据
         const dictDataMap = new Map<string, any>()
         res.forEach((dictData: DictDataVO) => {

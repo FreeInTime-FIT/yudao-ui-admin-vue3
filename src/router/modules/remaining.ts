@@ -1,3 +1,4 @@
+import ScreenLayout from '@/layout/SceenLayout/index.vue'
 import { Layout } from '@/utils/routerHelper'
 
 const { t } = useI18n()
@@ -573,6 +574,135 @@ const remainingRouter: AppRouteRecordRaw[] = [
         component: () => import('@/views/crm/product/detail/index.vue')
       }
     ]
+  },
+  {
+    path: '/screen',
+    component: ScreenLayout,
+    name: '大屏系统',
+    meta: { hidden: true },
+    children: [
+      {
+        path: 'index',
+        name: 'ScreenIndex',
+        meta: {
+          title: '首页',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/index'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'data/board',
+        name: 'ScreenDataBoard',
+        meta: {
+          title: '数据看板',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/data/board'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'data/realtime',
+        name: 'ScreenDataRealtime',
+        meta: {
+          title: '实时数据',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/data/realtime'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'data/history',
+        name: 'ScreenDataHistory',
+        meta: {
+          title: '历史数据',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/data/history'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'warning/index',
+        name: 'ScreenWarningIndex',
+        meta: {
+          title: '异常警告',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/warning/index'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'setting/archives',
+        name: 'ScreenSettingArchives',
+        meta: {
+          title: '档案设置',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/setting/archives'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'setting/module',
+        name: 'ScreenSettingModule',
+        meta: {
+          title: '模式设置',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/setting/module'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'setting/equipment',
+        name: 'ScreenSettingEquipment',
+        meta: {
+          title: '设备设置',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/setting/equipment'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'module/custom',
+        name: 'ScreenModuleCustom',
+        meta: {
+          title: '自定义模式',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/module/custom'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'statistic/analysis',
+        name: 'ScreenStatisticAnalysis',
+        meta: {
+          title: '统计分析',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/statistic/analysis'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+      {
+        path: 'info/prices',
+        name: 'ScreenInfoPrices',
+        meta: {
+          title: '电价信息',
+          noCache: true,
+          hidden: true,
+          activeMenu: '/screen/info/prices'
+        },
+        component: () => import('@/views/crm/product/detail/index.vue')
+      },
+    ],
   }
 ]
 

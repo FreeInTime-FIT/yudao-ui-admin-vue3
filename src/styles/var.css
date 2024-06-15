@@ -53,6 +53,11 @@
   --app-footer-height: 50px;
 
   --transition-time-02: 0.2s;
+
+  --screen-header-bg: #20407e;
+  --screen-header-text-color: #fff;
+  --screen-content-bg:#0b1229 ;
+  --screen-header-content-color: #fff;
 }
 
 .dark {

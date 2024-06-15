@@ -21,11 +21,11 @@ const request = (option: any) => {
 export default {
   get: async <T = any>(option: any) => {
     const res = await request({ method: 'GET', ...option })
-    return res.data as unknown as T
+    return res &&  res.data as unknown as T
   },
   post: async <T = any>(option: any) => {
     const res = await request({ method: 'POST', ...option })
-    return res.data as unknown as T
+    return res && res.data as unknown as T
   },
   postOriginal: async (option: any) => {
     const res = await request({ method: 'POST', ...option })
