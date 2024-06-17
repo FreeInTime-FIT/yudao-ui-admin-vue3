@@ -25,7 +25,7 @@ defineOptions({ name: 'ScreenLayout' })
 </script>
 
 <template>
-  <section class="h-[100%] flex flex-col ">
+  <section class="h-[100%] flex flex-col dark">
     <header class="flex pa-[12px] shadow-[var(--el-box-shadow-dark)] bg-[var(--screen-header-bg)] color-[var(--screen-header-text-color)]">
       <div class="flex-1 flex-items-center">
         <a type="info" href="/screen/index" class="font-size-[30px] color-[var(--screen-header-text-color)] logo">
@@ -78,6 +78,19 @@ defineOptions({ name: 'ScreenLayout' })
 </template>
 
 <style scoped lang="scss">
+  .dark{
+    --el-text-color-regular: #fff;
+    --el-input-text-color: #fff;
+    --el-fill-color-blank: #101b43;
+    --el-border-color-light: transparent;
+    --el-text-color-placeholder: rgba(255, 255, 255, 0.9);
+    --el-mask-color: #101b43;
+   --el-text-color-primary:#fff;
+    --el-border-color: transparent;
+    .el-card__header{
+      
+    }
+  }
   .menu-box{
     position: absolute;
     top: 0;

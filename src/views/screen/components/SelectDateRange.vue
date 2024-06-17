@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {defineModel} from "vue";
-
 import dayjs from "dayjs";
 
 const startTime = defineModel<string>('start');
@@ -40,6 +39,9 @@ function changeEndTime(time) {
     return;
   }
 }
+defineOptions({
+  name: 'SelectDateRage'
+})
 </script>
 
 <template>
