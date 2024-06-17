@@ -58,6 +58,8 @@
   --screen-header-text-color: #fff;
   --screen-content-bg:#0b1229 ;
   --screen-header-content-color: #fff;
+  --screen-content-text-color:#fff ;
+
 }
 
 .dark {

@@ -578,7 +578,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/screen',
     component: ScreenLayout,
-    name: '大屏系统',
+    name: '能量管理云监控',
     meta: { hidden: true },
     children: [
       {
@@ -587,10 +587,9 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '首页',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/index'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/index.vue')
       },
       {
         path: 'data/board',
@@ -598,7 +597,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '数据看板',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/data/board'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -609,7 +607,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '实时数据',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/data/realtime'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -620,7 +617,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '历史数据',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/data/history'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -631,10 +627,9 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '异常警告',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/warning/index'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/warning/index.vue')
       },
       {
         path: 'setting/archives',
@@ -642,7 +637,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '档案设置',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/setting/archives'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -653,7 +647,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '模式设置',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/setting/module'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -664,7 +657,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '设备设置',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/setting/equipment'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -675,7 +667,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '自定义模式',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/module/custom'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -686,7 +677,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '统计分析',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/statistic/analysis'
         },
         component: () => import('@/views/crm/product/detail/index.vue')
@@ -697,7 +687,6 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '电价信息',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/info/prices'
         },
         component: () => import('@/views/crm/product/detail/index.vue')

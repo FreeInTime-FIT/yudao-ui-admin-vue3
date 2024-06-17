@@ -6,6 +6,7 @@
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -28,6 +29,7 @@
       "vite/client",
       "element-plus/global",
       "@types/qrcode",
+      "./node_modules/**/*.d.ts",
       "vite-plugin-svg-icons/client"
     ],
     "outDir": "target", // 请保留这个属性，防止tsconfig.json文件报错

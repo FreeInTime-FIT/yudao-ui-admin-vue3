@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteMeta, RouteRecordRaw} from 'vue-router'
 import { defineComponent } from 'vue'
 
 /**

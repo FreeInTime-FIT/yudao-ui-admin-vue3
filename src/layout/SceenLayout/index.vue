@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
 import {ref, computed } from "vue";
-import {useRouter, useRoute} from "vue-router";
+import {useRouter} from "vue-router";
 const now = ref(dayjs());
-const route = useRoute();
 const router = useRouter();
 const menu = router.options.routes.find(i => i.path === '/screen').children;
 
@@ -18,7 +17,6 @@ function handleClick(item) {
   })
 }
 
-const menuList = [];
 setInterval(() => {
    now.value = dayjs();
 }, 1000)
@@ -59,17 +57,20 @@ defineOptions({ name: 'ScreenLayout' })
     <section class="flex-1 position-relative h-0 bg-[var(--screen-content-bg)]  color-[var(--screen-content-text-color)]">
       <div class="menu-box">
         <div class="menu-list">
-          <div class="menu-item" :class="{active: item.name === route.name}" v-for="item in menu" :key="item.path" @click="handleClick(item)">
+          <div class="menu-item" :class="{active: item.name === $route.name}" v-for="item in menu" :key="item.path" @click="handleClick(item)">
             <div><Icon icon="ant-design:dashboard-filled" /></div>
             <div>{{item.meta.title}}</div>
           </div>
         </div>
       </div>
-      <router-view>
-        <template #default="{ Component, route }">
-          <component :is="Component" :key="route.fullPath" />
-        </template>
-      </router-view>
+      <article class="pa-30px pt-12px">
+        <router-view>
+          <template #default="{ Component, route }">
+            <component :is="Component" :key="route.fullPath" />
+          </template>
+        </router-view>
+      </article>
+
     </section>
   </section>
 
