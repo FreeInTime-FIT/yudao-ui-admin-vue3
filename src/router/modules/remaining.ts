@@ -599,7 +599,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/data/board'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/data/board.vue')
       },
       {
         path: 'data/realtime',
