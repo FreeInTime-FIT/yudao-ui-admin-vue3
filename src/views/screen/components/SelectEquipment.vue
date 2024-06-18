@@ -15,14 +15,14 @@ const getEquipment = async () => {
 
 }
 const props = defineProps({
-  title: propTypes.string.isRequired,
+  title: propTypes.string,
 })
 </script>
 
 <template>
   <ElSelect
     remote
-    remote-method="getEquipment"
+    :remote-method="getEquipment"
     filterable
     placeholder='请选择设备'
     :loading="loading"
