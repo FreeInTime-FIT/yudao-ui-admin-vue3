@@ -5,12 +5,12 @@ import { config } from './config'
 const { default_headers } = config
 
 const request = (option: any) => {
-  const { url, method, params, data, headersType, responseType, ...config } = option
+  const { url, method, params, data, body, headersType, responseType, ...config } = option
   return service({
     url: url,
     method,
     params,
-    data,
+    data: data || body,
     ...config,
     responseType: responseType,
     headers: {
@@ -19,6 +19,7 @@ const request = (option: any) => {
   })
 }
 export default {
+  request,
   get: async <T = any>(option: any) => {
     const res = await request({ method: 'GET', ...option })
     return res &&  res.data as unknown as T

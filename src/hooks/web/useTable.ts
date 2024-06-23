@@ -7,13 +7,13 @@ import type { TableProps } from '@/components/Table/src/types'
 import { TableSetPropsType } from '@/types/table'
 
 const { t } = useI18n()
-interface ResponseType<T = any> {
-  list: T[]
-  total?: number
+interface ResponseType<T = Record<string, any>> {
+  list: T[];
+  total?: number;
 }
 
 interface UseTableConfig<T = any> {
-  getListApi: (option: any) => Promise<T>
+  getListApi: (option: any) => Promise<ResponseType<T>>
   delListApi?: (option: any) => Promise<T>
   exportListApi?: (option: any) => Promise<T>
   // 返回数据格式配置
@@ -135,8 +135,8 @@ export const useTable = <T = any>(config?: UseTableConfig<T>) => {
         tableObject.loading = false
       })
       if (res) {
-        tableObject.tableList = (res as unknown as ResponseType).list
-        tableObject.total = (res as unknown as ResponseType).total ?? 0
+        tableObject.tableList = (res as ResponseType).list
+        tableObject.total = (res as ResponseType).total ?? 0
       }
     },
     setProps: async (props: TableProps = {}) => {

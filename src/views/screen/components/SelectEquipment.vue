@@ -16,6 +16,7 @@ const getEquipment = async () => {
 }
 const props = defineProps({
   title: propTypes.string,
+  modelValue: propTypes.string,
 })
 </script>
 

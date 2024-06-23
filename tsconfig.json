@@ -29,6 +29,7 @@
       "vite/client",
       "element-plus/global",
       "@types/qrcode",
+      "./src/services/typings.d.ts",
       "./node_modules/**/*.d.ts",
       "vite-plugin-svg-icons/client"
     ],

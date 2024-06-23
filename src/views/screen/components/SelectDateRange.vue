@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {defineModel} from "vue";
 import dayjs from "dayjs";
+import InputWarp from "@/views/screen/components/InputWarp.vue";
 
 const startTime = defineModel<string>('start');
 const endTime = defineModel<string>('end');
@@ -46,28 +47,34 @@ defineOptions({
 
 <template>
   <ElFormItem prop="startTime" label="开始时间" >
-    <ElDatePicker
-      type="datetime"
-      clearable
-      format="YYYY-MM-DD HH:mm"
-      placeholder="开始时间"
-      :default-time="new Date()"
-      @change="changeStartTime"
-      v-model="startTime"
-    />
+    <InputWarp>
+      <ElDatePicker
+        type="datetime"
+        clearable
+        format="YYYY-MM-DD HH:mm"
+        placeholder="开始时间"
+        :default-time="new Date()"
+        @change="changeStartTime"
+        v-model="startTime"
+      />
+    </InputWarp>
+
   </ElFormItem>
   <ElFormItem prop="endTime" label="结束时间" >
-    <ElDatePicker
-      type="datetime"
-      clearable
-      format="YYYY-MM-DD HH:mm"
-      time-format="HH:mm"
-      placeholder="结束时间"
-      :default-time="new Date()"
-      :disabled-date="disabledEndDate"
-      @change="changeEndTime"
-      v-model="endTime"
-    />
+    <InputWarp>
+      <ElDatePicker
+        type="datetime"
+        clearable
+        format="YYYY-MM-DD HH:mm"
+        time-format="HH:mm"
+        placeholder="结束时间"
+        :default-time="new Date()"
+        :disabled-date="disabledEndDate"
+        @change="changeEndTime"
+        v-model="endTime"
+      />
+    </InputWarp>
+
   </ElFormItem>
 </template>
 

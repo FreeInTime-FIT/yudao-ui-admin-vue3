@@ -619,7 +619,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/data/history'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/data/history.vue')
       },
       {
         path: 'warning/index',
@@ -639,7 +639,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/setting/archives'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/setting/archives.vue')
       },
       {
         path: 'setting/module',
@@ -649,7 +649,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/setting/module'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/setting/module.vue')
       },
       {
         path: 'setting/equipment',
@@ -659,7 +659,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/setting/equipment'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/setting/equipment.vue')
       },
       {
         path: 'module/custom',
@@ -669,7 +669,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/module/custom'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/module/custom.vue')
       },
       {
         path: 'statistic/analysis',
@@ -679,7 +679,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/statistic/analysis'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/statistic/analysis.vue')
       },
       {
         path: 'info/prices',
@@ -689,7 +689,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           noCache: true,
           activeMenu: '/screen/info/prices'
         },
-        component: () => import('@/views/crm/product/detail/index.vue')
+        component: () => import('@/views/screen/info/prices.vue')
       },
     ],
   }

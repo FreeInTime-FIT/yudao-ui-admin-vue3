@@ -63,7 +63,7 @@ defineOptions({ name: 'ScreenLayout' })
           </div>
         </div>
       </div>
-      <article class="pa-30px pt-12px">
+      <article class="pa-30px pt-12px h-[100%] overflow-auto">
         <router-view>
           <template #default="{ Component, route }">
             <component :is="Component" :key="route.fullPath" />
@@ -73,23 +73,29 @@ defineOptions({ name: 'ScreenLayout' })
 
     </section>
   </section>
-
-
 </template>
 
 <style scoped lang="scss">
   .dark{
     --el-text-color-regular: #fff;
     --el-input-text-color: #fff;
-    --el-fill-color-blank: #101b43;
+    --el-fill-color-blank: rgb(22 32 60);
     --el-border-color-light: transparent;
     --el-text-color-placeholder: rgba(255, 255, 255, 0.9);
-    --el-mask-color: #101b43;
+    --el-mask-color:  rgb(22 32 60);
    --el-text-color-primary:#fff;
+    --el-card-padding: 4px;
     --el-border-color: transparent;
-    .el-card__header{
-      
-    }
+    --el-bg-color: rgb(22 32 60);
+    --el-fill-color-light: rgba(77, 83, 94, 0.77);
+
+  }
+  :deep(.el-table){
+    --el-table-header-text-color: #fff;
+    --el-table-tr-bg-color: #101b43;
+    --el-fill-color-lighter: var(--el-fill-color-blank);
+    --el-table-border-color: var(--el-fill-color-blank);
+
   }
   .menu-box{
     position: absolute;
@@ -98,8 +104,9 @@ defineOptions({ name: 'ScreenLayout' })
     bottom: 0;
     background-color: transparent;
     color: #fff;
-    z-index: 999;
+    z-index: 9999;
     min-width: 30px;
+    overflow: auto;
     &:hover{
       background-color: var(--screen-content-bg);
       .menu-list{
@@ -140,7 +147,22 @@ defineOptions({ name: 'ScreenLayout' })
     text-decoration: none;
     font-weight: bold;
   }
-  :deep(.el-button) {
-    color: #fff;
+  :deep {
+    .el-card{
+      --el-card-padding: 10px;
+      --el-card-bg-color: transparent;
+    }
+    .el-card__header{
+      background: linear-gradient(to right, rgb(30 57 117), rgb(11 18 42));
+      > div{
+        background: linear-gradient(to right, rgb(54 104 199), rgb(11 18 42));
+        padding: 6px 16px;
+
+      }
+    }
+    .el-card__body{
+      margin-top: 8px;
+      background-color: rgb(22 32 60);
+    }
   }
 </style>

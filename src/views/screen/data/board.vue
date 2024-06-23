@@ -1,6 +1,6 @@
 <template>
   <ContentWrap>
-    <IFrame src="http://120.26.61.213:18080/shareDashboard/e5c98e6b9bb54eea9bf79e508afce046?type=NONE" />
+    <IFrame src="http://120.26.61.213:8100/#/de-link/capuEuvf" />
   </ContentWrap>
 </template>
 <script lang="ts" setup>
