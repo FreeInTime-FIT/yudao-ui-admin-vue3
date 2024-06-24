@@ -106,6 +106,7 @@ onMounted(() => {
           symbolSize: 2.5,
           xAxisIndex: 0,
           yAxisIndex: 0,
+          showSymbol: false,
           encode: {
             x: 'time',
             y: 'total',
@@ -117,6 +118,7 @@ onMounted(() => {
           symbolSize: 2.5,
           xAxisIndex: 0,
           yAxisIndex: 0,
+          showSymbol: false,
           encode: {
             x: 'time',
             y: 'di',
@@ -129,6 +131,7 @@ onMounted(() => {
           symbolSize: 2.5,
           xAxisIndex: 0,
           yAxisIndex: 0,
+          showSymbol: false,
           encode: {
             x: 'time',
             y: 'tc',
@@ -140,6 +143,7 @@ onMounted(() => {
           symbolSize: 2.5,
           xAxisIndex: 1,
           yAxisIndex: 1,
+          showSymbol: false,
           encode: {
             x: 'time',
             y: 'fd',
@@ -151,6 +155,7 @@ onMounted(() => {
           symbolSize: 2.5,
           xAxisIndex: 1,
           yAxisIndex: 1,
+          showSymbol: false,
           encode: {
             x: 'time',
             y: 'cd',

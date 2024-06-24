@@ -1,5 +1,5 @@
 <template>
-  <IFrame src="http://120.26.61.213:8100/#/de-link/capuEuvf" />
+  <IFrame src="http://121.199.71.160:82/#/chart/preview/1" />
 
 </template>
 <script lang="ts" setup>

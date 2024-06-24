@@ -1,6 +1,6 @@
 // 引入unocss css
 import '@/plugins/unocss'
-
+import BaiduMap from 'vue-baidu-map-3x'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
@@ -64,6 +64,11 @@ const setupAll = async () => {
 
   app.use(VueDOMPurifyHTML)
 
+  app.use(BaiduMap, {
+    ak: import.meta.env.VITE_APP_BAIDU_MAP_CODE,
+    type: '3.0',
+    type: 'WebGL',
+  })
   app.mount('#app')
 }
 

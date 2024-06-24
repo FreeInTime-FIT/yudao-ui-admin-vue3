@@ -64,6 +64,7 @@
     "url": "^0.11.3",
     "video.js": "^7.21.5",
     "vue": "3.4.21",
+    "vue-baidu-map-3x": "^1.0.39",
     "vue-dompurify-html": "^4.1.4",
     "vue-i18n": "9.10.2",
     "vue-router": "^4.3.0",
