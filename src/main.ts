@@ -67,7 +67,7 @@ const setupAll = async () => {
   app.use(BaiduMap, {
     ak: import.meta.env.VITE_APP_BAIDU_MAP_CODE,
     type: '3.0',
-    type: 'WebGL',
+    // type: 'WebGL',
   })
   app.mount('#app')
 }

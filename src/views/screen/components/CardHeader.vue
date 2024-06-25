@@ -27,6 +27,7 @@ const { title } = defineProps<{
     position: relative;
     background: linear-gradient(to right, #111c38, rgb(24 50 117) 50% , #111c38);
     padding: 4px 12px;
+    margin-block: 12px;
     h3{
       text-shadow: 0 0 5px #000;
       padding: 3px 0;
