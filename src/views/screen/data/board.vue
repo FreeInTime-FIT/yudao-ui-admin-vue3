@@ -1,5 +1,5 @@
 <template>
-  <IFrame src="http://121.199.71.160:82/#/chart/preview/1" />
+  <IFrame src="/go-view/#/chart/preview/1" />
 
 </template>
 <script lang="ts" setup>
