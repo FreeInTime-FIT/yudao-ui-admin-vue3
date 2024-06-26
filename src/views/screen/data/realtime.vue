@@ -4,7 +4,7 @@ import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
-import dayjs from "dayjs";
+import bg from '@/views/screen/assets/real-bg.png'
 
 const domRef = ref();
 const realRef = ref();
@@ -143,6 +143,12 @@ const dataList = [{
       </article>
     </ElCol>
     <ElCol :span="9">
+      <article class="real-box">
+        <img :src="bg" class="bg" alt="" />
+        <div class="content">
+          <div class="content_1"></div>
+        </div>
+      </article>
       <article class="card-box">
         <div class="card-box_inner" v-for="inner in dataList" :key="inner.title">
           <header class="card-header">
@@ -225,7 +231,7 @@ const dataList = [{
   }
 
   .card-box{
-    margin: 30px 0;
+    margin: 0px 0 30px;
     padding: 8px 16px;
     background: linear-gradient(#5f687c, #344e86);
   }
@@ -304,5 +310,23 @@ const dataList = [{
     --el-fill-color-lighter: #eaebf4;
     --el-table-border-color: #fff;
     color: #333;
+  }
+  .real-box{
+    position: relative;
+    margin-bottom: 30px;
+    .bg{
+      width: 100%;
+      user-select: none;
+      height: auto;
+      display: block;
+    }
+
+    .content{
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
   }
 </style>

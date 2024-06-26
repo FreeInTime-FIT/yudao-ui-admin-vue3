@@ -2,9 +2,9 @@
   import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
   import CardHeader from "@/views/screen/components/CardHeader.vue";
   import BatteryInfo from "@/views/screen/components/BatteryInfo.vue";
+  import PieBattery from "@/views/screen/components/PieBattery.vue";
   import * as echarts from 'echarts'
   import screenConfig from '@/views/screen/config/echart.json'
-  import dayjs from "dayjs";
 
   const domRef = ref();
   const powerRef = ref();
