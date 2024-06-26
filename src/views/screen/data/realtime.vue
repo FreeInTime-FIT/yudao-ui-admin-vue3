@@ -295,12 +295,20 @@ const dataList = [{
   .card-data-list{
     display: flex;
     border-top: 2px solid #fff;
+    width: 0;
+    flex: 1;
   }
   .card-item-row{
+    flex: 1;
+    width: 0;
     border-right: 2px solid #fff;
     &_item{
+      width: 100%;
       padding: 12px 8px;
       border-bottom: 2px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .el-table{
