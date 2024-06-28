@@ -63,7 +63,7 @@ defineOptions({ name: 'ScreenLayout' })
           </div>
         </div>
       </div>
-      <article class="pa-30px pt-12px h-[100%] overflow-auto">
+      <article class="flex flex-col h-[100%] overflow-auto">
         <router-view>
           <template #default="{ Component, route }">
             <component :is="Component" :key="route.fullPath" />

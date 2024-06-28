@@ -254,12 +254,12 @@ const handleMapReady = ({ BMap, map}) => {
 </script>
 
 <template>
-  <header class="flex flex-justify-between gap-10px pa-10px color-[var(--screen-content-text-color)]">
+  <header class="flex flex-justify-between index-header  gap-10px pa-10px color-[var(--screen-content-text-color)]">
     <div>尊敬的{{userName}}{{sex}}，您好</div>
     <div>数据更新时间：12120</div>
-    <div><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
+    <div class="flex gap-[10px]"><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
   </header>
-  <article>
+  <article class="pos-relative flex-[1]">
     <section class="sideLeft">
       <aside class="side-list">
         <div class="side-item" v-for="item in totalList" :key="item.key">
@@ -292,6 +292,13 @@ const handleMapReady = ({ BMap, map}) => {
 </template>
 
 <style scoped lang="scss">
+.index-header{
+  border-top: 1px solid #eee;
+  background: linear-gradient(to bottom, #999, #222, #222);
+  box-shadow:0 10px 10px 0 #333;
+  position: relative;
+  z-index: 8;
+}
   .sideLeft{
     position: absolute;
     z-index: 2;
