@@ -582,10 +582,20 @@ const remainingRouter: AppRouteRecordRaw[] = [
     meta: { hidden: true },
     children: [
       {
+        path: 'map',
+        name: 'ScreenMap',
+        meta: {
+          title: '首页',
+          noCache: true,
+          activeMenu: '/screen/map'
+        },
+        component: () => import('@/views/screen/map.vue')
+      },
+      {
         path: 'index',
         name: 'ScreenIndex',
         meta: {
-          title: '首页',
+          title: '首页测试',
           noCache: true,
           activeMenu: '/screen/index'
         },
@@ -600,6 +610,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
           activeMenu: '/screen/data/board'
         },
         component: () => import('@/views/screen/data/board.vue')
+      },
+      {
+        path: 'data/boardView',
+        name: 'ScreenDataBoardView',
+        meta: {
+          title: '数据看板测试',
+          noCache: true,
+          activeMenu: '/screen/data/boardView'
+        },
+        component: () => import('@/views/screen/data/boardView.vue')
       },
       {
         path: 'data/realtime',

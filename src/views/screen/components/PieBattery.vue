@@ -37,6 +37,9 @@
         itemStyle: {
           borderWidth: 1,
         },
+        textStyle: {
+          color: '#fff',
+        },
       },
       title: {
         text: data.title,
