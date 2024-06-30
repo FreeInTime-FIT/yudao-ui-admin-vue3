@@ -1,12 +1,13 @@
-<script setup lang="ts">
-import {computed, onMounted} from "vue";
+<script setup lang="tsx">
+import {computed, onMounted, ref} from "vue";
 import { useUserStore } from '@/store/modules/user'
 import * as echarts from 'echarts';
 import { useResizeObserver } from '@vueuse/core'
-
+import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
 const echartsDomRef = ref<HTMLElement>()
 const chartRef = ref()
+const drawer = ref(false)
 const mapStyle = {
   styleJson,
 }
@@ -164,6 +165,65 @@ onUnmounted(() => {
 });
 const userStore = useUserStore()
 const userName = computed(() => userStore.user.nickname ?? 'Admin')
+const projectList = [{
+  name: '项目1',
+  lng: 116.404,
+  lat: 39.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 120.404,
+  lat: 33.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 119.404,
+  lat: 31.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 118.404,
+  lat: 32.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 117.404,
+  lat: 27.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 115.404,
+  lat: 28.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 121.404,
+  lat: 31.915,
+  province: '浙江',
+}]
+const provinceList = computed(() => {
+ return projectList.reduce((res, item) => {
+   let hasAdd = false;
+   res.some(pro => {
+     if (item.province === pro.province) {
+       hasAdd = true;
+       pro.children.push(item);
+       return true
+     }
+     return false
+   })
+   if (!hasAdd) {
+     return [
+       ...res,
+       {
+         province: item.province,
+         children: [item],
+       },
+     ]
+   }
+   return res;
+ }, []);
+})
   const sex = '先生'
 const totalList = [{
   label: '用户总量',
@@ -247,10 +307,21 @@ const todayData = [
     unit: '万元',
   },
 ]
+const handleClickMarker = (item) => {
+
+}
 const handleMapReady = ({ BMap, map}) => {
   console.log(BMap, map);
 
 }
+const handleShowProject = () => {
+  drawer.value = true;
+}
+const handleHideProject = () => {
+  drawer.value = false;
+}
+
+console.log(provinceList);
 </script>
 
 <template>
@@ -272,13 +343,24 @@ const handleMapReady = ({ BMap, map}) => {
     <baidu-map
       class="bm-view"
       @ready="handleMapReady"
-      :zoom="5.5"
+      :zoom="6"
+      :dragging="false"
       scroll-wheel-zoom
       :mapStyle="mapStyle"
-      :center="{lng: 116.404, lat: 39.915}"
+      :center="{lng: 105.404, lat: 38.915}"
     >
-      <span>1</span>
+      <bm-marker
+        v-for="item in projectList"
+        :position="{lat: item.lat, lng: item.lng}"
+        :key="item.name"
+        @click="handleClickMarker(item)"
+        :icon="{url: icon, size: {width: 32, height: 32}}"
+      />
     </baidu-map>
+    <header class="sideHeader">
+      <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
+      <ElButton type="primary">新增项目</ElButton>
+    </header>
     <aside class="sideRight">
       <div class="side-item-header">
         <span>当日数据</span>
@@ -288,6 +370,40 @@ const handleMapReady = ({ BMap, map}) => {
         <span>{{item.value}}{{item.unit}}</span>
       </div>
     </aside>
+    <ElDrawer
+      v-model="drawer"
+      direction="btt"
+      modal-class="drawer-project"
+      size="92%"
+    >
+      <template #title>
+        <div>
+          <ElButton type="primary" @click="handleHideProject"> 全局看板</ElButton>
+        </div>
+      </template>
+
+      <nav>
+        <div v-for="province in provinceList" class="flex mb-[12px]" :key="province.province">
+          <div class="font-size-[24px] w-[120px]">{{province.province}}</div>
+          <div class="flex-[1] flex flex-wrap gap-[10px]">
+            <div v-for="item in province.children" class="province-item" :key="item.name">
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <div class="flex mb-[12px]">
+          <div class="font-size-[24px] w-[120px]"></div>
+          <div class="flex-[1] flex flex-wrap gap-[10px]">
+            <div class="province-item text-center">
+              +
+            </div>
+            <div class="province-item text-center">
+              -
+            </div>
+          </div>
+        </div>
+      </nav>
+    </ElDrawer>
   </article>
 </template>
 
@@ -299,6 +415,14 @@ const handleMapReady = ({ BMap, map}) => {
   position: relative;
   z-index: 8;
 }
+:deep{
+  .drawer-project{
+    .el-drawer{
+      background: linear-gradient(to bottom, #676b78, #385693, #273b66, #181819);
+    }
+  }
+}
+
   .sideLeft{
     position: absolute;
     z-index: 2;
@@ -308,6 +432,13 @@ const handleMapReady = ({ BMap, map}) => {
     font-size: 24px;
     display: flex;
     flex-direction: column;
+  }
+  .sideHeader{
+    position: absolute;
+    z-index: 20;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .sideRight{
     position: absolute;
@@ -346,5 +477,13 @@ const handleMapReady = ({ BMap, map}) => {
     right: 0;
     bottom: 0;
     left: 0;
+  }
+  .province-item{
+    padding: 8px 12px;
+    width: 200px;
+    font-size: 18px;
+    border: 1px solid var(--el-border-color);
+    cursor: pointer;
+    background-color: var(--el-color-primary-dark-2);
   }
 </style>
