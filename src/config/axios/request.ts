@@ -16,7 +16,7 @@ const request = <T>(option: AxiosRequestConfig) => {
   return service<T>({
     url: url,
     method,
-    baseURL: '/',
+    baseURL: import.meta.env.VITE_BASE_URL + '/',
     // baseUrl: '/',
     params,
     data: body,

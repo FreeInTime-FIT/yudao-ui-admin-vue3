@@ -20,7 +20,7 @@
     <nav class="flex">
       <UseInfoItem
         title="电池电量"
-        value="0.001"
+        :value="elec.elecSoc"
         success-value="电池soc"
       />
       <UseInfoItem
@@ -170,8 +170,19 @@ import PieBattery from "@/views/screen/components/PieBattery.vue";
 import board from '@/views/screen/assets/board-bg.jpg'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
+import {getLatest1} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 defineOptions({ name: '数据中心' })
+const elec = reactive({
+  elecSoc: '',
+})
 const realRef = ref();
+onMounted(() => {
+  getLatest1({
+    c: 'addr_6000'
+  }).then(res => {
+    elec.elecSoc = res.data as string;
+  });
+})
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
   const axisProps = {

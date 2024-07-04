@@ -598,6 +598,18 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultGoViewDataRespVO = {
+    code?: number;
+    data?: GoViewDataRespVO;
+    msg?: string;
+  };
+
+  type CommonResultGoViewProjectRespVO = {
+    code?: number;
+    data?: GoViewProjectRespVO;
+    msg?: string;
+  };
+
   type CommonResultJobLogRespVO = {
     code?: number;
     data?: JobLogRespVO;
@@ -838,6 +850,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultObject = {
+    code?: number;
+    data?: Record<string, any>;
+    msg?: string;
+  };
+
   type CommonResultPageResultApiAccessLogRespVO = {
     code?: number;
     data?: PageResultApiAccessLogRespVO;
@@ -907,6 +925,12 @@ declare namespace APITypes {
   type CommonResultPageResultFileRespVO = {
     code?: number;
     data?: PageResultFileRespVO;
+    msg?: string;
+  };
+
+  type CommonResultPageResultGoViewProjectRespVO = {
+    code?: number;
+    data?: PageResultGoViewProjectRespVO;
     msg?: string;
   };
 
@@ -1336,6 +1360,13 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type createProjectParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type createRoleParams = {
     /** 租户编号 */
     'tenant-id'?: number;
@@ -1653,6 +1684,15 @@ declare namespace APITypes {
   type deleteProjectInfoParams = {
     /** 编号 */
     id: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type deleteProjectParams = {
+    /** 编号 */
+    id: number;
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */
@@ -2648,6 +2688,78 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getDataByHttp2Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataByHttp3Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataByHttp4Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataByHttp5Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataByHttpParams = {
+    body: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataBySQL2Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataBySQL3Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataBySQL4Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataBySQL5Params = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDataBySQLParams = {
+    reqVO: GoViewDataGetBySqlReqVO;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getDataSourceConfigListParams = {
     /** 租户编号 */
     'tenant-id'?: number;
@@ -2993,6 +3105,21 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getLatest1Params = {
+    c: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getLatestParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getLoginLogPageParams = {
     /** 用户 IP，模拟匹配 */
     userIp?: string;
@@ -3124,6 +3251,17 @@ declare namespace APITypes {
     readStatus?: string;
     /** 创建时间 */
     createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getMyProjectPageParams = {
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -3300,6 +3438,15 @@ declare namespace APITypes {
   type getProjectInfoParams = {
     /** 编号 */
     id: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getProjectParams = {
+    /** 编号 */
+    id: number;
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */
@@ -3782,6 +3929,57 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type GoViewDataGetBySqlReqVO = {
+    /** SQL 语句 */
+    sql: string;
+  };
+
+  type GoViewDataRespVO = {
+    /** 数据维度 */
+    dimensions: string[];
+    /** 数据明细列表 */
+    source: Record<string, any>[];
+  };
+
+  type GoViewProjectCreateReqVO = {
+    /** 项目名称 */
+    name: string;
+  };
+
+  type GoViewProjectRespVO = {
+    /** 编号 */
+    id: number;
+    /** 项目名称 */
+    name: string;
+    /** 发布状态 */
+    status: number;
+    /** 报表内容 */
+    content?: string;
+    /** 预览图片 URL */
+    picUrl?: string;
+    /** 项目备注 */
+    remark?: string;
+    /** 创建人编号 */
+    creator: string;
+    /** 创建时间 */
+    createTime: string;
+  };
+
+  type GoViewProjectUpdateReqVO = {
+    /** 编号 */
+    id: number;
+    /** 项目名称 */
+    name: string;
+    /** 发布状态 */
+    status: number;
+    /** 报表内容 */
+    content?: string;
+    /** 预览图片 URL */
+    picUrl?: string;
+    /** 项目备注 */
+    remark?: string;
+  };
+
   type importExcelParams = {
     /** 是否支持更新，默认为 false */
     updateSupport?: boolean;
@@ -3798,6 +3996,10 @@ declare namespace APITypes {
     'tenant-id'?: number;
     /** 认证 Token */
     Authorization?: string;
+  };
+
+  type IotReportSqlQuery = {
+    sql?: string;
   };
 
   type JobLogRespVO = {
@@ -4727,6 +4929,13 @@ declare namespace APITypes {
     total: number;
   };
 
+  type PageResultGoViewProjectRespVO = {
+    /** 数据 */
+    list: GoViewProjectRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
   type PageResultJobLogRespVO = {
     /** 数据 */
     list: JobLogRespVO[];
@@ -5126,6 +5335,7 @@ declare namespace APITypes {
     repCode?: string;
     repMsg?: string;
     repData?: Record<string, any>;
+    success?: boolean;
     repCodeEnum?:
       | 'SUCCESS'
       | 'ERROR'
@@ -5146,7 +5356,6 @@ declare namespace APITypes {
       | 'API_REQ_LOCK_GET_ERROR'
       | 'API_REQ_LIMIT_CHECK_ERROR'
       | 'API_REQ_LIMIT_VERIFY_ERROR';
-    success?: boolean;
   };
 
   type revokeTokenParams = {
@@ -5823,6 +6032,13 @@ declare namespace APITypes {
   };
 
   type updateProjectInfoParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type updateProjectParams = {
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */

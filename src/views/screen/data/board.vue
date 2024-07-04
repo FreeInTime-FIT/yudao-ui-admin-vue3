@@ -2,7 +2,10 @@
   <IFrame src="/go-view/#/chart/preview/1" />
 </template>
 <script lang="ts" setup>
+import {getLatest1} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+
 defineOptions({ name: '数据中心' })
+
 
 </script>
 

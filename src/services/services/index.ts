@@ -22,6 +22,7 @@ import * as guanlihoutai Youxiangzhanghao from './guanlihoutai Youxiangzhanghao'
 import * as guanlihoutai Zidianleixing from './guanlihoutai Zidianleixing'
 import * as guanlihoutai Zidianshuju from './guanlihoutai Zidianshuju'
 import * as guanlihoutai Bumen from './guanlihoutai Bumen'
+import * as guanlihoutaiGoViewXiangmu from './guanlihoutaiGoViewXiangmu'
 import * as guanlihoutai Xiangmuxinxi from './guanlihoutai Xiangmuxinxi'
 import * as guanlihoutai Dingshirenwu from './guanlihoutai Dingshirenwu'
 import * as guanlihoutai Wenjianpeizhi from './guanlihoutai Wenjianpeizhi'
@@ -39,6 +40,7 @@ import * as guanlihoutai Quanxian from './guanlihoutai Quanxian'
 import * as 0Shouquan from './0Shouquan'
 import * as guanlihoutai Yanzhengma from './guanlihoutai Yanzhengma'
 import * as guanlihoutai Renzheng from './guanlihoutai Renzheng'
+import * as guanlihoutaiIOTshujushishihuoqu from './guanlihoutaiIOTshujushishihuoqu'
 import * as guanlihoutai Wenjiancunchu from './guanlihoutai Wenjiancunchu'
 import * as yonghuApp Zidianshuju from './yonghuApp Zidianshuju'
 import * as yonghuApp Dequ from './yonghuApp Dequ'
@@ -51,6 +53,7 @@ import * as guanlihoutai Dequ from './guanlihoutai Dequ'
 import * as guanlihoutaiRedisJiankong from './guanlihoutaiRedisJiankong'
 import * as guanlihoutai Dingshirenwurizhi from './guanlihoutai Dingshirenwurizhi'
 import * as guanlihoutaiAPIFangwenrizhi from './guanlihoutaiAPIFangwenrizhi'
+import * as guanlihoutaiGoViewShuju from './guanlihoutaiGoViewShuju'
 import * as defaultController from './defaultController'
 export default {
   guanlihoutai Yonghugerenzhongxin,
@@ -73,6 +76,7 @@ export default {
   guanlihoutai Zidianleixing,
   guanlihoutai Zidianshuju,
   guanlihoutai Bumen,
+  guanlihoutaiGoViewXiangmu,
   guanlihoutai Xiangmuxinxi,
   guanlihoutai Dingshirenwu,
   guanlihoutai Wenjianpeizhi,
@@ -90,6 +94,7 @@ export default {
   0Shouquan,
   guanlihoutai Yanzhengma,
   guanlihoutai Renzheng,
+  guanlihoutaiIOTshujushishihuoqu,
   guanlihoutai Wenjiancunchu,
   yonghuApp Zidianshuju,
   yonghuApp Dequ,
@@ -102,5 +107,6 @@ export default {
   guanlihoutaiRedisJiankong,
   guanlihoutai Dingshirenwurizhi,
   guanlihoutaiAPIFangwenrizhi,
+  guanlihoutaiGoViewShuju,
   defaultController,
   }
