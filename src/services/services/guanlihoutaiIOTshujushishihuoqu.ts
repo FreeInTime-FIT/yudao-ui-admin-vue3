@@ -24,7 +24,7 @@ export async function getLatest1(
   });
 }
 
-/** 此处后端没有提供注释 GET /admin-api/iot/report/get-latest-profits-for-keys */
+/** 此处后端没有提供注释 POST /admin-api/iot/report/get-latest-profits-for-keys */
 export async function getLatestForKeys(
   params: APITypes.getLatestForKeysParams & {
     // header
@@ -33,17 +33,14 @@ export async function getLatestForKeys(
     /** 认证 Token */
     Authorization?: string;
   },
+  body: APITypes.GetLatestForKeys,
   options?: { [key: string]: any },
 ) {
   return request<APITypes.CommonResultObject>({
     url: `/admin-api/iot/report/get-latest-profits-for-keys`,
-    method: 'GET',
-    headers: {},
-    params: {
-      ...params,
-      keys: undefined,
-      ...params['keys'],
-    },
+    method: 'POST',
+    params: { ...params },
+    data: body,
     ...(options || {}),
   });
 }

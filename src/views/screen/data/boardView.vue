@@ -182,7 +182,7 @@ const elec = reactive({
 })
 const realRef = ref();
 onMounted(() => {
-  getLatestForKeys({
+  getLatestForKeys({},{
     "keys":[
       "addr_6003",
       "addr_141",

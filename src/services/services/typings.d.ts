@@ -3118,7 +3118,6 @@ declare namespace APITypes {
   };
 
   type getLatestForKeysParams = {
-    keys: GetLatestForKeys;
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */
