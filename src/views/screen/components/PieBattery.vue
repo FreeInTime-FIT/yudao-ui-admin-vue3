@@ -42,6 +42,7 @@
     const chart = echarts.init(batteryRef.value, 'screen');
     console.log(data.data);
     chart.setOption({
+      ...(data.options || {}),
       dataset:  data.data || {
         dimensions: ['label', 'value'],
         source: [
