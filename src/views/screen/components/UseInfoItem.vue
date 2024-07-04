@@ -19,12 +19,6 @@
      valRef.value = res.data;
    })
   })
-  const showValue = computed(() => {
-    if (valRef.value !== undefined) {
-      return valRef.value
-    }
-    return value
-  })
 </script>
 
 <template>
@@ -32,7 +26,7 @@
     <div class="use-info_name">{{title}}</div>
     <div class="use-info_value">
       <div class="color-[var(--el-color-success)]">{{ successValue }}</div>
-      <div class="color-[var(--el-color-primary)]">{{ showValue }}{{unit}}</div>
+      <div class="color-[var(--el-color-primary)]">{{ value !== undefined ? value : valRef }}{{unit}}</div>
     </div>
   </div>
 </template>

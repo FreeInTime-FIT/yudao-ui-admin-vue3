@@ -37,13 +37,13 @@
       />
       <UseInfoItem
         title="温度"
-        :value="keyValue['addr_6013']"
+        :value="keyValue.addr_6013"
         unit="°"
         success-value="单体温度最大值"
       />
       <UseInfoItem
         title="温度"
-        :value="keyValue['addr_6014']"
+        :value="keyValue.addr_6014"
         unit="°"
         success-value="单体温度最小值"
       />
@@ -112,7 +112,7 @@
               <div class="flex-[1] mt-[8px]" v-for="type in solarTypes" :key="type.value">
                 <div class="color-[var(--el-color-warning)] fw-500">{{item.name}}{{type.label}}:</div>
                 <div>
-                  <span class="font-size-[18px] fw-600">{{1212}}</span>
+                  <span class="font-size-[18px] fw-600">{{keyValue[`addr_${type[item.key]}`]}}</span>
                   <span class="font-500 ml-[3px]">{{type.unit}}</span>
                 </div>
               </div>
@@ -176,13 +176,11 @@ import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
 import {getLatest1, getLatestForKeys} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 defineOptions({ name: '数据中心' })
-const keyValue = ref({});
-const elec = reactive({
-  elecSoc: '',
-})
-const realRef = ref();
-onMounted(() => {
-  getLatestForKeys({},{
+const keyValue = ref<Record<string, any>>({});
+const keys = []
+
+const getLastData = async () => {
+  const res = await getLatestForKeys({},{
     "keys":[
       "addr_6003",
       "addr_141",
@@ -196,12 +194,16 @@ onMounted(() => {
       "addr_154",
       "addr_153",
       "addr_152",
-      "addr_155"
+      "addr_155",
+      'addr_150',
     ]
-  }).then(res => {
-    keyValue.value = res.data || {};
-    console.log(res);
   })
+  keyValue.value = res.data || {};
+  return res;
+}
+const realRef = ref();
+onMounted(() => {
+  getLastData()
 })
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
@@ -288,14 +290,20 @@ const solarTypes = [{
   value: 'fdl1',
   label: '电流',
   unit: 'A',
+  gf1: '151',
+  gf2: '154',
 },{
   value: 'fdl12',
   label: '电压',
   unit: 'V',
+  gf1: '150',
+  gf2: '153',
 },{
   value: 'fdl34',
   label: '功率',
   unit: 'kw',
+  gf1: '152',
+  gf2: '155',
 },]
 const solarList = [{
   id: '1',
