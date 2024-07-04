@@ -208,7 +208,7 @@ onMounted(() => {
 })
 useIntervalFn(() => {
   getLastData();
-}, 1000 * 60)
+}, 3000)
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
   const axisProps = {
