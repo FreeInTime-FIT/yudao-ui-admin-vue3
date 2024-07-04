@@ -4,9 +4,9 @@
   })
   const valRef = ref()
   const { title, successValue, value, api, params } = defineProps<{
-    title: string;
+    title?: string;
     successValue?: string;
-    value?: string;
+    value?: string | number;
     unit?: string;
     api?: (params) => Promise<any>;
     params?: Record<string, any>;

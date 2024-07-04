@@ -1,18 +1,48 @@
 <script setup lang="ts">
   import * as echarts from "echarts";
   const batteryRef = ref();
+  const chartRef = ref();
   defineOptions({
     name: 'PieBattery',
   })
   const data = defineProps<{
     class: string;
     title: string;
+    data?: any;
+    unit?: string;
+    options?: Record<string, any>;
   }>()
+
+  const total = computed(() => {
+    if (!data.data) {
+      return 0;
+    }
+    return data.data.source.reduce((t, item) => t + (item.value || 0), 0);
+  })
+
+  watch(data.data, (v) => {
+    console.log(v);
+    if (chartRef.value) {
+      chartRef.value.setOption({
+        dataset: data.data,
+      })
+    }
+  })
+
+  watch(total, v => {
+    console.log(v);
+    if (chartRef.value) {
+      chartRef.value.setOption({
+        dataset: data.data,
+      })
+    }
+  })
 
   onMounted(() => {
     const chart = echarts.init(batteryRef.value, 'screen');
+    console.log(data.data);
     chart.setOption({
-      dataset:  {
+      dataset:  data.data || {
         dimensions: ['label', 'value'],
         source: [
           {
@@ -34,12 +64,22 @@
         icon: 'circle',
         // width: 8,
         // height: 8,
+
         itemStyle: {
           borderWidth: 1,
         },
         textStyle: {
           color: '#fff',
         },
+        formatter(name) {
+          console.log(name);
+          const item = data.data?.source.find(i => i.label === name);
+          if (!item) {
+            return name;
+          }
+          return name + ` ${item.value} ${data.unit || ''}`;
+        },
+        ...(data.options?.legend || {})
       },
       title: {
         text: data.title,
@@ -74,6 +114,7 @@
         labelLine: {
           show: false
         },
+        ...(data.options?.series || {})
       }, {
         type: 'pie',
         encode: {
@@ -103,6 +144,7 @@
         labelLine: {
           show: false
         },
+        ...(data.options?.series || {})
       }, {
         type: 'pie',
         encode: {
@@ -139,9 +181,10 @@
         labelLine: {
           show: false
         },
+        ...(data.options?.series || {})
       }]
     })
-
+    chartRef.value = chart;
   });
 </script>
 

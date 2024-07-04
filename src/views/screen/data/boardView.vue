@@ -131,11 +131,23 @@
     <div class="flex flex-items-stretch mt-[16px]" >
       <div class="flex-[1]">
         <header class="title-name">用电统计</header>
-        <PieBattery class="pie-chart" title="" />
+        <PieBattery
+          :data="useTotalRef"
+          class="pie-chart"
+          title=""
+          unit="kWh"
+          :options="useTotalOptions"
+        />
       </div>
       <div class="flex-[1]">
         <header class="title-name">发电统计</header>
-        <PieBattery class="pie-chart" title="" />
+        <PieBattery
+          class="pie-chart"
+          title=""
+          unit="kWh"
+          :options="useTotalOptions"
+          :data="getterTotalRef"
+        />
 
       </div>
       <div class="flex-[1] flex flex-col">
@@ -144,7 +156,7 @@
           <div>
             <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
             <span class="font-size-[24px] font-600">5.55</span>
-            <span>kw</span>
+            <span>kWh</span>
           </div>
           <div>
             <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
@@ -168,14 +180,19 @@
 
 </template>
 <script lang="ts" setup>
-import { useIntervalFn } from '@vueuse/core'
+import { useIntervalFn, useResizeObserver } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
 import board from '@/views/screen/assets/board-bg.png'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
-import {getLatest1, getLatestForKeys} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import {
+  getLatest1,
+  getLatestForKeys,
+  getLatestPrice
+} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import dayjs from "dayjs";
 defineOptions({ name: '数据中心' })
 const keyValue = ref<Record<string, any>>({});
 const keys = []
@@ -204,14 +221,47 @@ const getLastData = async () => {
   return res;
 }
 const realRef = ref();
+const realChartRef = ref();
+const useTotalRef = ref();
+const getterTotalRef = ref();
+const useTotalOptions = {
+  legend: {
+    top: 0,
+    right: 0,
+    left: 0,
+    width: '100%',
+    orient: 'horizontal',
+  },
+  series: {
+    top: 20,
+  },
+}
 onMounted(() => {
   getLastData()
 })
 useIntervalFn(() => {
   getLastData();
 }, 3000)
+useResizeObserver(realRef, () => {
+  if (realChartRef.value) {
+    realChartRef.value.resize();
+  }
+});
+onMounted(() => {
+  getLatestPrice({
+    key: '用电统计',
+  }).then(res => {
+    useTotalRef.value = res.data;
+  })
+  getLatestPrice({
+    key: '发电统计',
+  }).then(res => {
+    getterTotalRef.value = res.data;
+  })
+})
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
+  const now = dayjs('00:00', 'HH:mm');
   const axisProps = {
     nameTextStyle: {
       color: '#fff',
@@ -228,62 +278,89 @@ onMounted(() => {
     },
     axisLabel: {
       show: true,
+      hideOverlap: true,
     },
     splitLine: {
       show: true,
     },
   }
   const valueTypes = [{
-    value: 'value1',
-    label: '数据1',
+    value: 'yesterday_avg',
+    label: '昨天',
+    color: '#e49134',
   },{
-    value: 'value2',
-    label: '数据2',
-  },{
-    value: 'value3',
-    label: '数据3',
+    value: 'today_avg',
+    label: '今天',
+    color: '#3b76e8',
   }]
-  chart.setOption({
-    dataset:   {
-      dimensions: ['time', 'value1', 'value2', 'value3'],
-      source: Array(24 * 5).fill(1).map((_, i) => [i + 1, 50 - Math.random() * 100, 50 - Math.random() * 100, 50 - Math.random() * 100]),
-    },
-    title: {
-      text: '实时电价',
-      top: '2%',
-      left: '2%',
-    },
-    xAxis: {
-      ...axisProps,
-    },
-    yAxis: {
-      ...axisProps,
-    },
-    series: valueTypes.map((type, idx) => ({
-      type: 'line',
-      smooth: false,
-      encode: {
-        x: 'time',
-        y: type.value,
+  getLatestPrice({
+    key: '实时电价'
+  }).then(res => {
+    chart.setOption({
+      dataset:  {
+        ...res.data,
+        source: res.data.source.map(item => ({
+          ...item,
+          hour: dayjs(item.hour, 'HH:mm').toDate(),
+        }))
       },
-      labelLine: {
-        show: 0,
+      title: {
+        text: '实时电价',
+        top: '2%',
+        left: '2%',
       },
-      areaStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
-          {
-            offset: 0,
-            color: screenConfig.color[idx],
+      xAxis: {
+        ...axisProps,
+        type: 'time',
+        interval: 1000 * 60 * 60 * 2,
+      },
+      yAxis: {
+        ...axisProps,
+      },
+      legend: {
+        icon: 'circle',
+        right: 20,
+        top: 20,
+        data: valueTypes.map((type) => ({
+          name: type.label,
+          itemStyle: {
+            color: type.color,
           },
-          {
-            offset: 1,
-            color: 'transparent'
-          }
-        ])
+        })),
       },
-      showSymbol: false,
-    }))
+      series: valueTypes.map((type, idx) => ({
+        type: 'line',
+        smooth: true,
+        name: type.label,
+        encode: {
+          x: 'hour',
+          y: type.value,
+        },
+        step: 'start',
+        itemStyle: {
+          color: type.color,
+        },
+        labelLine: {
+          show: 0,
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+            {
+              offset: 0,
+              color: screenConfig.color[idx],
+            },
+            {
+              offset: 1,
+              color: 'transparent'
+            }
+          ])
+        },
+        showSymbol: false,
+      }))
+    })
+
   })
+  realChartRef.value = chart;
 })
 const solarTypes = [{
   value: 'fdl',

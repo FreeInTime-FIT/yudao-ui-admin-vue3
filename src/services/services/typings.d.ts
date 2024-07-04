@@ -3131,6 +3131,14 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getLatestPriceParams = {
+    key: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getLoginLogPageParams = {
     /** 用户 IP，模拟匹配 */
     userIp?: string;
