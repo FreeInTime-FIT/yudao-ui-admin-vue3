@@ -90,7 +90,7 @@
           </div>
           <div>
             <span>微电网日发电量：</span>
-            <span>5.55kWh</span>
+            <span>{{keyValue['calc_162+164']}}</span>
           </div>
         </div>
         <ElDivider border-style="dashed" content-position="left">天气</ElDivider>
@@ -197,6 +197,7 @@ const getLastData = async () => {
       "addr_152",
       "addr_155",
       'addr_150',
+      '(addr_162+addr_164) as "calc_162+164"',
     ]
   })
   keyValue.value = res.data || {};
