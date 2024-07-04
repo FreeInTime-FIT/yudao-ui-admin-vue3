@@ -168,6 +168,7 @@
 
 </template>
 <script lang="ts" setup>
+import { useIntervalFn } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
@@ -205,6 +206,9 @@ const realRef = ref();
 onMounted(() => {
   getLastData()
 })
+useIntervalFn(() => {
+  getLastData();
+}, 1000 * 60)
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
   const axisProps = {
