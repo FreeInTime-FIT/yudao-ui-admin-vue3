@@ -343,7 +343,7 @@ console.log(provinceList);
     <baidu-map
       class="bm-view"
       @ready="handleMapReady"
-      :zoom="6"
+      :zoom="5"
       :dragging="false"
       scroll-wheel-zoom
       :mapStyle="mapStyle"
