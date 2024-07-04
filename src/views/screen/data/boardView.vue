@@ -26,25 +26,25 @@
       />
       <UseInfoItem
         title="充放电次数(当日)"
-        value="56"
+        :value="keyValue['addr_6000'] || 2"
         success-value="两充两放"
       />
       <UseInfoItem
         title="功率"
-        :api="getLatest1"
-        :params="{c: 'addr_141'}"
+        :value="keyValue['addr_141']"
+        unit="kw"
         success-value="功率"
       />
       <UseInfoItem
         title="温度"
-        :api="getLatest1"
-        :params="{c: 'addr_6013'}"
+        :value="keyValue['addr_6013']"
+        unit="°"
         success-value="单体温度最大值"
       />
       <UseInfoItem
         title="温度"
-        :api="getLatest1"
-        :params="{c: 'addr_6014'}"
+        :value="keyValue['addr_6014']"
+        unit="°"
         success-value="单体温度最小值"
       />
     </nav>
@@ -57,7 +57,7 @@
             success-value="用电功率"
           />
           <UseInfoItem
-            value="4.6kWh"
+            value="3.4kWh"
             success-value="用电量(当日)"
           />
         </div>
@@ -66,8 +66,7 @@
         <CardHeader title="电网" />
         <div class="flex">
           <UseInfoItem
-            :api="getLatest1"
-            :params="{c: 'addr_192'}"
+            :value="keyValue['addr_192']"
             success-value="功率"
           />
           <div class="flex flex-col gap-[12px] mb-[12px]">
@@ -175,14 +174,34 @@ import PieBattery from "@/views/screen/components/PieBattery.vue";
 import board from '@/views/screen/assets/board-bg.jpg'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
-import {getLatest1} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import {getLatest1, getLatestForKeys} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 defineOptions({ name: '数据中心' })
+const keyValue = ref({});
 const elec = reactive({
   elecSoc: '',
 })
 const realRef = ref();
 onMounted(() => {
-
+  getLatestForKeys({
+    "keys":[
+      "addr_6003",
+      "addr_141",
+      "addr_6013",
+      "addr_6014",
+      "addr_192",
+      "addr_32",
+      "addr_162",
+      "addr_164",
+      "addr_151",
+      "addr_154",
+      "addr_153",
+      "addr_152",
+      "addr_155"
+    ]
+  }).then(res => {
+    keyValue.value = res.data || {};
+    console.log(res);
+  })
 })
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
@@ -263,6 +282,8 @@ const solarTypes = [{
   value: 'fdl',
   label: '发电量',
   unit: 'kWh',
+  gf1: '162',
+  gf2: '164',
 },{
   value: 'fdl1',
   label: '电流',
@@ -280,10 +301,12 @@ const solarList = [{
   id: '1',
   name: '光伏1',
   type: 'pv1',
+  key: 'gf1',
 },{
   id: '2',
   name: '光伏2',
   type: 'pv2',
+  key: 'gf2',
 },]
 </script>
 

@@ -3113,6 +3113,18 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type GetLatestForKeys = {
+    keys?: string[];
+  };
+
+  type getLatestForKeysParams = {
+    keys: GetLatestForKeys;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getLatestParams = {
     /** 租户编号 */
     'tenant-id'?: number;

@@ -7,6 +7,7 @@
     title: string;
     successValue?: string;
     value?: string;
+    unit?: string;
     api?: (params) => Promise<any>;
     params?: Record<string, any>;
   }>()
@@ -31,7 +32,7 @@
     <div class="use-info_name">{{title}}</div>
     <div class="use-info_value">
       <div class="color-[var(--el-color-success)]">{{ successValue }}</div>
-      <div class="color-[var(--el-color-primary)]">{{ showValue }}</div>
+      <div class="color-[var(--el-color-primary)]">{{ showValue }}{{unit}}</div>
     </div>
   </div>
 </template>
