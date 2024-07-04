@@ -21,7 +21,7 @@
       <UseInfoItem
         title="电池电量"
         :api="getLatest1"
-        :params="{c: 'addr_6000'}"
+        :params="{c: 'addr_6003'}"
         success-value="电池soc"
       />
       <UseInfoItem
@@ -31,17 +31,20 @@
       />
       <UseInfoItem
         title="功率"
-        value="0.1kw"
+        :api="getLatest1"
+        :params="{c: 'addr_141'}"
         success-value="功率"
       />
       <UseInfoItem
         title="温度"
-        value="0.1°"
+        :api="getLatest1"
+        :params="{c: 'addr_6013'}"
         success-value="单体温度最大值"
       />
       <UseInfoItem
         title="温度"
-        value="0.1°"
+        :api="getLatest1"
+        :params="{c: 'addr_6014'}"
         success-value="单体温度最小值"
       />
     </nav>
@@ -63,7 +66,8 @@
         <CardHeader title="电网" />
         <div class="flex">
           <UseInfoItem
-            value="19kWh"
+            :api="getLatest1"
+            :params="{c: 'addr_192'}"
             success-value="功率"
           />
           <div class="flex flex-col gap-[12px] mb-[12px]">
@@ -86,7 +90,7 @@
             <span>5.55kWh</span>
           </div>
           <div>
-            <span>微电网日用电量：</span>
+            <span>微电网日发电量：</span>
             <span>5.55kWh</span>
           </div>
         </div>
