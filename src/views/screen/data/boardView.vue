@@ -172,7 +172,7 @@ import { useIntervalFn } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
-import board from '@/views/screen/assets/board-bg.jpg'
+import board from '@/views/screen/assets/board-bg.png'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
 import {getLatest1, getLatestForKeys} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";

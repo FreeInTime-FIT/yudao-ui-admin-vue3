@@ -31,17 +31,16 @@ defineOptions({ name: 'ScreenLayout' })
         <a type="info" href="/screen/index" class="font-size-[30px] color-[var(--screen-header-text-color)] logo">
           能量管理云监控系统
         </a>
-
       </div>
       <div class="flex flex-items-center gap-10px">
         <RouterLink to="/screen/warning/index">
-          <ElButton type='text'>实时告警</ElButton>
+          <ElButton link>实时告警</ElButton>
         </RouterLink>
         <ElDivider direction='vertical' />
         <RouterLink to="/screen/setting/index">
-          <ElButton type='text'>
+          <ElButton link>
             <ElAvatar />
-            <span>管理中心</span>
+            <span class="ml-[6px]">管理中心</span>
           </ElButton>
 
         </RouterLink>
@@ -146,6 +145,7 @@ defineOptions({ name: 'ScreenLayout' })
   .logo{
     text-decoration: none;
     font-weight: bold;
+    white-space: nowrap;
   }
   :deep {
     .el-card{
