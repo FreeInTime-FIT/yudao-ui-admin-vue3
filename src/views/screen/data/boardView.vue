@@ -20,7 +20,8 @@
     <nav class="flex">
       <UseInfoItem
         title="电池电量"
-        :value="elec.elecSoc"
+        :api="getLatest1"
+        :params="{c: 'addr_6000'}"
         success-value="电池soc"
       />
       <UseInfoItem
@@ -177,11 +178,7 @@ const elec = reactive({
 })
 const realRef = ref();
 onMounted(() => {
-  getLatest1({
-    c: 'addr_6000'
-  }).then(res => {
-    elec.elecSoc = res.data as string;
-  });
+
 })
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);

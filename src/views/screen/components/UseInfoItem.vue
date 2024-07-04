@@ -2,11 +2,28 @@
   defineOptions({
     name: 'UserInfoItem',
   })
-  const { title, successValue, value } = defineProps<{
+  const valRef = ref()
+  const { title, successValue, value, api, params } = defineProps<{
     title: string;
     successValue?: string;
     value?: string;
+    api?: (params) => Promise<any>;
+    params?: Record<string, any>;
   }>()
+  onMounted(() => {
+   if (!api) {
+     return
+   }
+   api(params).then(res => {
+     valRef.value = res.data;
+   })
+  })
+  const showValue = computed(() => {
+    if (valRef.value !== undefined) {
+      return valRef.value
+    }
+    return value
+  })
 </script>
 
 <template>
@@ -14,7 +31,7 @@
     <div class="use-info_name">{{title}}</div>
     <div class="use-info_value">
       <div class="color-[var(--el-color-success)]">{{ successValue }}</div>
-      <div class="color-[var(--el-color-primary)]">{{ value }}</div>
+      <div class="color-[var(--el-color-primary)]">{{ showValue }}</div>
     </div>
   </div>
 </template>
