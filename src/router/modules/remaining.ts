@@ -711,6 +711,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
         },
         component: () => import('@/views/screen/info/prices.vue')
       },
+      {
+        path: 'setting/fields',
+        name: 'ScreenSettingFields',
+        meta: {
+          title: '运维平台',
+          noCache: true,
+          activeMenu: '/screen/setting/fields'
+        },
+        component: () => import('@/views/screen/setting/fields.vue')
+      },
     ],
   }
 ]
