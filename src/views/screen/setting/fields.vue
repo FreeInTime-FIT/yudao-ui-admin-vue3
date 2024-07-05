@@ -27,6 +27,7 @@
   const fieldValue = shallowRef({});
   const updateValue = shallowRef({})
   const topicValue = ref()
+  const notifyRef = ref([]);
   const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server.value, {
     autoReconnect: false,
     heartbeat: false,
@@ -223,12 +224,33 @@
         return;
       }
       if (jsonMessage.type === 'error') {
+        if (notifyRef.value && notifyRef.value.length > 3) {
+          notifyRef.value.shift().close();
+        }
         const msg = JSON.parse(jsonMessage.content);
-        ElNotification({
-          title: msg.code,
-          message: msg.msg,
-          type: 'error',
-        })
+        notifyRef.value.push(
+          ElNotification({
+            title: msg.code,
+            message: msg.msg,
+            type: 'error',
+          })
+        )
+
+        return;
+      }
+      if (jsonMessage.type === 'success') {
+        if (notifyRef.value && notifyRef.value.length > 3) {
+          notifyRef.value.shift().close();
+        }
+        const res = JSON.parse(jsonMessage.content);
+        notifyRef.value.push(
+          ElNotification({
+            title: '操作成功',
+            message: res.msg,
+            type: 'success',
+          })
+        )
+
         return;
       }
       if (jsonMessage.type === WRITE_KEY) {
@@ -256,6 +278,9 @@
     open();
 
     sendData(TOPIC_LIST_KEY, {});
+    if (unref(selectedTopic).topicId) {
+      sendData(DEVICE_LIST_KEY, unref(selectedTopic));
+    }
   })
 
   onUnmounted(() => {
