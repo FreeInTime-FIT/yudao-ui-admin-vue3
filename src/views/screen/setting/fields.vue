@@ -107,6 +107,7 @@
     dataKey: item.key,
     title: item.key,
     minWidth: 150,
+    width: '15%',
     headerCellRenderer(props) {
       return (
         <div class="flex items-center justify-center">
@@ -248,10 +249,8 @@
       return
     }
     console.log(v);
-    sendData(DEVICE_LIST_KEY, {
-      productKey: unref(selectedTopic).productKey,
-      deviceName: unref(selectedTopic).deviceName,
-    });
+
+    sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   });
   onMounted(() => {
     open();
