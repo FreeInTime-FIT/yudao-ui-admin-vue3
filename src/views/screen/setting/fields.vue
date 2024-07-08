@@ -64,17 +64,17 @@
     },
     {
       key: 'type',
-      editable: true,
+      editable: false,
       options: 'BITS_ENUM16_INT16_UINT16_UINT32_STRING'.split('_'),
     },
     {
       key: 'access',
-      editable: true,
+      editable: false,
       options: ['RO', 'WO', 'RW'],
     },
     {
       key: 'value',
-      editable: true,
+      editable: false,
       isInput: true,
     },
     {
@@ -84,7 +84,7 @@
     },
     {
       key: 'desc',
-      editable: true,
+      editable: false,
       isInput: true,
     },
   ]

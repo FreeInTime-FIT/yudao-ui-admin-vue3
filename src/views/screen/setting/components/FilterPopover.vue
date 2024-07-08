@@ -10,7 +10,7 @@ const { list, rowKey, options} = defineProps<{
   rowKey: string;
   options?: string[];
 }>()
-const modelValue = defineModel();
+const modelValue = defineModel<any>();
 defineOptions({
   name: 'FilterPopover'
 })
