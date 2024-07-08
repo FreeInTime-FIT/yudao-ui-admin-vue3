@@ -83,7 +83,7 @@
       isInput: true,
     },
     {
-      key: 'desc',
+      key: 'des',
       editable: false,
       isInput: true,
     },
