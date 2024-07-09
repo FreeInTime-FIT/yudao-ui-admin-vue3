@@ -388,7 +388,7 @@
       name: key,
       type: 'line',
       showSymbol: true,
-      smooth: true,
+      smooth: false,
       encode: {
         x: 'updateTime',
         y: key,
