@@ -7,7 +7,7 @@
   import { TrendCharts, Hide } from '@element-plus/icons-vue'
   import FilterPopover from "@/views/screen/setting/components/FilterPopover.vue";
   import InputWarp from "@/views/screen/components/InputWarp.vue";
-  import { ElNotification, TableV2FixedDir } from 'element-plus'
+  import { ElNotification, TableV2FixedDir, ElMessage } from 'element-plus'
   import screenConfig from "@/views/screen/config/echart.json";
   const WRITE_KEY = 'device-write-addr';
   const READ_KEY = 'device-read-addr'
@@ -172,6 +172,13 @@
           modelValue={isChecked && !unChecked}
           onChange={v => {
             if (v) {
+              if(unref(showList).length > 50) {
+                ElMessage({
+                  message: '当前行数太多，请筛选后在选择',
+                  type: 'warning',
+                })
+                return true;
+              }
               selectedList.value = unref(showList).map(i => i.addr);
             } else {
               selectedList.value = [];
