@@ -1,16 +1,26 @@
 <script setup lang="tsx">
   import {getAccessToken} from "@/utils/auth";
-  import {useWebSocket, useLocalStorage} from "@vueuse/core";
+  import {useWebSocket, useLocalStorage, useResizeObserver} from "@vueuse/core";
   import queryString from 'query-string';
   import dayjs from "dayjs";
+  import * as echarts from 'echarts'
+  import { TrendCharts, Hide } from '@element-plus/icons-vue'
   import FilterPopover from "@/views/screen/setting/components/FilterPopover.vue";
   import InputWarp from "@/views/screen/components/InputWarp.vue";
   import { ElNotification, TableV2FixedDir } from 'element-plus'
+  import screenConfig from "@/views/screen/config/echart.json";
   const WRITE_KEY = 'device-write-addr';
   const READ_KEY = 'device-read-addr'
   const TOPIC_LIST_KEY = 'device-topic-list'
   const DEVICE_LIST_KEY = 'device-last-data';
+  const chartDom = ref();
+  let chart;
+  const chartRef = ref();
+  const selectedList = ref<string[]>([]);
+  const historyList = ref([]);
+  const isVisible = ref(false);
 
+  echarts.registerTheme('screen', screenConfig);
   defineOptions({
     name: '字段维护',
   })
@@ -93,7 +103,85 @@
       ...(updateValue.value[rowIndex] || {}),
     });
   }
+  useResizeObserver(chartDom.value, () => {
+    if (chart) {
+      chart.resize();
+    }
+  })
+  const showList = computed(() => {
+    if (!resData.value?.profits) {
+      return []
+    }
+    if (!Object.keys(fieldValue.value)) {
+      return resData.value?.profits
+    }
+    const fieldKeyList = Object.keys(fieldValue.value);
+    const filterData = (item) => {
+      return fieldKeyList.every(key => {
+        const fieldV = fieldValue.value[key];
+        if (!fieldV) {
+          return true;
+        }
+        if (Array.isArray(fieldV)) {
+          return !fieldV.length || fieldV.some(i => i === item[key]);
+        }
+        if (typeof fieldV === 'string') {
+          return item[key] && item[key].indexOf(fieldV) !== -1;
+        }
+        return false;
+      });
+    }
+    return resData.value?.profits.filter(item => filterData(item))
+  })
   const columns = ref([{
+    key: 'selection',
+    dataKey: 'selection',
+    width: 60,
+    minWidth: 60,
+    align: 'center',
+    fixed: TableV2FixedDir.LEFT,
+    cellRenderer({ rowData, rowIndex }) {
+      const isChecked = unref(selectedList).some(i => i === rowData.addr);
+      return (
+        <ElCheckbox
+          modelValue={isChecked}
+          onChange={v => {
+            if (v) {
+              selectedList.value = [...selectedList.value, rowData.addr];
+            }else {
+              selectedList.value = selectedList.value.filter(i => i !== rowData.addr);
+            }
+            console.log(v);
+          }}
+        />
+      );
+    },
+    headerCellRenderer(props) {
+      let isChecked = false;
+      let unChecked = false;
+      unref(showList).forEach(i => {
+        if (unref(selectedList).some(k => i.addr === k)) {
+          isChecked = true;
+        } else {
+          unChecked = true;
+        }
+      });
+      return (
+        <ElCheckbox
+          indeterminate={isChecked && unChecked}
+          modelValue={isChecked && !unChecked}
+          onChange={v => {
+            if (v) {
+              selectedList.value = unref(showList).map(i => i.addr);
+            } else {
+              selectedList.value = [];
+
+            }
+          }}
+        />
+      );
+    },
+  },{
     key: 'index',
     dataKey: 'index',
     title: '序号',
@@ -160,14 +248,27 @@
     key: 'id',
     dataKey: 'id',
     title: '操作',
-    width: 150,
-    minWidth: 150,
+    width: 180,
+    minWidth: 180,
     fixed: TableV2FixedDir.RIGHT,
     cellRenderer({rowData, rowIndex}) {
+      const isChecked = unref(selectedList).some(i => i === rowData.addr);
       return (
         <ElSpace>
           <ElButton>读</ElButton>
           <ElButton onClick={() => handleWrite(rowData, rowIndex)}>写</ElButton>
+          <ElButton onClick={() => {
+            if (!isChecked) {
+              selectedList.value = [...selectedList.value, rowData.addr];
+            }else {
+              selectedList.value = selectedList.value.filter(i => i !== rowData.addr);
+            }
+            isVisible.value = !!selectedList.value.length;
+          }}>
+            <el-icon>{isChecked && isVisible.value ? (
+              <Hide/>
+            ) : (<TrendCharts/>)}</el-icon>
+          </ElButton>
         </ElSpace>
       )
     },
@@ -183,33 +284,6 @@
     });
   }
 
-  const showList = computed(() => {
-    if (!resData.value?.profits) {
-      return []
-    }
-    if (!Object.keys(fieldValue.value)) {
-      return resData.value?.profits
-    }
-    const fieldKeyList = Object.keys(fieldValue.value);
-    const filterData = (item) => {
-      return fieldKeyList.every(key => {
-        const fieldV = fieldValue.value[key];
-        if (!fieldV) {
-          return true;
-        }
-        if (Array.isArray(fieldV)) {
-          return !fieldV.length || fieldV.some(i => i === item[key]);
-        }
-        if (typeof fieldV === 'string') {
-          return item[key] && item[key].indexOf(fieldV) !== -1;
-        }
-        return false;
-      });
-    }
-    return resData.value?.profits.filter(item => filterData(item))
-  })
-
-
   watchEffect(() => {
     if (!data.value) {
       return
@@ -223,6 +297,11 @@
       console.log(jsonMessage);
       if (jsonMessage.type === DEVICE_LIST_KEY) {
         resData.value = JSON.parse(jsonMessage.content);
+        historyList.value = [...historyList.value, resData.value];
+        // 大于1000就清除掉之前的数据
+        if (historyList.value.length > 1000) {
+          historyList.value.shift();
+        }
         return;
       }
       if (jsonMessage.type === TOPIC_LIST_KEY) {
@@ -280,10 +359,114 @@
     if (!v) {
       return
     }
-    console.log(v);
-
+    historyList.value = [];
+    selectedList.value = [];
     sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   });
+
+  watch([historyList, selectedList, isVisible], (v, oldValue) => {
+    if (!unref(v[2])) {
+      chart = null;
+      return;
+    }
+    const dataset = {
+      dimensions: [
+        'updateTime',
+        ...unref(v[1]),
+      ],
+      source: unref(v[0]).map(item => {
+        return [dayjs(item.updateTime).toDate(), ...unref(v[1]).map(k => {
+          const curr = item.profits?.find(i => i.addr === k);
+          if (!curr) {
+            return undefined;
+          }
+          return Number(curr.value);
+        })]
+      })
+    }
+    const series = unref(v[1]).map(key => ({
+      name: key,
+      type: 'line',
+      showSymbol: true,
+      smooth: true,
+      encode: {
+        x: 'updateTime',
+        y: key,
+        // tooltip: ['updateTime', key],
+      },
+    }))
+    if (chart) {
+      console.log(v, oldValue);
+
+      if (v[0] !== oldValue[0]) {
+        chart.setOption({
+          dataset,
+        });
+        return;
+      }
+
+      chart.setOption({
+        dataset,
+        series,
+      });
+      return;
+    }
+
+    chart = echarts.init(chartDom.value, 'screen');
+    chart.setOption({
+      dataset,
+      title: {
+        text: '实时数据',
+        top: 10,
+        left: 10,
+      },
+      grid: {
+        right: 16,
+        top: 50,
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          animation: false,
+          label: {
+            show: true,
+            formatter(params) {
+              return dayjs(params.value).format('HH:mm:ss SSS')
+            },
+          },
+        }
+      },
+
+      xAxis: {
+        type: 'time',
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+      },
+      legend: {
+        bottom: 0,
+        left: 'center',
+      },
+      series,
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: 0,
+          minSpan: 2
+        },
+        {
+          type: 'slider',
+          xAxisIndex: 0,
+          minSpan: 2,
+          bottom: 50,
+          height: 12,
+        }
+      ],
+    });
+  }, {
+    flush: 'post',
+  })
   onMounted(() => {
     open();
 
@@ -297,6 +480,10 @@
     console.log('close');
     close();
   })
+  function handleVisible() {
+    isVisible.value = !isVisible.value;
+
+  }
 </script>
 
 <template>
@@ -305,7 +492,7 @@
     <span>数据更新时间：{{dayjs(resData.updateTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
   </header>
   <aside class="aside">
-    <ElFormItem label="订阅主题" class="flex-items-center">
+    <ElFormItem label="订阅主题" class="flex-items-center mb-[0px]">
       <InputWarp>
         <ElSelect
           v-model="selectedTopic"
@@ -324,9 +511,25 @@
       </InputWarp>
     </ElFormItem>
 
+    <div>
+      <ElButton v-if="!!selectedList.length" @click="handleVisible">
+        <el-icon>
+          <TrendCharts v-if="!isVisible" />
+          <Hide v-else />
+        </el-icon>
+        <span>实时数据</span>
+      </ElButton>
+    </div>
 
   </aside>
-  <article class="flex-[1] m-[12px_16px_24px] h-[0]">
+  <div
+    class="charts"
+    ref="chartDom"
+    v-if="isVisible"
+  >
+
+  </div>
+  <article class="flex-[1] m-[0px_16px_24px_32px] h-[0]">
     <ElAutoResizer>
       <template #default="{ height, width }">
         <el-table-v2
@@ -363,6 +566,12 @@
   }
   .aside{
     display: flex;
-    padding: 12px 16px;
+    padding: 12px 16px 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .charts{
+    height: 300px;
+    margin: 0 16px 0 32px;
   }
 </style>
