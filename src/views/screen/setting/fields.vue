@@ -5,7 +5,7 @@
   import dayjs from "dayjs";
   import FilterPopover from "@/views/screen/setting/components/FilterPopover.vue";
   import InputWarp from "@/views/screen/components/InputWarp.vue";
-  import { ElNotification } from 'element-plus'
+  import { ElNotification, TableV2FixedDir } from 'element-plus'
   const WRITE_KEY = 'device-write-addr';
   const READ_KEY = 'device-read-addr'
   const TOPIC_LIST_KEY = 'device-topic-list'
@@ -18,9 +18,7 @@
     url: (import.meta.env.VITE_BASE_URL + '/infra/ws').replace(/^http/, 'ws'),
     query: {
       token: getAccessToken(),
-      productKey: 'UEJQdCOqf2o',
-      'deviceName': 'Inverter_01',
-    }})
+     }})
   ) // WebSocket 服务地址
   const resData = useLocalStorage('sc:screen-setting-field', {});
   const selectedTopic = useLocalStorage('sc:screen-setting-field-topic', {});
@@ -86,6 +84,7 @@
       key: 'des',
       editable: false,
       isInput: true,
+      percentage: 0.30,
     },
   ]
   const handleWrite = (rowData, rowIndex) => {
@@ -99,7 +98,8 @@
     dataKey: 'index',
     title: '序号',
     width: 80,
-    fixed: true,
+    minWidth: 80,
+    fixed: TableV2FixedDir.LEFT,
     cellRenderer({ rowData, rowIndex }) {
       return rowIndex + 1;
     },
@@ -108,7 +108,8 @@
     dataKey: item.key,
     title: item.key,
     minWidth: 150,
-    width: '15%',
+    width: 150,
+    percentage: item.percentage || 0.1,
     headerCellRenderer(props) {
       return (
         <div class="flex items-center justify-center">
@@ -160,7 +161,8 @@
     dataKey: 'id',
     title: '操作',
     width: 150,
-    fixed: 'right',
+    minWidth: 150,
+    fixed: TableV2FixedDir.RIGHT,
     cellRenderer({rowData, rowIndex}) {
       return (
         <ElSpace>
@@ -171,7 +173,15 @@
     },
   }]);
 
-
+  const getColumns = (width) => {
+    return columns.value.map(item => {
+      let columnWidth = item.width;
+      return {
+        ...item,
+        width: item.percentage ? Math.max(item.minWidth, width * item.percentage): item.width
+      }
+    });
+  }
 
   const showList = computed(() => {
     if (!resData.value?.profits) {
@@ -320,7 +330,8 @@
     <ElAutoResizer>
       <template #default="{ height, width }">
         <el-table-v2
-          :columns="columns"
+          :columns="getColumns(width, height)"
+          fixed
           :data="showList"
           :width="width || 800"
           :height="height || 800"
