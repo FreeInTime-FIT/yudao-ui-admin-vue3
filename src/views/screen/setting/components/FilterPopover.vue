@@ -5,10 +5,11 @@ import { ClickOutside as vClickOutside } from 'element-plus'
 
 const domRef = ref();
 const popoverRef = ref()
-const { list, rowKey, options} = defineProps<{
+const { list, rowKey, options, isInput} = defineProps<{
   list: Record<string, any>;
   rowKey: string;
   options?: string[];
+  isInput?: boolean;
 }>()
 const modelValue = defineModel<any>();
 defineOptions({
@@ -18,7 +19,7 @@ const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.()
 }
 
-const filterList = computed(() => {
+const filterList = computed<string[]>(() => {
   const res = [];
   if (options){
     return options;
@@ -33,6 +34,19 @@ const filterList = computed(() => {
   })
   return res;
 })
+const querySearch = (query, cb) => {
+  console.log(query, cb, filterList);
+
+  if (!query) {
+    cb( unref(filterList).map(i => ({
+      value: i,
+    })))
+    return
+  }
+   cb(unref(filterList).map(i => ({
+    value: i,
+  })).filter(i => i.value && i.value.indexOf(query) !== -1));
+}
 </script>
 
 <template>
@@ -51,15 +65,14 @@ const filterList = computed(() => {
       allowCreate
       multiple
       v-model="modelValue"
-      v-if="filterList.length > 6"
+      v-if="!isInput && filterList.length > 6"
     >
       <ElOption v-for="item in filterList" :key="item" :label="item" :value="item" />
     </ElSelect>
-    <div class="filter-wrapper" v-else-if="filterList.length">
+    <div class="filter-wrapper" v-else-if="!isInput && filterList.length">
       <div class="filter-group">
         <ElCheckboxGroup
           v-model="modelValue"
-
         >
           <ElCheckbox v-for="item in filterList" :key="item" :label="item" :value="item" />
         </ElCheckboxGroup>
@@ -67,7 +80,10 @@ const filterList = computed(() => {
     </div>
     <div class="filter-wrapper" v-else>
       <div class="filter-group">
-        <ElInput placeholder="请输入" v-model="modelValue" />
+        <ElInput
+          placeholder="请输入"
+          v-model="modelValue"
+        />
       </div>
     </div>
   </ElPopover>

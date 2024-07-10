@@ -22,6 +22,22 @@
   const historyList = ref([]);
   const isVisible = ref(false);
 
+  const dealData = (prev, nowData) => {
+    return {
+      ...nowData,
+      profits: [
+        ...nowData.profits,
+        ...(prev?.profits || []).filter(i => nowData.profits.every(item => item.addr !== i.addr)),
+      ].sort((a, b) => {
+        const aArr = a.addr.split('#').map(i => parseInt(i));
+        const bArr = b.addr.split('#').map(i => parseInt(i));
+        if (aArr[0] !== bArr[0]) {
+          return aArr[0] - bArr[0]
+        }
+        return aArr[1] - bArr[1]
+      }),
+    }
+  }
   echarts.registerTheme('screen', screenConfig);
   defineOptions({
     name: '字段维护',
@@ -61,7 +77,6 @@
     }
   }
   const handleFilter = (key, v) => {
-    console.log(key, v);
 
     fieldValue.value = {
       ...fieldValue.value,
@@ -72,6 +87,7 @@
     {
       key: 'addr',
       editable: false,
+      isInput: true,
     },
     {
       key: 'type',
@@ -120,11 +136,11 @@
     }
   })
   const showList = computed(() => {
-    if (!resData.value?.profits) {
+    if (!resData.value.profits) {
       return []
     }
     if (!Object.keys(fieldValue.value)) {
-      return resData.value?.profits
+      return resData.value.profits;
     }
     const fieldKeyList = Object.keys(fieldValue.value);
     const filterData = (item) => {
@@ -142,7 +158,7 @@
         return false;
       });
     }
-    return resData.value?.profits.filter(item => filterData(item))
+    return resData.value.profits.filter(item => filterData(item))
   })
   const columns = ref([{
     key: 'selection',
@@ -162,7 +178,6 @@
             }else {
               selectedList.value = selectedList.value.filter(i => i !== rowData.addr);
             }
-            console.log(v);
           }}
         />
       );
@@ -224,6 +239,7 @@
           <FilterPopover
             key={item}
             options={item.options}
+            isInput={item.isInput}
             list={resData.value.profits || []}
             modelValue={fieldValue.value[item.key]}
             {...{['onUpdate:modelValue']: (v) => handleFilter(item.key, v)}}
@@ -302,7 +318,7 @@
     });
   }
 
-  watchEffect(() => {
+  watch(data, () => {
     if (!data.value) {
       return
     }
@@ -312,10 +328,10 @@
     }
     try {
       const jsonMessage = JSON.parse(data.value)
-      console.log(jsonMessage);
       if (jsonMessage.type === DEVICE_LIST_KEY) {
-        resData.value = JSON.parse(jsonMessage.content);
-        historyList.value = [...historyList.value, resData.value];
+        resData.value = dealData(resData.value || {}, JSON.parse(jsonMessage.content));
+        historyList.value = [...historyList.value, JSON.parse(jsonMessage.content)];
+        console.log(resData.value);
         // 大于1000就清除掉之前的数据
         if (historyList.value.length > 1000) {
           historyList.value.shift();
@@ -417,7 +433,6 @@
       },
     }))
     if (chart) {
-      console.log(v, oldValue);
 
       if (v[0] !== oldValue[0]) {
         chart.setOption({
