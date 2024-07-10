@@ -82,7 +82,7 @@
     },
     {
       key: 'value',
-      editable: false,
+      editable: true,
       isInput: true,
     },
     {
@@ -491,6 +491,12 @@
     isVisible.value = !isVisible.value;
 
   }
+  function handleReset() {
+    updateValue.value = {};
+  }
+  function handleRefresh() {
+    sendData(DEVICE_LIST_KEY, unref(selectedTopic));
+  }
 </script>
 
 <template>
@@ -518,7 +524,7 @@
       </InputWarp>
     </ElFormItem>
 
-    <div>
+    <ElSpace>
       <ElButton v-if="!!selectedList.length" @click="handleVisible">
         <el-icon>
           <TrendCharts v-if="!isVisible" />
@@ -526,7 +532,13 @@
         </el-icon>
         <span>实时数据</span>
       </ElButton>
-    </div>
+      <ElButton @click="handleReset">
+        重置
+      </ElButton>
+      <ElButton v-if="selectedTopic.topicId" @click="handleRefresh">
+        刷新列表
+      </ElButton>
+    </ElSpace>
 
   </aside>
   <div
