@@ -431,6 +431,7 @@
       type: 'line',
       showSymbol: false,
       smooth: true,
+      connectNulls: true,
       encode: {
         x: 'updateTime',
         y: key,
@@ -481,10 +482,12 @@
       xAxis: {
         type: 'time',
       },
-      yAxis: {
+      yAxis: [{
         type: 'value',
         boundaryGap: [0, '100%'],
-      },
+      }, {
+        type: 'category',
+      }],
       legend: {
         bottom: 0,
         left: 'center',
