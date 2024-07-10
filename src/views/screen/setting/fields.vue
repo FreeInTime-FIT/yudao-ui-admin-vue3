@@ -42,20 +42,20 @@
   defineOptions({
     name: '字段维护',
   })
-  const server = ref(queryString.stringifyUrl({
+  const server = queryString.stringifyUrl({
     url: (import.meta.env.VITE_BASE_URL + '/infra/ws').replace(/^http/, 'ws'),
     query: {
       token: getAccessToken(),
-     }})
-  ) // WebSocket 服务地址
-  const resData = useLocalStorage('sc:screen-setting-field', {});
+     }});
+   // WebSocket 服务地址
+  const resData = useLocalStorage<any>('sc:screen-setting-field', {});
   const selectedTopic = useLocalStorage('sc:screen-setting-field-topic', {});
   const fieldValue = shallowRef({});
   const updateValue = shallowRef({})
   const moduleContent = ref();
   const topicValue = ref()
   const notifyRef = ref([]);
-  const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server.value, {
+  const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server as any, {
     autoReconnect: false,
     heartbeat: !import.meta.env.DEV,
     autoClose: false,
@@ -68,10 +68,10 @@
     }));
   }
 
-  const handleChange = (rowData, rowIndex, key, v) => {
+  const handleChange = (rowData, key, v) => {
     updateValue.value = {
       ...updateValue.value,
-      [rowIndex]: {
+      [rowData.addr]: {
         [key]: v,
       },
     }
@@ -92,17 +92,22 @@
     {
       key: 'type',
       editable: false,
+      width: 80,
+      minWidth: 80,
       options: 'BITS_ENUM16_INT16_UINT16_UINT32_STRING'.split('_'),
     },
     {
       key: 'access',
       editable: false,
+      width: 80,
+      minWidth: 80,
       options: ['RO', 'WO', 'RW'],
     },
     {
       key: 'value',
       editable: true,
       isInput: true,
+      percentage: 0.15,
     },
     {
       key: 'set',
@@ -116,18 +121,18 @@
       percentage: 0.30,
     },
   ]
-  const handleWrite = (rowData, rowIndex) => {
+  const handleWrite = (rowData) => {
     sendData(WRITE_KEY, {
       ...rowData,
-      ...(updateValue.value[rowIndex] || {}),
+      ...(updateValue.value[rowData.addr] || {}),
     });
   }
-  const handleRead = (rowData, rowIndex) => {
+  const handleRead = (rowData) => {
     sendData(READ_KEY, {
       ...rowData,
-      ...(updateValue.value[rowIndex] || {}),
+      ...(updateValue.value[rowData.addr] || {}),
     });
-    updateValue.value[rowIndex] = {};
+    updateValue.value[rowData.addr] = {};
 
   }
   useResizeObserver(chartDom.value, () => {
@@ -228,8 +233,8 @@
     key: item.key,
     dataKey: item.key,
     title: item.key,
-    minWidth: 150,
-    width: 150,
+    minWidth: item.minWidth ||150,
+    width: item.width || 150,
     percentage: item.percentage || 0.1,
     headerCellRenderer(props) {
       return (
@@ -252,13 +257,13 @@
       if (!item.editable) {
         return cellData;
       }
-      const val = rowIndex in updateValue.value && item.key in updateValue.value[rowIndex] ? updateValue.value[rowIndex][item.key] : cellData;
+      const val = rowData.addr in updateValue.value && item.key in updateValue.value[rowData.addr] ? updateValue.value[rowData.addr][item.key] : cellData;
       if (item.options) {
         return (
           <ElSelect
             modelValue={val}
-            onChange={v => handleChange(rowData, rowIndex, item.key, v)}
-            onInput={v => handleChange(rowData, rowIndex, item.key, v)}
+            onChange={v => handleChange(rowData, item.key, v)}
+            onInput={v => handleChange(rowData, item.key, v)}
           >
             {item.options.map(option => (
               <ElOption
@@ -273,8 +278,8 @@
       return (
         <ElInput
           modelValue={val}
-          onChange={v => handleChange(rowData, rowIndex, item.key, v)}
-          onInput={v => handleChange(rowData, rowIndex, item.key, v)}
+          onChange={v => handleChange(rowData, item.key, v)}
+          onInput={v => handleChange(rowData, item.key, v)}
         />
       )
     },
