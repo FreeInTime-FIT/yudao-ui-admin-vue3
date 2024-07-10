@@ -38,7 +38,7 @@
   const notifyRef = ref([]);
   const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server.value, {
     autoReconnect: false,
-    heartbeat: false,
+    heartbeat: !import.meta.env.DEV,
     autoClose: false,
     immediate: false,
   })
@@ -99,6 +99,12 @@
   ]
   const handleWrite = (rowData, rowIndex) => {
     sendData(WRITE_KEY, {
+      ...rowData,
+      ...(updateValue.value[rowIndex] || {}),
+    });
+  }
+  const handleRead = (rowData, rowIndex) => {
+    sendData(READ_KEY, {
       ...rowData,
       ...(updateValue.value[rowIndex] || {}),
     });
@@ -262,7 +268,7 @@
       const isChecked = unref(selectedList).some(i => i === rowData.addr);
       return (
         <ElSpace>
-          <ElButton>读</ElButton>
+          <ElButton onClick={() => handleRead(rowData, rowIndex)}>读</ElButton>
           <ElButton onClick={() => handleWrite(rowData, rowIndex)}>写</ElButton>
           <ElButton onClick={() => {
             if (!isChecked) {
@@ -387,6 +393,9 @@
           if (!curr) {
             return undefined;
           }
+          if (curr.type === 'STRING' || curr.type === 'BITS' || curr.type === 'ENUM16') {
+            return curr.value;
+          }
           return Number(curr.value);
         })]
       })
@@ -394,8 +403,8 @@
     const series = unref(v[1]).map(key => ({
       name: key,
       type: 'line',
-      showSymbol: true,
-      smooth: false,
+      showSymbol: false,
+      smooth: true,
       encode: {
         x: 'updateTime',
         y: key,
