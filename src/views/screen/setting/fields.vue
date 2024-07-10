@@ -517,7 +517,9 @@
   }
   function handlePushConfirm() {
     confirmVisible.value = false;
-    sendData(PUSH_KEY, moduleContent.value);
+    sendData(PUSH_KEY, {
+      content: moduleContent.value,
+    });
   }
 </script>
 
