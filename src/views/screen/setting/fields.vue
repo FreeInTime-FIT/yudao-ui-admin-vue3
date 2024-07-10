@@ -108,6 +108,8 @@
       ...rowData,
       ...(updateValue.value[rowIndex] || {}),
     });
+    updateValue.value[rowIndex] = {};
+
   }
   useResizeObserver(chartDom.value, () => {
     if (chart) {
