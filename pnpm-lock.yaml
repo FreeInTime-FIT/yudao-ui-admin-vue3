@@ -92,6 +92,9 @@ dependencies:
   mitt:
     specifier: ^3.0.1
     version: 3.0.1
+  monaco-editor:
+    specifier: ^0.50.0
+    version: 0.50.0
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -8645,6 +8648,10 @@ packages:
     dependencies:
       min-dash: 3.8.1
     dev: true
+
+  /monaco-editor@0.50.0:
+    resolution: {integrity: sha512-8CclLCmrRRh+sul7C08BmPBP3P8wVWfBHomsTcndxg5NRCEPfu/mc2AGU8k37ajjDVXcXFc12ORAMUkmk+lkFA==}
+    dev: false
 
   /mpd-parser@0.22.1:
     resolution: {integrity: sha512-fwBebvpyPUU8bOzvhX0VQZgSohncbgYwUyJJoTSNpmy7ccD2ryiCvM7oRkn/xQH5cv73/xU7rJSNCLjdGFor0Q==}

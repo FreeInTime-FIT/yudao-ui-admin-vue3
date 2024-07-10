@@ -13,6 +13,8 @@
   const READ_KEY = 'device-read-addr'
   const TOPIC_LIST_KEY = 'device-topic-list'
   const DEVICE_LIST_KEY = 'device-last-data';
+  const PUSH_KEY = 'device-push-any';
+  const confirmVisible = ref(false);
   const chartDom = ref();
   let chart;
   const chartRef = ref();
@@ -34,6 +36,7 @@
   const selectedTopic = useLocalStorage('sc:screen-setting-field-topic', {});
   const fieldValue = shallowRef({});
   const updateValue = shallowRef({})
+  const moduleContent = ref();
   const topicValue = ref()
   const notifyRef = ref([]);
   const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server.value, {
@@ -508,6 +511,14 @@
   function handleRefresh() {
     sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   }
+  function handlePush(content) {
+    confirmVisible.value = true;
+    moduleContent.value = content;
+  }
+  function handlePushConfirm() {
+    confirmVisible.value = false;
+    sendData(PUSH_KEY, moduleContent.value);
+  }
 </script>
 
 <template>
@@ -549,6 +560,12 @@
       <ElButton v-if="selectedTopic.topicId" @click="handleRefresh">
         刷新列表
       </ElButton>
+      <ElButton @click="handlePush('quit')">
+        重启设备
+      </ElButton>
+      <ElButton @click="handlePush('reboot')">
+        退出设备
+      </ElButton>
     </ElSpace>
 
   </aside>
@@ -559,6 +576,23 @@
   >
 
   </div>
+  <el-dialog
+    v-model="confirmVisible"
+    title="推送设备"
+    width="500"
+
+  >
+    <div class="mb-[5px]">将会推送以下内容至设备</div>
+    <el-input class="input" autofocus v-model="moduleContent" autocomplete="off" />
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="confirmVisible = false">取消</el-button>
+        <el-button type="primary" @click="handlePushConfirm">
+          确认推送
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
   <article class="flex-[1] m-[0px_16px_24px_32px] h-[0]">
     <ElAutoResizer>
       <template #default="{ height, width }">
@@ -599,6 +633,9 @@
     padding: 12px 16px 0;
     align-items: center;
     justify-content: space-between;
+  }
+  .input{
+    --el-input-bg-color: #000;
   }
   .charts{
     height: 300px;
