@@ -3,11 +3,12 @@
   import {useWebSocket, useLocalStorage, useResizeObserver} from "@vueuse/core";
   import queryString from 'query-string';
   import dayjs from "dayjs";
+  import type  {Ref} from "vue";
   import * as echarts from 'echarts'
   import { TrendCharts, Hide } from '@element-plus/icons-vue'
   import FilterPopover from "@/views/screen/setting/components/FilterPopover.vue";
   import InputWarp from "@/views/screen/components/InputWarp.vue";
-  import { ElNotification, TableV2FixedDir, ElMessage } from 'element-plus'
+  import { ElNotification, TableV2FixedDir, ElMessage, notificationProps } from 'element-plus'
   import screenConfig from "@/views/screen/config/echart.json";
   const WRITE_KEY = 'device-write-addr';
   const READ_KEY = 'device-read-addr'
@@ -48,14 +49,14 @@
       token: getAccessToken(),
      }});
    // WebSocket 服务地址
-  const resData = useLocalStorage<any>('sc:screen-setting-field', {});
-  const selectedTopic = useLocalStorage('sc:screen-setting-field-topic', {});
+  const resData: Ref<any> = useLocalStorage<any>('sc:screen-setting-field', {}) as Ref<any>;
+  const selectedTopic: Ref<any> = useLocalStorage<any>('sc:screen-setting-field-topic', {}) as Ref<any>;
   const fieldValue = shallowRef({});
   const updateValue = shallowRef({})
   const moduleContent = ref();
   const topicValue = ref()
   const notifyRef = ref([]);
-  const { status, data, send, close, open } = useWebSocket<Record<string, any>>(server as any, {
+  const { status, data, send, close, open } = useWebSocket<string>(server as any, {
     autoReconnect: false,
     heartbeat: !import.meta.env.DEV,
     autoClose: false,
@@ -83,7 +84,16 @@
       [key]: v,
     }
   }
-  const keys = [
+  type KeyItem = {
+    key: string;
+    editable?: boolean;
+    isInput?: boolean;
+    width?: number;
+    minWidth?: number;
+    options?: string[];
+    percentage?: number;
+  }
+  const keys: KeyItem[] = [
     {
       key: 'addr',
       editable: false,
@@ -294,8 +304,8 @@
       const isChecked = unref(selectedList).some(i => i === rowData.addr);
       return (
         <ElSpace>
-          <ElButton onClick={() => handleRead(rowData, rowIndex)}>读</ElButton>
-          <ElButton onClick={() => handleWrite(rowData, rowIndex)}>写</ElButton>
+          <ElButton onClick={() => handleRead(rowData)}>读</ElButton>
+          <ElButton onClick={() => handleWrite(rowData)}>写</ElButton>
           <ElButton onClick={() => {
             if (!isChecked) {
               selectedList.value = [...selectedList.value, rowData.addr];
@@ -314,7 +324,7 @@
   }]);
 
   const getColumns = (width) => {
-    return columns.value.map(item => {
+    return columns.value.map((item: Record<string, any>) => {
       let columnWidth = item.width;
       return {
         ...item,
@@ -324,15 +334,15 @@
   }
 
   watch(data, () => {
-    if (!data.value) {
+    if (!unref(data)) {
       return
     }
 
-    if (data.value === 'pong' || data.value === '"pong"') {
+    if (unref(data) === 'pong' || unref(data) === '"pong"') {
       return;
     }
     try {
-      const jsonMessage = JSON.parse(data.value)
+      const jsonMessage = JSON.parse(unref(data) as string)
       if (jsonMessage.type === DEVICE_LIST_KEY) {
         resData.value = dealData(resData.value || {}, JSON.parse(jsonMessage.content));
         historyList.value = [...historyList.value, JSON.parse(jsonMessage.content)];
@@ -345,7 +355,7 @@
       }
       if (jsonMessage.type === TOPIC_LIST_KEY) {
         topicValue.value = JSON.parse(jsonMessage.content);
-        if (!selectedTopic.value) {
+        if (!unref(selectedTopic)) {
           selectedTopic.value = topicValue.value[0];
         }
         console.log(topicValue.value);
@@ -361,7 +371,7 @@
             title: msg.code,
             message: msg.msg,
             type: 'error',
-          })
+          } as notificationProps)
         )
 
         return;
@@ -376,7 +386,7 @@
             title: '操作成功',
             message: res.msg,
             type: 'success',
-          })
+          } as notificationProps)
         )
 
         return;
@@ -386,7 +396,7 @@
           title: '操作成功',
           message: '成功',
           type: 'success',
-        })
+        }as notificationProps)
       }
 
     }catch (e) {
@@ -403,6 +413,12 @@
     sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   });
 
+  watch(selectedList, (v) => {
+    if (v.length) {
+      return
+    }
+    isVisible.value = false;
+  })
   watch([historyList, selectedList, isVisible], (v, oldValue) => {
     if (!unref(v[2])) {
       chart = null;
@@ -512,7 +528,8 @@
     flush: 'post',
   })
   onMounted(() => {
-    open();
+
+    open() ;
 
     sendData(TOPIC_LIST_KEY, {});
     if (unref(selectedTopic).topicId) {
@@ -585,10 +602,10 @@
       <ElButton v-if="selectedTopic.topicId" @click="handleRefresh">
         刷新列表
       </ElButton>
-      <ElButton @click="handlePush('quit')">
+      <ElButton @click="handlePush('reboot')">
         重启设备
       </ElButton>
-      <ElButton @click="handlePush('reboot')">
+      <ElButton @click="handlePush('quit')">
         退出设备
       </ElButton>
     </ElSpace>

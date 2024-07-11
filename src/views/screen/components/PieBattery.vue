@@ -58,6 +58,7 @@
           }
         ],
       },
+      backgroundColor: 'transparent',
       legend: {
         right: 20,
         orient: 'vertical',

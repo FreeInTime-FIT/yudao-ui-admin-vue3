@@ -97,12 +97,31 @@ const todayDataList = [
     label: '交易收益',
     key: '42',
   },
-]
+].reduce((res, item, idx) => {
+  console.log(idx, idx % 2);
+  if (idx % 2 === 1) {
+    res[res.length - 1] = {
+      ...res[res.length - 1],
+      next: item,
+    }
+    return res;
+  }
+  return [
+    ...res,
+    {
+      first: item,
+    }
+  ]
+}, [])
 const dataList = [{
   title: '并网点',
   list: [
-   [ 'A相电压', 'B相电压', 'C相电压'], [ 'A相电流', 'B相电流', 'C相电流'],[ 'A相有功', 'B相有功', 'C相有功'],
-    [ 'A相功率因数', 'B相功率因数', 'C相功率因数'], [ 'A相需量', 'B相需量', 'C相需量'],[ '三相平衡度', '频率', '谐波'],
+   [ 'A相电压', 'B相电压', 'C相电压'],
+    [ 'A相电流', 'B相电流', 'C相电流'],
+    [ 'A相有功', 'B相有功', 'C相有功'],
+    [ 'A相功率因数', 'B相功率因数', 'C相功率因数'],
+    [ 'A相需量', 'B相需量', 'C相需量'],
+    [ '三相平衡度', '频率', '谐波'],
   ],
 }, {
   title: '负载点',
@@ -111,6 +130,28 @@ const dataList = [{
     [ 'A相功率因数', 'B相功率因数', 'C相功率因数'], [ 'A相需量', 'B相需量', 'C相需量'],[ '三相平衡度', '频率', '谐波'],
   ],
 }]
+const messList = [
+  {id: 1, voltage: 'A相电压', electric: 'A相电流', type: '并网点'},
+  {id: 2, voltage: 'B相电压', type: '并网点'},
+  { id: 3, voltage: 'C相电压', type: '并网点'},
+  {id: 4, voltage: 'A相电压', electric: 'A相电流', type: '并网点'},
+  {id: 5, voltage: 'B相电压', type: '并网点'},
+  { id: 6, voltage: 'C相电压', type: '并网点'},
+]
+const spanMethod = ({ rowIndex, columnIndex}) => {
+  if (columnIndex === 0) {
+    if (rowIndex % 3 === 0) {
+      return {
+        rowspan: 3,
+        colspan: 1,
+      }
+    }
+    return {
+      rowspan: 0,
+      colspan: 1,
+    }
+  }
+}
 </script>
 
 <template>
@@ -129,12 +170,15 @@ const dataList = [{
         <header class="card-header">
           <h3>xxx项目</h3>
         </header>
-        <div class="card-list ">
-          <div class="card-item" v-for="item in projectAttrs" :key="item.key">
-            <div class="card-item_col w-[100px]">{{item.label}}</div>
-            <div class="card-item_col flex-[1]">{{item.key}}</div>
-          </div>
-        </div>
+        <ElTable
+          :data="projectAttrs"
+          row-key="label"
+          border
+          :show-header="false"
+        >
+          <ElTableColumn :width="100" label="名称" prop="label"  />
+          <ElTableColumn label="值" prop="key"  />
+        </ElTable>
         <footer class="card-footer">
           <ElButton >更多档案信息</ElButton>
           <ElButton>修改档案</ElButton>
@@ -143,37 +187,46 @@ const dataList = [{
       </article>
     </ElCol>
     <ElCol :span="9">
-      <article class="real-box">
+      <CardHeader title="" />
+      <article class="real-box">、
         <img :src="bg" class="bg" alt="" />
         <div class="content">
           <div class="content_1"></div>
         </div>
       </article>
+      <CardHeader title="电网信息" />
       <article class="card-box">
-        <div class="card-box_inner" v-for="inner in dataList" :key="inner.title">
-          <header class="card-header">
-            <h3>{{inner.title}}</h3>
-          </header>
-          <div class="card-data-list ">
-            <div class="card-item-row" v-for="(item, index) in inner.list" :key="index">
-              <div class="card-item-row_item" v-for="rowItem in item" :key="rowItem">{{rowItem}}</div>
-            </div>
-          </div>
-        </div>
-
+        <ElTable
+          :data="messList"
+          row-key="label"
+          border
+          :span-method="spanMethod"
+          :show-header="false"
+        >
+          <ElTableColumn width="40" label="类别" prop="type"  />
+          <ElTableColumn label="电压" prop="voltage"  />
+          <ElTableColumn label="电流" prop="first.key"  />
+          <ElTableColumn label="有功" prop="next.label"  />
+          <ElTableColumn label="功率因数" prop="next.key"  />
+          <ElTableColumn label="需量" prop="next.key"  />
+          <ElTableColumn label="参数" prop="next.key"  />
+        </ElTable>
       </article>
     </ElCol>
     <ElCol :span="7">
-      <article class="card-box">
-        <header class="card-header">
-          <h3>当日数据</h3>
-        </header>
-        <div class="card-list card-list-grid">
-          <div class="card-item" v-for="item in todayDataList" :key="item.key">
-            <div class="card-item_col w-[100px]">{{item.label}}</div>
-            <div class="card-item_col flex-[1]">{{item.key}}</div>
-          </div>
-        </div>
+      <CardHeader title="当日数据" />
+      <article class="card-box ">
+        <ElTable
+          :data="todayDataList"
+          row-key="label"
+          border
+          :show-header="false"
+        >
+          <ElTableColumn :width="90" label="名称" prop="first.label"  />
+          <ElTableColumn label="值" prop="first.key"  />
+          <ElTableColumn :width="90" label="名称" prop="next.label"  />
+          <ElTableColumn label="值" prop="next.key"  />
+        </ElTable>
         <footer class="card-footer">
           <ElButton>更多档案信息</ElButton>
           <ElButton>修改档案</ElButton>
@@ -189,7 +242,7 @@ const dataList = [{
           row-key="id"
           border
         >
-          <ElTableColumn label="序号" type="index"  />
+          <ElTableColumn :width="60" label="序号" type="index"  />
           <ElTableColumn label="并网功率" prop="index1"  />
           <ElTableColumn label="所属部分" prop="index2"  />
           <ElTableColumn label="发生时间"  prop="index3"  />
@@ -204,14 +257,19 @@ const dataList = [{
         <header class="card-header text-left">
           <h3>运行参数</h3>
         </header>
-        <div class="card-list card-list-grid">
-          <div class="card-item" v-for="item in todayDataList" :key="item.key">
-            <div class="card-item_col w-[100px]">{{item.label}}</div>
-            <div class="card-item_col flex-[1]">{{item.key}}</div>
-          </div>
-        </div>
+        <ElTable
+          :data="[{id: 1}, {id: 2}]"
+          row-key="id"
+          border
+          :show-header="false"
+        >
+          <ElTableColumn label="序号" prop="index"  />
+          <ElTableColumn label="并网功率" prop="index1"  />
+          <ElTableColumn label="所属部分" prop="index2"  />
+          <ElTableColumn label="重要度" prop="index4"  />
+        </ElTable>
         <footer class="card-footer">
-          <ElButton >更多运行参数</ElButton>
+          <ElButton>更多运行参数</ElButton>
           <ElButton>修改参数</ElButton>
           <ElButton>本地参数上传</ElButton>
         </footer>
@@ -231,13 +289,19 @@ const dataList = [{
   }
 
   .card-box{
-    margin: 0px 0 30px;
-    padding: 8px 16px;
-    background: linear-gradient(#5f687c, #344e86);
+    margin: 16px 0 16px;
+    padding: 12px 16px;
+    background: var(--el-bg-color);
+    border-radius: 3px;
+    box-shadow: var(--el-box-shadow);
+    .el-table{
+      --el-table-border-color: #333;
+    }
+    .el-button{
+      --el-fill-color-blank: #000;
+    }
   }
   .card-header{
-    border: 2px solid #fff;
-    border-bottom: none;
     text-align: center;
     padding: 8px 12px;
     &.text-left{
@@ -247,81 +311,21 @@ const dataList = [{
       margin: 0;
     }
   }
-  .card-item{
-    display: flex;
-    box-sizing: border-box;
-    border: 2px solid #fff;
-    border-bottom: none;
-    &_col{
-      padding: 4px 8px;
-      border-left: 2px solid #fff;
-      font-size: 16px;
-      font-weight: bold;
-      &:first-child{
-        border-left: none;
-      }
-    }
-  }
-  .card-list-grid{
-    display: flex;
-    flex-wrap: wrap;
-    .card-item{
-      width: 50%;
-      &:nth-child(2n) {
-        border-left: none;
-      }
-    }
-  }
   .card-list{
-    border-bottom: 2px solid #fff;
   }
   .card-footer{
     margin-top: 12px;
     text-align: center;
     display: flex;
     justify-content: center;
-    gap: 6px;
-  }
-  .card-box_inner{
-    display: flex;
-    align-items: stretch;
-    margin-top: 12px;
-    .card-header{
-      writing-mode: tb;
-      border-bottom: 2px solid #fff;
-    }
-
-  }
-  .card-data-list{
-    display: flex;
-    border-top: 2px solid #fff;
-    width: 0;
-    flex: 1;
-  }
-  .card-item-row{
-    flex: 1;
-    width: 0;
-    border-right: 2px solid #fff;
-    &_item{
-      width: 100%;
-      padding: 12px 8px;
-      border-bottom: 2px solid #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
   }
   .el-table{
-    --el-table-header-bg-color: #4f73bd;
-    --el-table-header-text-color: #fff;
-    --el-table-tr-bg-color: #d0d5e8;
-    --el-fill-color-lighter: #eaebf4;
-    --el-table-border-color: #fff;
-    color: #333;
+
   }
   .real-box{
     position: relative;
     margin-bottom: 30px;
+    height: 379px;
     .bg{
       width: 100%;
       user-select: none;

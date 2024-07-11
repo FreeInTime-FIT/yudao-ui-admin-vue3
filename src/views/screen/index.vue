@@ -7,10 +7,12 @@ import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
 const echartsDomRef = ref<HTMLElement>()
 const chartRef = ref()
+const mapDomRef = ref();
 const drawer = ref(false)
 const mapStyle = {
   styleJson,
 }
+let mapChart;
 console.log(mapStyle);
 
 useResizeObserver(echartsDomRef, () => {
@@ -19,6 +21,130 @@ useResizeObserver(echartsDomRef, () => {
   }
 });
 onMounted(() => {
+  mapChart = echarts.init(mapDomRef.value);
+  mapChart.showLoading();
+  import('@/views/screen/config/china.json').then(res => {
+    console.log(res.default);
+    mapChart.hideLoading();
+    echarts.registerMap('CHINA', res.default, {
+
+    });
+    mapChart.setOption({
+      tooltip: {
+        trigger: 'item',
+        showDelay: 0,
+        transitionDuration: 0.2
+      },
+      visualMap: {
+        type: 'piecewise',
+        left: '40%',
+        top: 'bottom',
+        calculable: true,
+        realtime: false,
+        pieces: [
+          {gte: 1000},            // (1500, Infinity]
+          {gte: 600, lte: 999},  // (900, 1500]
+          {gte: 200, lte: 599},  // (310, 1000]
+          {gte: 50, lte: 199},   // (200, 300]
+          {gte: 10, lte: 49 },
+          {lte: 9}
+        ],
+        textStyle: {
+          color: '#fff',
+        },
+        inRange: {
+          color: [
+            '#c7d6de',
+            '#94bbcf',
+            '#72b2c9',
+            '#75a8c6',
+            '#4c8fb5',
+            '#3c80b1',
+          ]
+        }
+      },
+      toolbox: {
+        show: true,
+        //orient: 'vertical',
+        left: 'left',
+        top: 'top',
+        feature: {
+          dataView: { readOnly: false },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      darkMode: true,
+      color: [
+        '#c7d6de',
+        '#94bbcf',
+        '#72b2c9',
+        '#75a8c6',
+        '#4c8fb5',
+        '#3c80b1',
+      ],
+      series: [
+        {
+          name: '项目数量',
+          type: 'map',
+          roam: false,
+          map: 'CHINA',
+          emphasis: {
+            label: {
+              show: true
+            },
+            itemStyle: {
+              color: '#02bce8'
+            },
+          },
+          nameMap: {
+
+          },
+          colorBy: 'data',
+          data: [
+            {name: '河南', value: 30},
+            {name: '浙江', value: 30},
+            {name: '北京', value: 100},
+            {name: '江苏', value: 1},
+            {name: '上海', value: 300},
+            {name: '河北', value: 800},
+            {name: '天津', value: 1200},
+            {name: '山东', value: 1200},
+            {name: '山西', value: 800},
+            {name: '新疆', value: 800},
+            {name: '内蒙古', value: 100},
+            {name: '黑龙江', value: 100},
+            {name: '吉林', value: 400},
+            {name: '湖南', value: 400},
+            {name: '湖北', value: 400},
+            {name: '广东', value: 400},
+            {name: '广西', value: 800},
+            {name: '福建', value: 800},
+            {name: '香港', value: 800},
+          ],
+          markPoint: {
+
+          },
+          itemStyle: {
+            borderColor: '#8ac2d0',
+            areaColor: '#1a1b1e',
+            shadowColor: '#fff',
+            shadowBlur:  3,
+          },
+          markLine: {
+            lineStyle: {
+              color: 'green',
+            },
+          },
+          select: {
+            label: {
+              show: true,
+            },
+          },
+        },
+      ],
+    })
+  })
   const myChart = echarts.init(echartsDomRef.value);
   const gridValue = '55%';
   const axisProps = {
@@ -340,7 +466,8 @@ console.log(provinceList);
       </aside>
       <div class="echarts" ref="echartsDomRef"></div>
     </section>
-    <baidu-map
+    <div class="mapCharts" ref="mapDomRef"></div>
+<!--    <baidu-map
       class="bm-view"
       @ready="handleMapReady"
       :zoom="5"
@@ -356,7 +483,7 @@ console.log(provinceList);
         @click="handleClickMarker(item)"
         :icon="{url: icon, size: {width: 32, height: 32}}"
       />
-    </baidu-map>
+    </baidu-map>-->
     <header class="sideHeader">
       <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
       <ElButton type="primary">新增项目</ElButton>
@@ -453,7 +580,10 @@ console.log(provinceList);
   }
   .side-item-header{
     text-align: center;
-
+  }
+  .mapCharts{
+    width: 100%;
+    height: calc(100vh - 100px);
   }
   .side-list{
     display: flex;

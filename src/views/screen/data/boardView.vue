@@ -128,8 +128,8 @@
       </div>
     </div>
     <CardHeader title="效益分析" />
-    <div class="flex flex-items-stretch mt-[16px]" >
-      <div class="flex-[1]">
+    <div class="flex flex-items-stretch mt-[16px] " >
+      <div class="flex-[1] mr-[8px]">
         <header class="title-name">用电统计</header>
         <PieBattery
           :data="useTotalRef"
