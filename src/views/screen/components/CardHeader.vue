@@ -28,7 +28,7 @@ const { title } = defineProps<{
   .screen-card-header{
     position: relative;
     background: linear-gradient(to right, #111c38, rgb(24 50 117) 50% , #111c38);
-    padding: 4px 12px;
+    padding: 6px 12px;
     margin-block: 12px;
 
     --arrow-first-top: 1px;
@@ -39,10 +39,11 @@ const { title } = defineProps<{
     --arrow-second-height: 3px;
     h3{
       text-shadow: 0 0 5px #000;
-      padding: 3px 0;
+      padding: 2px 0;
       background: linear-gradient(to right,rgb(11 20 41), #1f4fca 50% , rgb(11 20 41));
       text-align: center;
       margin: 0;
+      font-size: 18px;
     }
     &_arrow_left{
 

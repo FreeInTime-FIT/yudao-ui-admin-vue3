@@ -1,8 +1,8 @@
 <template>
 <!--  <IFrame src="/go-view/#/chart/preview/1" />-->
-  <article class="content-box">
+  <div class="content-box">
     <ElRow :gutter="24">
-      <ElCol :span="8">
+      <ElCol :span="10">
         <CardHeader
           title=''
         />
@@ -14,7 +14,7 @@
         />
         <div class="real-price" ref="realRef"></div>
       </ElCol>
-      <ElCol :span="16">
+      <ElCol :span="14">
         <CardHeader
           title='电池'
         />
@@ -186,7 +186,8 @@
         </div>
       </ElCol>
     </ElRow>
-  </article>
+
+  </div>
 
 
 </template>
@@ -445,20 +446,19 @@ const solarList = [{
 
 <style lang="scss">
 .content-box{
-  width: 1440px;
-  margin: 0 auto;
-  background-color: #030711;
   padding: 12px;
 }
 .board-bg{
   width: 100%;
   margin-bottom: 12px;
+  height: 485px;
   img{
     width: 100%;
+    max-height: 480px;
   }
 }
 .pie-chart{
-  height: 20vw;
+  height: 260px;
   min-height: 200px;
 }
 .real-price{
@@ -473,9 +473,10 @@ const solarList = [{
 .split-title{
   display: flex;
   align-items: center;
-  padding: 5px 0;
+  padding: 5px 0 10px;
   margin-top: 12px;
   font-size: 12px;
+  color: #eee;
   &:after{
     content: '';
     flex: 1;
