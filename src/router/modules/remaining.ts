@@ -606,8 +606,9 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'data/board',
         name: 'ScreenDataBoard',
         meta: {
-          title: '数据看板',
+          title: '数据看板1',
           noCache: true,
+          hidden: true,
           activeMenu: '/screen/data/board'
         },
         component: () => import('@/views/screen/data/board.vue')
@@ -616,9 +617,8 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'data/boardView',
         name: 'ScreenDataBoardView',
         meta: {
-          title: '数据看板测试',
+          title: '数据看板',
           noCache: true,
-          hidden: true,
           activeMenu: '/screen/data/boardView'
         },
         component: () => import('@/views/screen/data/boardView.vue')
