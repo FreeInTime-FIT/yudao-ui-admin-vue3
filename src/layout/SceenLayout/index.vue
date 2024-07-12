@@ -57,7 +57,7 @@ defineOptions({ name: 'ScreenLayout' })
       <div class="menu-box">
         <div class="menu-list">
           <div class="menu-item" :class="{active: item.name === $route.name}" v-for="item in menu" :key="item.path" @click="handleClick(item)">
-            <div><Icon icon="ant-design:dashboard-filled" /></div>
+            <div><Icon class="icon" icon="ant-design:dashboard-filled" /></div>
             <div>{{item.meta.title}}</div>
           </div>
         </div>
@@ -116,7 +116,7 @@ defineOptions({ name: 'ScreenLayout' })
   .menu-list{
     transition: all linear 0.3s;
     display: none;
-    width: 200px;
+    width: 160px;
     background-color: #376ed8;
     padding: 12px 0;
   }
@@ -128,6 +128,9 @@ defineOptions({ name: 'ScreenLayout' })
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
+    .icon{
+      color: inherit;
+    }
     &.active{
       background-color: #fff;
       color: #376ed8;
@@ -136,7 +139,7 @@ defineOptions({ name: 'ScreenLayout' })
       color: #6d9af3;
     }
     .el-icon{
-      color: #6d9af3;
+      color: inherit;
     }
     &:last-child{
       border-bottom: none;

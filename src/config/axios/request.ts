@@ -11,7 +11,7 @@ import { config } from './config'
 const { default_headers } = config
 
 
-const request = <T>(option: AxiosRequestConfig) => {
+const request = <T extends Record<string, any>>(option: AxiosRequestConfig) => {
   const { url, method, params, body, headersType, responseType, ...config } = option
   return service<T>({
     url: url,

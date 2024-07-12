@@ -85,14 +85,16 @@
         <div class="split-title">
           <span>总体运行</span>
         </div>
-        <div class="flex">
+        <div>
           <div>
-            <span>微电网日用电量：</span>
-            <span>{{keyValue['3#addr_0x3000']}}</span>
+            <span class="color-[var(--el-color-primary)]">微电网日用电量：</span>
+            <span class="font-size-[24px]">{{keyValue['3#addr_0x3000']}}</span>
+            <span>kW</span>
           </div>
           <div>
-            <span>微电网日发电量：</span>
-            <span>{{keyValue['calc_addr_162+addr_164']}}</span>
+            <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
+            <span class="font-size-[24px]">{{keyValue['calc_addr_162+addr_164']}}</span>
+            <span>kW</span>
           </div>
         </div>
         <div class="split-title">
@@ -168,14 +170,14 @@
             <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
             <span>
               <span class="font-size-[24px] font-600">5.55</span>
-              <span>kg</span>
+              <span class="font-600 ml-[4px]">kg</span>
             </span>
           </div>
           <div>
             <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
             <span>
               <span class="font-size-[24px] font-600">5.55</span>
-              <span>元</span>
+              <span class="font-600 ml-[4px]">元</span>
             </span>
           </div>
         </nav>
@@ -416,7 +418,8 @@ const solarList = [{
   }
 }
 .pie-chart{
-  height: 200px;
+  height: 20vw;
+  min-height: 200px;
 }
 .real-price{
   height: 300px;
@@ -432,6 +435,7 @@ const solarList = [{
   align-items: center;
   padding: 5px 0;
   margin-top: 12px;
+  font-size: 12px;
   &:after{
     content: '';
     flex: 1;
