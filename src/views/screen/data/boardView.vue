@@ -86,11 +86,11 @@
         <div class="flex">
           <div>
             <span>微电网日用电量：</span>
-            <span>5.55kWh</span>
+            <span>{{keyValue['3#addr_0x3000']}}</span>
           </div>
           <div>
             <span>微电网日发电量：</span>
-            <span>{{keyValue['calc_162+164']}}</span>
+            <span>{{keyValue['calc_addr_162+addr_164']}}</span>
           </div>
         </div>
         <ElDivider border-style="dashed" content-position="left">天气</ElDivider>
@@ -214,7 +214,8 @@ const getLastData = async () => {
       "addr_152",
       "addr_155",
       'addr_150',
-      '(addr_162+addr_164) as "calc_162+164"',
+      '3#addr_0x3000',
+      'calc_addr_162+addr_164',
     ]
   })
   keyValue.value = res.data || {};
