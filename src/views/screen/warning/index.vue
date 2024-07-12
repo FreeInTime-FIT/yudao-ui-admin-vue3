@@ -27,7 +27,12 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
   async getListApi(option: any) {
     console.log(option);
     return {
-      list: [{id: 1, time: '2024-05-05 09:09:09', level : 1}, { id: 2, time: '2024-05-05 09:09:09', level : 2}, { id: 3, time: '2024-05-05 09:09:09', level : 3}] as RecordItem[],
+      list: [
+        {id: 1, time: '2024-05-05 09:09:09', level : 1, status: 3, product: '垂直轴风机', message: '系统故障汇总', type: '故障码4'},
+        { id: 2, time: '2024-05-05 09:09:09', level : 2, status: 2, product: '光伏逆变器 ', message: 'COM板汇总故障', type: '故障码4'},
+        { id: 3, time: '2024-05-05 09:09:09', level : 3, product: '垂直轴风机', message: '正在过载告警', type: '警告'},
+        { id: 2, time: '2024-05-05 09:09:09', level : 2, product: '光伏逆变器 ', message: ' 烟雾报警器', type: '消防   '},
+      ] as RecordItem[],
       total: 20,
     };
   }, props: undefined, response: undefined,
@@ -37,8 +42,15 @@ const { getList, setSearchParams } = tableMethods
 onMounted(() => {
   getList()
 })
+const handleIgnore = (row) => {
+  ElMessageBox.confirm('确认忽略当前警告么？', '提示',{
+
+  })
+}
 const handleEdit = (row) => {
-  console.log(row);
+  ElMessageBox.confirm('确认处理当前警告么？', '提示',{
+
+  })
 }
 const levelFormatter = (row, cellValue, index) => {
   const levels = {
@@ -106,12 +118,26 @@ const levelFormatter = (row, cellValue, index) => {
       <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1" />
       <ElTableColumn prop="time" label="告警时间" />
       <ElTableColumn prop="level" label="警告级别" :formatter="levelFormatter" />
-      <ElTableColumn prop="3" label="所属设备" />
-      <ElTableColumn prop="4" label="告警信息" />
-      <ElTableColumn prop="5" label="告警类型" />
-      <ElTableColumn prop="6" label="操作" fixed="right" width="80">
+      <ElTableColumn prop="product" label="所属设备" />
+      <ElTableColumn prop="message" label="告警信息" />
+      <ElTableColumn prop="type" label="告警类型" />
+      <ElTableColumn prop="status" label="状态" >
         <template #default="scope">
-          <a @click="handleEdit(scope.row)">操作</a>
+          <ElSpace>
+            <ElTag type="success" v-if="scope.row.status=== 3">已处理</ElTag>
+            <ElTag type="danger" v-else-if="scope.row.status=== 2">未处理</ElTag>
+            <ElTag type="info" v-else>已忽略</ElTag>
+          </ElSpace>
+
+        </template>
+      </ElTableColumn>
+      <ElTableColumn prop="oper" label="操作" fixed="right" width="100">
+        <template #default="scope">
+          <ElSpace>
+<!--            <a @click="handleIgnore(scope.row)">忽略</a>-->
+            <ElButton  @click="handleEdit(scope.row)">处理</ElButton>
+          </ElSpace>
+
         </template>
       </ElTableColumn>
     </ElTable>

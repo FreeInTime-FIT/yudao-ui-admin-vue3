@@ -46,7 +46,7 @@ defineOptions({
 </script>
 
 <template>
-  <ElFormItem prop="startTime" label="开始时间" >
+  <ElFormItem prop="startTime" class="flex-items-center" label="开始时间" >
     <InputWarp>
       <ElDatePicker
         type="datetime"
@@ -60,7 +60,7 @@ defineOptions({
     </InputWarp>
 
   </ElFormItem>
-  <ElFormItem prop="endTime" label="结束时间" >
+  <ElFormItem prop="endTime" class="flex-items-center"  label="结束时间" >
     <InputWarp>
       <ElDatePicker
         type="datetime"

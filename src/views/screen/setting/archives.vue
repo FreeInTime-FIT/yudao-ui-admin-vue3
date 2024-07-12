@@ -28,7 +28,10 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
   async getListApi(option: any) {
     console.log(option);
     return {
-      list: [{id: 1, time: '2024-05-05 09:09:09', level : 1}, { id: 2, time: '2024-05-05 09:09:09', level : 2}, { id: 3, time: '2024-05-05 09:09:09', level : 3}] as RecordItem[],
+      list: [
+        {id: 1, time: '2024-05-05 09:09:09', level : 1, project: '万达A', userName: '业主1',},
+        { id: 2, time: '2024-05-05 09:09:09', level : 2, project: '万达B', userName: '业主1',},
+        { id: 3, time: '2024-05-05 09:09:09', level : 3, project: '万达C', userName: '业主1',}] as RecordItem[],
       total: 20,
     };
   }, props: undefined, response: undefined,
@@ -73,7 +76,7 @@ const levelFormatter = (row, cellValue, index) => {
     ref="queryFormRef"
     :inline="true"
     :model="queryParams"
-    class="-mb-15px form"
+    class="mt-[15px] form"
   >
     <ElFormItem prop="d" >
       <InputWarp>
@@ -114,10 +117,10 @@ const levelFormatter = (row, cellValue, index) => {
       <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1" />
       <ElTableColumn prop="time" label="编号" />
       <ElTableColumn prop="level" label="型号" />
-      <ElTableColumn prop="3" label="所属项目" />
-      <ElTableColumn prop="4" label="业主" />
-      <ElTableColumn prop="5" label="负责人" />
-      <ElTableColumn prop="6" label="操作" fixed="right" width="80" >
+      <ElTableColumn prop="project" label="所属项目" />
+      <ElTableColumn prop="userName" label="业主" />
+      <ElTableColumn prop="user" label="负责人" />
+      <ElTableColumn prop="operation" label="操作" fixed="right" width="80" >
         <template #default="scope">
           <a @click="handleEdit(scope.row)">操作</a>
         </template>

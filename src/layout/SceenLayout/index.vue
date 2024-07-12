@@ -4,7 +4,7 @@ import {ref, computed } from "vue";
 import {useRouter} from "vue-router";
 const now = ref(dayjs());
 const router = useRouter();
-const menu = router.options.routes.find(i => i.path === '/screen').children;
+const menu = router.options.routes.find(i => i.path === '/screen').children?.filter(i => !i.meta.hidden);
 
 const date = computed(() => ({
   time: now.value.format('HH:mm:ss'),

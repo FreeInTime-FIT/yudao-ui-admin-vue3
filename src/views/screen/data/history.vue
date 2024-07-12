@@ -154,36 +154,36 @@ onMounted(() => {
     title: [
       ...[...group, {name: '历史数据'}].map((item, i) => ({
         text: item.name,
-        top: ['3%', '30%', '64%' ][Math.floor(i / 2)],
-        left: ['2%', '50%'][i % 2],
+        left: ['3%', '30%', '64%' ][i % 3],
+        top: ['2%', '48%'][Number(i < 3)],
       })),
     ],
     grid: [
       {
-        right: '55%',
-        bottom: '75%',
+        right: '70%',
+        bottom: '55%',
       },
       {
-        left: '55%',
-        bottom: '75%',
+        left: '35%',
+        right: '40%',
+        bottom: '55%',
       },
       {
-        right: '55%',
-        bottom: '40%',
-        top: '35%',
+        left: '70%',
+        bottom: '55%',
       },
       {
-        left: '55%',
-        bottom: '40%',
-        top: '35%',
+        right: '70%',
+        top: '55%',
       },
       {
-        right: '55%',
-        top: '70%',
+        left: '35%',
+        right: '40%',
+        top: '55%',
       },
       {
-        left: '55%',
-        top: '70%',
+        left: '70%',
+        top: '55%',
       },
     ],
 
@@ -297,7 +297,7 @@ onMounted(() => {
     ref="queryFormRef"
     :inline="true"
     :model="queryParams"
-    class="-mb-15px form"
+    class="m-[15px_0px_0_16px] form"
   >
     <SelectDateRange
       v-model:end="queryParams.endTime"
@@ -308,23 +308,23 @@ onMounted(() => {
       <ElButton type="primary">下载</ElButton>
     </ElFormItem>
   </ElForm>
-  <ElRow :gutter="24">
-    <ElCol :span="12">
-      <div class="echarts" ref="domRef"></div>
-    </ElCol>
-    <ElCol :span="12">
-      <div class="real-echarts" ref="realRef"></div>
-      <div >
-        <header class="header">报表：</header>
-        <IFrame src="https://cnabcpm-test.cnabcpm.com/cnabcpm-test/contractTemplate/20220407/RmRrRe2e9XbsrmsOe2ggQVa69bAuWD82FkjSSf9tuhzoKM7Izup_j_Dusy3x.pdf" />
-      </div>
-    </ElCol>
-  </ElRow>
+  <div class=" chartBox">
+    <div class="real-echarts" ref="realRef"></div>
+    <div class="echarts" ref="domRef"></div>
+  </div>
+
 </template>
 
 <style scoped lang="scss">
+.chartBox{
+  margin: 0 16px 16px 32px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
 .echarts{
-  height: 800px;
+  margin-top: 12px;
+  flex: 1;
   width: 100%;
 }
 .real-echarts{

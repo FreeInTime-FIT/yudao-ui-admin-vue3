@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
 import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
 import bg from '@/views/screen/assets/real-bg.png'
 
-const domRef = ref();
-const realRef = ref();
 echarts.registerTheme('screen', screenConfig);
 
-const chartRef = ref()
 defineOptions({
   name: 'ScreenDataHistory',
 })
@@ -19,22 +15,22 @@ defineOptions({
 const projectAttrs = [
   {
     label: '项目编号',
-    key: 'code',
+    key: 'projectCode',
     value: ''
   },
   {
     label: '业主名称',
-    key: 'code1',
+    key: 'userName',
     value: ''
   },
   {
     label: '项目地址',
-    key: 'code2',
+    key: 'address',
     value: ''
   },
   {
     label: '项目经纬度',
-    key: 'code3',
+    key: 'latlng',
     value: ''
   },
   {
@@ -48,6 +44,7 @@ const projectAttrs = [
     value: ''
   },
 ]
+
 const todayDataList = [
   {
     label: '购电总量',
@@ -97,8 +94,8 @@ const todayDataList = [
     label: '交易收益',
     key: '42',
   },
-].reduce((res, item, idx) => {
-  console.log(idx, idx % 2);
+]
+const todayDataShowList = todayDataList.reduce((res, item, idx) => {
   if (idx % 2 === 1) {
     res[res.length - 1] = {
       ...res[res.length - 1],
@@ -113,31 +110,48 @@ const todayDataList = [
     }
   ]
 }, [])
-const dataList = [{
-  title: '并网点',
-  list: [
-   [ 'A相电压', 'B相电压', 'C相电压'],
-    [ 'A相电流', 'B相电流', 'C相电流'],
-    [ 'A相有功', 'B相有功', 'C相有功'],
-    [ 'A相功率因数', 'B相功率因数', 'C相功率因数'],
-    [ 'A相需量', 'B相需量', 'C相需量'],
-    [ '三相平衡度', '频率', '谐波'],
-  ],
-}, {
-  title: '负载点',
-  list: [
-    [ 'A相电压', 'B相电压', 'C相电压'], [ 'A相电流', 'B相电流', 'C相电流'],[ 'A相有功', 'B相有功', 'C相有功'],
-    [ 'A相功率因数', 'B相功率因数', 'C相功率因数'], [ 'A相需量', 'B相需量', 'C相需量'],[ '三相平衡度', '频率', '谐波'],
-  ],
-}]
 const messList = [
   {id: 1, voltage: 'A相电压', electric: 'A相电流', type: '并网点'},
   {id: 2, voltage: 'B相电压', type: '并网点'},
-  { id: 3, voltage: 'C相电压', type: '并网点'},
-  {id: 4, voltage: 'A相电压', electric: 'A相电流', type: '并网点'},
-  {id: 5, voltage: 'B相电压', type: '并网点'},
-  { id: 6, voltage: 'C相电压', type: '并网点'},
+  {id: 3, voltage: 'C相电压', type: '并网点'},
+  {id: 4, voltage: 'A相电压', electric: 'A相电流', type: '负载点'},
+  {id: 5, voltage: 'B相电压', type: '负载点'},
+  {id: 6, voltage: 'C相电压', type: '负载点'},
 ]
+const useList = [{
+  title: '购电量',
+  key: '1',
+  unit: '',
+}, {
+  title: '用电量',
+  key: '2',
+  unit: '',
+},{
+  title: '光伏发电量',
+  key: '3',
+  unit: '',
+},{
+  title: '光伏发电量',
+  key: '4',
+  successValue: '光伏1发电量',
+  unit: '',
+},{
+  title: '储能调电量',
+  key: '5',
+  successValue: '光伏2发电量',
+  unit: '',
+},]
+const getValue = (key) => {
+  return {
+    projectCode: '03123033',
+    projectName: '电力A项目',
+    address: '杭州市余杭区万达广场',
+    userName: '万达管理集团',
+    code4: '8000kVA',
+    code5: '8000kW',
+    latlng: '120.0000,31.000'
+  }[key] || '';
+}
 const spanMethod = ({ rowIndex, columnIndex}) => {
   if (columnIndex === 0) {
     if (rowIndex % 3 === 0) {
@@ -159,16 +173,19 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
     <ElCol :span="8">
       <CardHeader title="使用数据" />
       <section class="use-info">
-        <UseInfoItem title="购电量" />
-        <UseInfoItem title="用电量" />
-        <UseInfoItem title="光伏发电量" success-value="光伏1发电量" value="0.1kWh" />
-        <UseInfoItem title="光伏发电量" success-value="光伏2发电量" value="0.1kWh" />
-        <UseInfoItem title="储能调电量" />
+
+        <UseInfoItem v-for="item in useList"
+                     :key="item.key"
+                     :title="item.title"
+                     :success-value="item.successValue"
+                     :unit="item.unit"
+                     :value="getValue(item.key)"
+        />
       </section>
       <CardHeader title="项目信息" />
       <article class="card-box">
         <header class="card-header">
-          <h3>xxx项目</h3>
+          <h3> {{getValue('projectName')}}</h3>
         </header>
         <ElTable
           :data="projectAttrs"
@@ -177,7 +194,11 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
           :show-header="false"
         >
           <ElTableColumn :width="100" label="名称" prop="label"  />
-          <ElTableColumn label="值" prop="key"  />
+          <ElTableColumn label="值" prop="key"  >
+            <template #default="{row}">
+              {{getValue(row.key)}}
+            </template>
+          </ElTableColumn>
         </ElTable>
         <footer class="card-footer">
           <ElButton >更多档案信息</ElButton>
@@ -205,11 +226,31 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
         >
           <ElTableColumn width="40" label="类别" prop="type"  />
           <ElTableColumn label="电压" prop="voltage"  />
-          <ElTableColumn label="电流" prop="first.key"  />
-          <ElTableColumn label="有功" prop="next.label"  />
-          <ElTableColumn label="功率因数" prop="next.key"  />
-          <ElTableColumn label="需量" prop="next.key"  />
-          <ElTableColumn label="参数" prop="next.key"  />
+          <ElTableColumn label="电流" prop="first.key"  >
+            <template #default="{row}">
+              {{getValue(row.voltage)}}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn label="有功" prop="next.label"  >
+            <template #default="{row}">
+              {{getValue(row.voltage)}}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn label="功率因数" prop="next.key"  >
+            <template #default="{row}">
+              {{getValue(row.voltage)}}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn label="需量" prop="next.key"  >
+            <template #default="{row}">
+              {{getValue(row.voltage)}}
+            </template>
+          </ElTableColumn>
+          <ElTableColumn label="参数" prop="next.key"  >
+            <template #default="{row}">
+              {{getValue(row.voltage)}}
+            </template>
+          </ElTableColumn>
         </ElTable>
       </article>
     </ElCol>
@@ -217,15 +258,23 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
       <CardHeader title="当日数据" />
       <article class="card-box ">
         <ElTable
-          :data="todayDataList"
+          :data="todayDataShowList"
           row-key="label"
           border
           :show-header="false"
         >
           <ElTableColumn :width="90" label="名称" prop="first.label"  />
-          <ElTableColumn label="值" prop="first.key"  />
+          <ElTableColumn label="值" prop="first.key"  >
+            <template #default="{row}">
+              {{getValue(row.first.key)}}
+            </template>
+          </ElTableColumn>
           <ElTableColumn :width="90" label="名称" prop="next.label"  />
-          <ElTableColumn label="值" prop="next.key"  />
+          <ElTableColumn label="值" prop="next.key"  >
+            <template #default="{row}">
+              {{getValue(row.next.key)}}
+            </template>
+          </ElTableColumn>
         </ElTable>
         <footer class="card-footer">
           <ElButton>更多档案信息</ElButton>
