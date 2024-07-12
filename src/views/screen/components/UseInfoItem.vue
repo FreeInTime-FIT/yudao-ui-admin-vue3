@@ -3,21 +3,31 @@
     name: 'UserInfoItem',
   })
   const valRef = ref()
-  const { title, successValue, value, api, params } = defineProps<{
+  const props = defineProps<{
     title?: string;
     successValue?: string;
     value?: string | number;
     unit?: string;
     api?: (params) => Promise<any>;
     params?: Record<string, any>;
+    emptyText?: string;
   }>()
   onMounted(() => {
-   if (!api) {
+   if (!props.api) {
      return
    }
-   api(params).then(res => {
+    props.api(props.params).then(res => {
      valRef.value = res.data;
    })
+  })
+  const showValue = computed(() => {
+    if (props.value || props.value === 0) {
+      return props.value;
+    }
+    if (unref(valRef) || unref(valRef) === 0) {
+      return unref(valRef)
+    }
+    return props.emptyText;
   })
 </script>
 
@@ -26,7 +36,7 @@
     <div class="use-info_name">{{title}}</div>
     <div class="use-info_value">
       <div class="color-[var(--el-color-success)]">{{ successValue }}</div>
-      <div class="color-[var(--el-color-primary)]">{{ value !== undefined ? value : valRef }}{{unit}}</div>
+      <div class="color-[var(--el-color-primary)]">{{ showValue }}{{showValue !== emptyText ? unit : ''}}</div>
     </div>
   </div>
 </template>

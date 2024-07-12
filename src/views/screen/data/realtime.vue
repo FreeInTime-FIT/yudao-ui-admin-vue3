@@ -4,14 +4,16 @@ import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
 import bg from '@/views/screen/assets/real-bg.png'
-
+import {
+  getLatestForKeys,
+} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
   name: 'ScreenDataHistory',
 })
 
-
+const keyValue = ref({});
 const projectAttrs = [
   {
     label: '项目编号',
@@ -124,8 +126,9 @@ const useList = [{
   unit: '',
 }, {
   title: '用电量',
-  key: '2',
-  unit: '',
+  key: '3#addr_0x3000',
+  async: true,
+  unit: 'kWh',
 },{
   title: '光伏发电量',
   key: '3',
@@ -141,7 +144,19 @@ const useList = [{
   successValue: '光伏2发电量',
   unit: '',
 },]
+const getData = async () => {
+  const keys = [...useList.filter(i => i.async).map(i => i.key)];
+  const res = await  getLatestForKeys({}, {
+    keys,
+  })
+  keyValue.value = res.data || {};
+  return res;
+}
+onMounted(() => {
+  getData();
+})
 const getValue = (key) => {
+  console.log(unref(keyValue), key, unref(keyValue)[key]);
   return {
     projectCode: '03123033',
     projectName: '电力A项目',
@@ -149,7 +164,8 @@ const getValue = (key) => {
     userName: '万达管理集团',
     code4: '8000kVA',
     code5: '8000kW',
-    latlng: '120.0000,31.000'
+    latlng: '120.0000,31.000',
+    ...(unref(keyValue)),
   }[key] || '';
 }
 const spanMethod = ({ rowIndex, columnIndex}) => {
