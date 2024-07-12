@@ -8,7 +8,6 @@ const domRef = ref();
 const realRef = ref();
 echarts.registerTheme('screen', screenConfig);
 
-const chartRef = ref()
 defineOptions({
   name: 'ScreenDataHistory',
 })
@@ -49,6 +48,9 @@ onMounted(() => {
     },
     yAxis: {
 
+    },
+    tooltip: {
+      trigger: 'axis',
     },
     series: [...group.map((item, i) => ({
       type: 'line',
@@ -158,6 +160,7 @@ onMounted(() => {
         top: ['2%', '48%'][Number(i < 3)],
       })),
     ],
+    tooltip: {},
     grid: [
       {
         right: '70%',

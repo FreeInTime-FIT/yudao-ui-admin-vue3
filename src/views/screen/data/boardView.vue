@@ -82,7 +82,9 @@
     </nav>
     <div class="flex gap-[12px] border-total">
       <div class="flex-[1]">
-        <ElDivider border-style="dashed" content-position="left">总体运行</ElDivider>
+        <div class="split-title">
+          <span>总体运行</span>
+        </div>
         <div class="flex">
           <div>
             <span>微电网日用电量：</span>
@@ -93,14 +95,18 @@
             <span>{{keyValue['calc_addr_162+addr_164']}}</span>
           </div>
         </div>
-        <ElDivider border-style="dashed" content-position="left">天气</ElDivider>
+        <div class="split-title">
+          <span>天气</span>
+        </div>
         <div>
           <span>天气：</span>
           <span>37°</span>
         </div>
       </div>
-      <div class="flex-[2]">
-        <ElDivider border-style="dashed" content-position="left">光伏</ElDivider>
+      <div class="flex-[2] ml-[12px]">
+        <div class="split-title">
+          <span>光伏</span>
+        </div>
         <div class="flex gap-[12px]">
           <div class="flex-[1]">
             <div class="flex">
@@ -419,7 +425,21 @@ const solarList = [{
   background: url("@/views/screen/assets/lineBg.png") no-repeat top center;
   background-size: 100% 100%;
   --el-border-color: #32508d;
-  padding: 8px 18px;
+  padding: 12px 18px 24px;
+}
+.split-title{
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  margin-top: 12px;
+  &:after{
+    content: '';
+    flex: 1;
+    display: block;
+    height: 0;
+    margin-left: 4px;
+    border-top: 1px dashed var(--el-color-primary);
+  }
 }
 .title-name{
   font-size: 18px;
