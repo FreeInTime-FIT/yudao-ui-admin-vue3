@@ -62,7 +62,7 @@ defineOptions({ name: 'ScreenLayout' })
           </div>
         </div>
       </div>
-      <article class="flex flex-col h-[100%] overflow-auto">
+      <article class="flex flex-col ml-[16px] mt-[12px] h-[100%] overflow-y-auto">
         <router-view>
           <template #default="{ Component, route }">
             <component :is="Component" :key="route.fullPath" />
@@ -78,7 +78,7 @@ defineOptions({ name: 'ScreenLayout' })
   .dark{
     --el-text-color-regular: #fff;
     --el-input-text-color: #fff;
-    --el-fill-color-blank: rgb(22 32 60);
+    --el-fill-color-blank: #101b43;
     --el-border-color-light: transparent;
     --el-text-color-placeholder: rgba(255, 255, 255, 0.9);
     --el-mask-color:  rgb(22 32 60);

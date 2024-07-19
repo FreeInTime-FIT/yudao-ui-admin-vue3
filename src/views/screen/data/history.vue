@@ -300,7 +300,7 @@ onMounted(() => {
     ref="queryFormRef"
     :inline="true"
     :model="queryParams"
-    class="m-[15px_0px_0_16px] form"
+    class="form"
   >
     <SelectDateRange
       v-model:end="queryParams.endTime"
@@ -320,7 +320,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .chartBox{
-  margin: 0 16px 16px 32px;
+  margin: 0 16px 16px;
   display: flex;
   flex: 1;
   flex-direction: column;

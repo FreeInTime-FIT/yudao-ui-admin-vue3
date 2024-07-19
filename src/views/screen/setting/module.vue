@@ -23,6 +23,33 @@ const queryParams = reactive<{
   startTime: undefined,
   endTime: undefined,
 })
+const changeVisible = ref(false);
+const selected = ref(
+  'normal'
+);
+const innerModule = ref();
+const moduleList = [{
+  label: '经济模式',
+  value: 'jj',
+}, {
+  label: '普通模式',
+  value: 'normal',
+}, {
+  label: '微网运行模式',
+  value: 'ww',
+}, {
+  label: '零碳运行模式',
+  value: 'lt',
+}, {
+  label: '控功率模式',
+  value: 'kgs',
+}, {
+  label: '控电量模式',
+  value: 'kdl',
+}]
+const selectedModule = computed(() => {
+  return moduleList.find(i => i.value === unref(selected));
+})
 const {  tableObject, tableMethods } = useTable<RecordItem>({
   async getListApi(option: any) {
     console.log(option);
@@ -57,14 +84,92 @@ const handleClose = () => {
 const handleOpen = () => {
 
 }
+const handleChangeVisible = () => {
+  changeVisible.value = true;
+  innerModule.value = unref(selected);
+}
+const handleConfirm = () => {
+  changeVisible.value = false;
+  selected.value = unref(innerModule);
+}
 </script>
 
 <template>
+  <ElCard
+    class="header-card"
+    body-class="header-card_body"
+  >
+    <template #header>
+      <header class="flex p-[8px_12px] flex-justify-between flex-items-center">
+        <h3 class="title">
+          系统模式
+          <span class="module-selected">{{selectedModule.label}}</span>
+        </h3>
+        <div>
+          <ElButton type="primary" @click="handleChangeVisible">切换模式</ElButton>
+        </div>
+      </header>
+    </template>
+    <aside class="statistic-card">
+      <el-row gutter="16">
+        <ElCol :span="7">
+          <div class="statistic-card-item">
+            <header class="statistic-card-item_title">运行状态</header>
+            <div class="statistic-card-item_list">
+              <div>
+                <div class="statistic-card-item_value"> {{444}}</div>
+                <div class="statistic-card-item_name">已运行时长(分钟)</div>
+              </div>
+              <div>
+                <div class="statistic-card-item_value">{{444}}</div>
+                <div class="statistic-card-item_name">可运行时长(分钟)</div>
+              </div>
+            </div>
+          </div>
+        </ElCol>
+        <ElCol :span="7">
+          <div class="statistic-card-item">
+            <header class="statistic-card-item_title">功率（kW）</header>
+            <div class="statistic-card-item_list">
+              <div>
+                <div class="statistic-card-item_value"> {{300}}</div>
+                <div class="statistic-card-item_name">实时功率</div>
+              </div>
+              <div>
+                <div class="statistic-card-item_value">{{600}}</div>
+                <div class="statistic-card-item_name">目标功率</div>
+              </div>
+            </div>
+          </div>
+        </ElCol>
+        <ElCol :span="10">
+          <div class="statistic-card-item">
+            <header class="statistic-card-item_title">其他（kW）</header>
+            <div class="statistic-card-item_list">
+              <div>
+                <div class="statistic-card-item_value">{{1120}}</div>
+                <div class="statistic-card-item_name">潜在值</div>
+              </div>
+              <div>
+                <div class="statistic-card-item_value"> {{-187.1}}</div>
+                <div class="statistic-card-item_name">调节值</div>
+              </div>
+              <div>
+                <div class="statistic-card-item_value">{{20}}</div>
+                <div class="statistic-card-item_name">调节死区</div>
+              </div>
+            </div>
+          </div>
+        </ElCol>
+      </el-row>
+    </aside>
+  </ElCard>
+
   <ElForm
     ref="queryFormRef"
     :inline="true"
     :model="queryParams"
-    class="-mb-15px form"
+    class=" form"
   >
     <ElFormItem prop="d" >
       <InputWarp>
@@ -110,17 +215,31 @@ const handleOpen = () => {
       </ElTableColumn>
       <ElTableColumn prop="person" label="操作人" />
       <ElTableColumn prop="7" label="用户编号" />
-      <ElTableColumn prop="6" label="操作" >
-        <template #default="scope">
-          <a @click="handleEdit(scope.row)">操作</a>
-        </template>
-      </ElTableColumn>
     </ElTable>
     <ElPagination
       :total="tableObject.total"
       v-model:current-page="tableObject.currentPage"
       v-model:page-size="tableObject.pageSize"
     />
+    <ElDialog width="750" v-model="changeVisible" title="切换模式">
+      <div class="module-list">
+        <div v-for="item in moduleList"
+             class="module-item"
+             :key="item.value"
+             @click="innerModule=item.value"
+             :class="{selected: item.value === innerModule}"
+        >
+          <span>{{item.label}}</span></div>
+      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="changeVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleConfirm">
+            确认切换
+          </el-button>
+        </div>
+      </template>
+    </ElDialog>
   </ContentWrap>
 
 </template>
@@ -134,10 +253,144 @@ const handleOpen = () => {
       align-items: center;
     }
   }
+  .statistic-card{
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .title{
+    font-size: 20px;
+
+    &:before{
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background-color: var(--el-color-primary);
+      margin-right: 8px;
+    }
+  }
+  .header-card{
+    --el-card-padding: 2px;
+    --el-card-bg-color: transparent;
+    margin: 0 16px 12px 0;
+    :deep(.el-card__header){
+      background-color: transparent;
+    }
+    :deep(.el-card__body){
+      margin-top: 0;
+      background-color: transparent;
+    }
+    h3{
+      margin: 0;
+    }
+  }
   a{
     color: #fff;
     text-decoration: none;
   }
+  .statistic-card-item{
+    box-shadow: var(--el-box-shadow);
+    padding: 12px 16px;
+    background-color: #17203a;
+    border-right: 4px;
+    margin-top: 8px;
+    &_title{
+      font-size: 16px;
+      font-weight: bold;
+      text-align: left;
+    }
+    &_list{
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+    &_value{
+      font-size: 24px;
+      font-weight: bold;
+    }
+    &_name{
+      margin-top: 3px;
+    }
+  }
+  .module-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .module-item{
+    position: relative;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 6px 12px;
+    width: 200px;
+    text-align: center;
+    background-color: #17203a;
+    box-shadow: inset 0 0 12px 0 var(--el-color-primary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all linear 0.3s;
+    &:hover{
+      font-weight: bold;
+      transform: scale(1.04);
+    }
+    &:active{
+      box-shadow: inset 0 0 12px 0 var(--el-color-warning);
+      background-color: #3b290f;
+    }
+    &.selected{
+      color: var(--el-color-warning);
+      font-weight: bold;
+
+    }
+    &:after,
+    &:before{
+      position: absolute;
+      top: 12px;
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+    }
+    &:before{
+      left: 12px;
+      box-shadow: 2px 0 4px 0 #0861bb;
+
+    }
+    &:after{
+      right: 12px;
+      box-shadow: -2px 0 4px 0 #0861bb;
+    }
+  }
+  .module-selected{
+    position: relative;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 6px 40px;
+    background-color: #17203a;
+    box-shadow: inset 0 0 12px 0 var(--el-color-primary);
+    font-size: 24p;
+    color: var(--el-color-warning);
+    &:after,
+    &:before{
+      position: absolute;
+      top: 12px;
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 16px;
+    }
+    &:before{
+      left: 12px;
+      box-shadow: 2px 0 4px 0 #0861bb;
+
+    }
+    &:after{
+      right: 12px;
+      box-shadow: -2px 0 4px 0 #0861bb;
+    }
+  }
+
   :deep(.dot){
     display: inline-flex;
     width: 12px;

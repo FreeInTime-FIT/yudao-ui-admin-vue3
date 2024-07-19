@@ -6,9 +6,19 @@
         <CardHeader
           title=''
         />
-        <div class="board-bg">
-          <img :src="board" alt="" />
+        <div class="board-bg-box">
+          <div class="board-bg">
+            <img :src="board" alt="" />
+            <div class="board-pos board-pos1">光伏发电量：34521kWh</div>
+            <div class="board-pos board-pos2">变压器频率：55Hz</div>
+            <div class="board-pos board-pos3">储能电量：3452kWh</div>
+            <div class="board-pos board-pos4">
+              <div>总用电量：3331kWh</div>
+              <div>总用电功率：4012kW</div>
+            </div>
+          </div>
         </div>
+
         <CardHeader
           title='实时电价'
         />
@@ -23,11 +33,12 @@
             title="电池电量"
             :api="getLatest1"
             :params="{c: 'addr_6003'}"
+            unit="kWh"
             success-value="电池soc"
           />
           <UseInfoItem
             title="充放电次数(当日)"
-            :value="keyValue['addr_6000'] || 2"
+            :value="keyValue['addr_6000']"
             success-value="两充两放"
           />
           <UseInfoItem
@@ -54,11 +65,13 @@
             <CardHeader title="负载" />
             <div class="flex">
               <UseInfoItem
-                value="4.6kWh"
+                value="4.6"
+                unit="kW"
                 success-value="用电功率"
               />
               <UseInfoItem
-                value="3.4kWh"
+                value="3.4"
+                unit="kWh"
                 success-value="用电量(当日)"
               />
             </div>
@@ -69,6 +82,7 @@
               <UseInfoItem
                 :value="keyValue['addr_192']"
                 success-value="功率"
+                unit="kW"
               />
               <div class="flex flex-col gap-[12px] mb-[12px]">
                 <div>
@@ -94,7 +108,7 @@
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
-                <span class="font-size-[24px]">{{keyValue['calc_addr_162+addr_164']}}</span>
+                <span class="font-size-[24px]">{{keyValue['3#addr_0x3001']}}</span>
                 <span>kW</span>
               </div>
             </div>
@@ -130,7 +144,7 @@
               <div>
                 <div class="color-[var(--el-color-primary)]">总发电量:</div>
                 <div class="color-[var(--el-color-warning)] fw-500">7天</div>
-                <div class="font-size-[18px] fw-600">PV1 + PV2</div>
+                <div class="font-size-[18px] fw-600">{{(keyValue[`addr_162`]*1 || 0) + (keyValue[`addr_164`]* 1 || 0)}}kWh</div>
               </div>
             </div>
 
@@ -448,14 +462,38 @@ const solarList = [{
 .content-box{
   padding: 12px;
 }
+.board-bg-box{
+  height: 485px;
+}
 .board-bg{
+  position: relative;
   width: 100%;
   margin-bottom: 12px;
-  height: 485px;
   img{
     width: 100%;
-    max-height: 480px;
+    max-height: 485px;
   }
+}
+.board-pos{
+  position: absolute;
+  font-weight: bold;
+  font-size: 16px;
+}
+.board-pos1{
+  top: 42%;
+  left: 2%;
+}
+.board-pos2{
+  top: 44%;
+  left: 78%;
+}
+.board-pos3{
+  top: 95%;
+  left: 3%;
+}
+.board-pos4{
+  top: 93%;
+  left: 74%;
 }
 .pie-chart{
   height: 260px;
@@ -475,7 +513,7 @@ const solarList = [{
   align-items: center;
   padding: 5px 0 10px;
   margin-top: 12px;
-  font-size: 12px;
+  font-size: 16px;
   color: #eee;
   &:after{
     content: '';

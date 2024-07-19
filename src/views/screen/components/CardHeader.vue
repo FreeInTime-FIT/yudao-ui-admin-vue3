@@ -15,7 +15,9 @@ const { title } = defineProps<{
       <div class="screen-card-header_arrow_left_first"></div>
       <div class="screen-card-header_arrow_left_second"></div>
     </div>
-    <h3>{{title}}</h3>
+    <slot>
+      <h3>{{title}}</h3>
+    </slot>
     <div class="screen-card-header_arrow_right">
       <div class="screen-card-header_arrow_right_first"></div>
       <div class="screen-card-header_arrow_right_second"></div>

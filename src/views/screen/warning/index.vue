@@ -28,10 +28,10 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
     console.log(option);
     return {
       list: [
-        {id: 1, time: '2024-05-05 09:09:09', level : 1, status: 3, product: '垂直轴风机', message: '系统故障汇总', type: '故障码4'},
-        { id: 2, time: '2024-05-05 09:09:09', level : 2, status: 2, product: '光伏逆变器 ', message: 'COM板汇总故障', type: '故障码4'},
-        { id: 3, time: '2024-05-05 09:09:09', level : 3, product: '垂直轴风机', message: '正在过载告警', type: '警告'},
-        { id: 2, time: '2024-05-05 09:09:09', level : 2, product: '光伏逆变器 ', message: ' 烟雾报警器', type: '消防   '},
+        {id: 1, time: '2024-05-05 09:09:09', level : 1, status: 3, user: '张工', product: '垂直轴风机', message: '系统故障汇总', type: '故障码4'},
+        { id: 2, time: '2024-05-05 09:09:09', level : 1, status: 2,user: '张工', product: '光伏逆变器 ', message: 'COM板汇总故障', type: '故障码4'},
+        { id: 3, time: '2024-05-05 09:09:09', level : 2, product: '垂直轴风机', user: '张工', message: '正在过载告警', type: '警告'},
+        { id: 2, time: '2024-05-05 09:09:09', level : 3, product: '光伏逆变器 ',user: '张工', message: ' 烟雾报警器', type: '消防   '},
       ] as RecordItem[],
       total: 20,
     };
@@ -48,9 +48,11 @@ const handleIgnore = (row) => {
   })
 }
 const handleEdit = (row) => {
-  ElMessageBox.confirm('确认处理当前警告么？', '提示',{
+  ElMessageBox.prompt('输入处理意见', '警告处理',{
 
-  })
+  }).then(({ value }) => {
+    console.log(value);
+  });
 }
 const levelFormatter = (row, cellValue, index) => {
   const levels = {
@@ -121,7 +123,10 @@ const levelFormatter = (row, cellValue, index) => {
       <ElTableColumn prop="product" label="所属设备" />
       <ElTableColumn prop="message" label="告警信息" />
       <ElTableColumn prop="type" label="告警类型" />
+      <ElTableColumn prop="user" label="处理人" />
+
       <ElTableColumn prop="status" label="状态" >
+
         <template #default="scope">
           <ElSpace>
             <ElTag type="success" v-if="scope.row.status=== 3">已处理</ElTag>

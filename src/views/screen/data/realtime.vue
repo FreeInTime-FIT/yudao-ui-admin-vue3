@@ -13,6 +13,8 @@ defineOptions({
   name: 'ScreenDataHistory',
 })
 
+const detailVisible = ref(false)
+const isEdit = ref(false)
 const keyValue = ref({});
 const projectAttrs = [
   {
@@ -120,10 +122,19 @@ const messList = [
   {id: 5, voltage: 'B相电压', type: '负载点'},
   {id: 6, voltage: 'C相电压', type: '负载点'},
 ]
-const useList = [{
+type UseItem = {
+  title: string;
+  key: string;
+  unit?: string;
+  async?: boolean;
+  successValue?: string;
+  value?: any;
+}
+const useList: UseItem[] = [{
   title: '购电量',
   key: '1',
-  unit: '',
+  unit: 'kWh',
+  value: 0,
 }, {
   title: '用电量',
   key: '3#addr_0x3000',
@@ -132,17 +143,25 @@ const useList = [{
 },{
   title: '光伏发电量',
   key: '3',
-  unit: '',
+  unit: 'kWh',
+  successValue: '光伏1发电量',
+  value: 1300,
 },{
   title: '光伏发电量',
   key: '4',
-  successValue: '光伏1发电量',
-  unit: '',
-},{
-  title: '储能调电量',
-  key: '5',
   successValue: '光伏2发电量',
-  unit: '',
+  unit: 'kWh',
+  value: 1200,
+},{
+  title: '充电调用量',
+  key: '5',
+  value: 1300,
+  unit: 'kWh',
+},{
+  title: '放电调用量',
+  key: '6',
+  unit: 'kWh',
+  value: 1300,
 },]
 const getData = async () => {
   const keys = [...useList.filter(i => i.async).map(i => i.key)];
@@ -155,16 +174,31 @@ const getData = async () => {
 onMounted(() => {
   getData();
 })
+const projectInfo = reactive({
+  projectCode: '03123033',
+  projectName: '电力A项目',
+  address: '杭州市余杭区万达广场',
+  userName: '万达管理集团',
+  code4: '8000kVA',
+  code5: '8000kW',
+  latlng: '120.0000,31.000',
+  r1: '6000kVA',
+  fh: '6000kW',
+  cn: '电池储能',
+  cnrl: '8000kWh',
+  edgl: '8000kW',
+  dclx: '铅酸电池',
+  dcdy: '48V',
+  fdsd: '90%',
+  xhsm: '1000次循环',
+  cfdsl: '2C',
+  yqsm: '10年',
+  wdfw: '-20℃至60℃',
+})
 const getValue = (key) => {
   console.log(unref(keyValue), key, unref(keyValue)[key]);
   return {
-    projectCode: '03123033',
-    projectName: '电力A项目',
-    address: '杭州市余杭区万达广场',
-    userName: '万达管理集团',
-    code4: '8000kVA',
-    code5: '8000kW',
-    latlng: '120.0000,31.000',
+    ...(unref(projectInfo)),
     ...(unref(keyValue)),
   }[key] || '';
 }
@@ -182,6 +216,14 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
     }
   }
 }
+const handleProject = () => {
+  detailVisible.value = true;
+  isEdit.value = false;
+}
+const handleProjectEdit = () => {
+  detailVisible.value = true;
+  isEdit.value = true;
+}
 </script>
 
 <template>
@@ -195,7 +237,7 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
                      :title="item.title"
                      :success-value="item.successValue"
                      :unit="item.unit"
-                     :value="getValue(item.key)"
+                     :value="getValue(item.key) || item.value"
         />
       </section>
       <CardHeader title="项目信息" />
@@ -217,8 +259,8 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
           </ElTableColumn>
         </ElTable>
         <footer class="card-footer">
-          <ElButton >更多档案信息</ElButton>
-          <ElButton>修改档案</ElButton>
+          <ElButton @click="handleProject">更多档案信息</ElButton>
+          <ElButton @click="handleProjectEdit">修改档案</ElButton>
           <ElButton>删除项目</ElButton>
         </footer>
       </article>
@@ -228,7 +270,41 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
       <article class="real-box">、
         <img :src="bg" class="bg" alt="" />
         <div class="content">
-          <div class="content_1"></div>
+          <div class="content_1">
+            <div>P:50kW</div>
+            <div>U:400V</div>
+            <div>I:125A</div>
+          </div>
+          <div class="content_2">
+            <div>P:50kW</div>
+            <div>U:400V</div>
+            <div>I:125A</div>
+          </div>
+          <div class="content_3">
+            <div>P:50kW</div>
+            <div>Ua:230V</div>
+            <div>Ub:230V</div>
+            <div>Uc:230V</div>
+            <div>Ia:1321A</div>
+            <div>Ib:1321A</div>
+            <div>Ic:1321A</div>
+            <div>F:50Hz</div>
+            <div>PF:95%</div>
+          </div>
+          <div class="content_4">
+            <div>P:100kW</div>
+            <div>Ua:230V</div>
+            <div>Ub:230V</div>
+            <div>Uc:230V</div>
+            <div>Ia:264A</div>
+            <div>Ib:264A</div>
+            <div>Ic:264A</div>
+            <div>F:50Hz</div>
+            <div>PF:95%</div>
+          </div>
+          <div class="content_5">
+            <div>P:268kW U:12V I:208A</div>
+          </div>
         </div>
       </article>
       <CardHeader title="电网信息" />
@@ -292,11 +368,6 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
             </template>
           </ElTableColumn>
         </ElTable>
-        <footer class="card-footer">
-          <ElButton>更多档案信息</ElButton>
-          <ElButton>修改档案</ElButton>
-          <ElButton>删除项目</ElButton>
-        </footer>
       </article>
       <article class="card-box">
         <header class="card-header text-left">
@@ -341,6 +412,76 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
       </article>
     </ElCol>
   </ElRow>
+  <ElDialog
+    :title="getValue('projectName')"
+    lock-scroll
+    class="dialog"
+    center
+    align-center
+    :append-to-body="false"
+    v-model="detailVisible"
+  >
+    <ElForm
+      label-width="auto"
+    >
+      <ElFormItem label="项目编号" prop="projectCode">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.projectCode" />
+      </ElFormItem>
+      <ElFormItem label="业主名称" prop="userName">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.userName" />
+      </ElFormItem>
+      <ElFormItem label="项目地址" prop="address">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.address" />
+      </ElFormItem>
+      <ElFormItem label="项目经纬度" prop="latlng">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.latlng" />
+      </ElFormItem>
+      <ElFormItem label="变压器容量" prop="r1">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.r1" />
+      </ElFormItem>
+      <ElFormItem label="负荷总功率" prop="fh">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.fh" />
+      </ElFormItem>
+      <ElFormItem label="储能类型" prop="cn">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.cn" />
+      </ElFormItem>
+      <ElFormItem label="储能容量" prop="cnrl">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.cnrl" />
+      </ElFormItem>
+      <ElFormItem label="额定功率" prop="edgl">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.edgl" />
+      </ElFormItem>
+      <ElFormItem label="电池类型" prop="dclx">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.dclx" />
+      </ElFormItem>
+      <ElFormItem label="电池电压范围" prop="dcdy">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.dcdy" />
+      </ElFormItem>
+      <ElFormItem label="放电深度" prop="fdsd">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.fdsd" />
+      </ElFormItem>
+      <ElFormItem label="循环寿命" prop="xhsm">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.xhsm" />
+      </ElFormItem>
+      <ElFormItem label="充放电速率" prop="cfdsl">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.cfdsl" />
+      </ElFormItem>
+      <ElFormItem label="预期寿命" prop="yqsm">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.yqsm" />
+      </ElFormItem>
+      <ElFormItem label="温度范围" prop="wdfw">
+        <ElInput :readonly="!isEdit" v-model="projectInfo.wdfw" />
+      </ElFormItem>
+    </ElForm>
+    <template #footer v-if="isEdit">
+      <div class="dialog-footer">
+        <el-button @click="detailVisible = false">关闭</el-button>
+        <el-button type="primary" @click="detailVisible = false">
+          确认提交
+        </el-button>
+      </div>
+    </template>
+  </ElDialog>
 </template>
 
 <style scoped lang="scss">
@@ -396,6 +537,7 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
       user-select: none;
       height: auto;
       display: block;
+      max-height: 379px;
     }
 
     .content{
@@ -405,5 +547,33 @@ const spanMethod = ({ rowIndex, columnIndex}) => {
       bottom: 0;
       right: 0;
     }
+    .content_1{
+      position: absolute;
+      top: 5%;
+      left: 26%;
+    }
+    .content_2{
+      position: absolute;
+      top: 5%;
+      left: 64%;
+    }
+    .content_3{
+      position: absolute;
+      top: 45%;
+      left: 7%;
+    }
+    .content_4{
+      position: absolute;
+      top: 45%;
+      left: 80%;
+    }
+    .content_5{
+      position: absolute;
+      top: 90%;
+      left: 36%;
+    }
+  }
+  :deep(.dialog){
+    --el-dialog-margin-top: 50px;
   }
 </style>

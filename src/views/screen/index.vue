@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import { useUserStore } from '@/store/modules/user'
 import * as echarts from 'echarts';
 import { useResizeObserver } from '@vueuse/core'
+import dayjs from "dayjs";
 import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
 const echartsDomRef = ref<HTMLElement>()
@@ -15,6 +16,7 @@ const mapStyle = {
 let mapChart;
 console.log(mapStyle);
 
+const time = dayjs().format('YYYY-MM-DD HH:mm')
 useResizeObserver(echartsDomRef, () => {
   if (chartRef.value) {
     chartRef.value.resize();
@@ -61,17 +63,6 @@ onMounted(() => {
             '#4c8fb5',
             '#3c80b1',
           ]
-        }
-      },
-      toolbox: {
-        show: true,
-        //orient: 'vertical',
-        left: 'left',
-        top: 'top',
-        feature: {
-          dataView: { readOnly: false },
-          restore: {},
-          saveAsImage: {}
         }
       },
       darkMode: true,
@@ -154,7 +145,7 @@ onMounted(() => {
     axisLine: {
       show: true,
       lineStyle: {
-        color: 'yellow',
+        color: '#409EFF',
       },
     },
     axisTick: {
@@ -233,19 +224,19 @@ onMounted(() => {
     dataset: [
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i + 1 + Math.random()]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.5 + Math.random()]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i + 1 + Math.random()]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.6 + 1 + Math.random()]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i + 1 + Math.random()]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.7 + 1 + Math.random()]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i + 1 + Math.random()]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.4 + 1 + Math.random()]),
       },
     ],
     xAxis: Array(4).fill(1).map((_, i) => ({
@@ -279,7 +270,7 @@ onMounted(() => {
       },
       showSymbol: false,
       itemStyle: {
-        color: 'yellow',
+        color: '#409EFF',
       },
       ...item,
     }))
@@ -354,32 +345,39 @@ const provinceList = computed(() => {
 const totalList = [{
   label: '用户总量',
   key: 'user',
+  value: 5,
   unit: '个',
 }, {
   label: '项目总量',
   key: 'user1',
+  value: 5,
   unit: '个',
 }, {
   label: '设备总量',
   key: 'user2',
+  value: 10,
   unit: '台',
 }, {
   label: '负荷总量',
   key: 'user3',
+  value: 20000,
   unit: 'kW',
 }, {
   label: '电源总量',
   key: 'user4',
+  value: 20000,
   unit: 'kWp',
 }, {
   label: '储能总量',
   key: 'user5',
   unit: 'kWh',
+  value: 20000,
 }]
 const todayData = [
   {
     label: '购电总量',
     key: '1',
+    value: 5,
     unit: 'kWh',
   },
   {
@@ -453,7 +451,7 @@ console.log(provinceList);
 <template>
   <header class="flex flex-justify-between index-header  gap-10px pa-10px color-[var(--screen-content-text-color)]">
     <div>尊敬的{{userName}}{{sex}}，您好</div>
-    <div>数据更新时间：12120</div>
+    <div>数据更新时间：{{ time }}</div>
     <div class="flex gap-[10px]"><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
   </header>
   <article class="pos-relative flex-[1]">
@@ -488,15 +486,6 @@ console.log(provinceList);
       <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
       <ElButton type="primary">新增项目</ElButton>
     </header>
-    <aside class="sideRight">
-      <div class="side-item-header">
-        <span>当日数据</span>
-      </div>
-      <div class="side-item" v-for="item in todayData" :key="item.key">
-        <span>{{item.label}}</span>
-        <span>{{item.value}}{{item.unit}}</span>
-      </div>
-    </aside>
     <ElDrawer
       v-model="drawer"
       direction="btt"
@@ -537,7 +526,7 @@ console.log(provinceList);
 <style scoped lang="scss">
 .index-header{
   border-top: 1px solid #eee;
-  background: linear-gradient(to bottom, #999, #222, #222);
+  background: linear-gradient(to bottom, #666,  #333,50%, #222);
   box-shadow:0 10px 10px 0 #333;
   position: relative;
   z-index: 8;
