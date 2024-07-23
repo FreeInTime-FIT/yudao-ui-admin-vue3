@@ -62,14 +62,6 @@
         <template #header>
           <div class="h-3 flex justify-between">
             <span>{{ t('workplace.project') }}</span>
-            <el-link
-              type="primary"
-              :underline="false"
-              href="https://github.com/yudaocode"
-              target="_blank"
-            >
-              {{ t('action.more') }}
-            </el-link>
           </div>
         </template>
         <el-skeleton :loading="loading" animated>
