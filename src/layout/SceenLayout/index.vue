@@ -154,6 +154,7 @@ defineOptions({ name: 'ScreenLayout' })
     white-space: nowrap;
   }
   .full{
+    padding-top: 0;
     margin-top: 0;
     margin-left: 0;
   }
