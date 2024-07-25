@@ -62,7 +62,10 @@ defineOptions({ name: 'ScreenLayout' })
           </div>
         </div>
       </div>
-      <article class="flex flex-col ml-[16px] mt-[12px] h-[100%] overflow-y-auto">
+      <article
+        class="flex flex-col ml-[16px] box-border pt-[12px] h-[100%] overflow-y-auto"
+        :class="{full: $route.meta.full}"
+      >
         <router-view>
           <template #default="{ Component, route }">
             <component :is="Component" :key="route.fullPath" />
@@ -149,6 +152,10 @@ defineOptions({ name: 'ScreenLayout' })
     text-decoration: none;
     font-weight: bold;
     white-space: nowrap;
+  }
+  .full{
+    margin-top: 0;
+    margin-left: 0;
   }
   :deep {
     .el-card{

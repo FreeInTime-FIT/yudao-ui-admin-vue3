@@ -227,191 +227,194 @@ const handleProjectEdit = () => {
 </script>
 
 <template>
-  <ElRow :gutter="24">
-    <ElCol :span="8">
-      <CardHeader title="使用数据" />
-      <section class="use-info">
+  <section class="w-[100%] overflow-x-hidden">
+    <ElRow :gutter="24">
+      <ElCol :span="8">
+        <CardHeader title="使用数据" />
+        <section class="use-info">
 
-        <UseInfoItem v-for="item in useList"
-                     :key="item.key"
-                     :title="item.title"
-                     :success-value="item.successValue"
-                     :unit="item.unit"
-                     :value="getValue(item.key) || item.value"
-        />
-      </section>
-      <CardHeader title="项目信息" />
-      <article class="card-box">
-        <header class="card-header">
-          <h3> {{getValue('projectName')}}</h3>
-        </header>
-        <ElTable
-          :data="projectAttrs"
-          row-key="label"
-          border
-          :show-header="false"
-        >
-          <ElTableColumn :width="100" label="名称" prop="label"  />
-          <ElTableColumn label="值" prop="key"  >
-            <template #default="{row}">
-              {{getValue(row.key)}}
-            </template>
-          </ElTableColumn>
-        </ElTable>
-        <footer class="card-footer">
-          <ElButton @click="handleProject">更多档案信息</ElButton>
-          <ElButton @click="handleProjectEdit">修改档案</ElButton>
-          <ElButton>删除项目</ElButton>
-        </footer>
-      </article>
-    </ElCol>
-    <ElCol :span="9">
-      <CardHeader title="" />
-      <article class="real-box">、
-        <img :src="bg" class="bg" alt="" />
-        <div class="content">
-          <div class="content_1">
-            <div>P:50kW</div>
-            <div>U:400V</div>
-            <div>I:125A</div>
+          <UseInfoItem v-for="item in useList"
+                       :key="item.key"
+                       :title="item.title"
+                       :success-value="item.successValue"
+                       :unit="item.unit"
+                       :value="getValue(item.key) || item.value"
+          />
+        </section>
+        <CardHeader title="项目信息" />
+        <article class="card-box">
+          <header class="card-header">
+            <h3> {{getValue('projectName')}}</h3>
+          </header>
+          <ElTable
+            :data="projectAttrs"
+            row-key="label"
+            border
+            :show-header="false"
+          >
+            <ElTableColumn :width="100" label="名称" prop="label"  />
+            <ElTableColumn label="值" prop="key"  >
+              <template #default="{row}">
+                {{getValue(row.key)}}
+              </template>
+            </ElTableColumn>
+          </ElTable>
+          <footer class="card-footer">
+            <ElButton @click="handleProject">更多档案信息</ElButton>
+            <ElButton @click="handleProjectEdit">修改档案</ElButton>
+            <ElButton>删除项目</ElButton>
+          </footer>
+        </article>
+      </ElCol>
+      <ElCol :span="9">
+        <CardHeader title="" />
+        <article class="real-box">、
+          <img :src="bg" class="bg" alt="" />
+          <div class="content">
+            <div class="content_1">
+              <div>P:50kW</div>
+              <div>U:400V</div>
+              <div>I:125A</div>
+            </div>
+            <div class="content_2">
+              <div>P:50kW</div>
+              <div>U:400V</div>
+              <div>I:125A</div>
+            </div>
+            <div class="content_3">
+              <div>P:50kW</div>
+              <div>Ua:230V</div>
+              <div>Ub:230V</div>
+              <div>Uc:230V</div>
+              <div>Ia:1321A</div>
+              <div>Ib:1321A</div>
+              <div>Ic:1321A</div>
+              <div>F:50Hz</div>
+              <div>PF:95%</div>
+            </div>
+            <div class="content_4">
+              <div>P:100kW</div>
+              <div>Ua:230V</div>
+              <div>Ub:230V</div>
+              <div>Uc:230V</div>
+              <div>Ia:264A</div>
+              <div>Ib:264A</div>
+              <div>Ic:264A</div>
+              <div>F:50Hz</div>
+              <div>PF:95%</div>
+            </div>
+            <div class="content_5">
+              <div>P:268kW U:12V I:208A</div>
+            </div>
           </div>
-          <div class="content_2">
-            <div>P:50kW</div>
-            <div>U:400V</div>
-            <div>I:125A</div>
-          </div>
-          <div class="content_3">
-            <div>P:50kW</div>
-            <div>Ua:230V</div>
-            <div>Ub:230V</div>
-            <div>Uc:230V</div>
-            <div>Ia:1321A</div>
-            <div>Ib:1321A</div>
-            <div>Ic:1321A</div>
-            <div>F:50Hz</div>
-            <div>PF:95%</div>
-          </div>
-          <div class="content_4">
-            <div>P:100kW</div>
-            <div>Ua:230V</div>
-            <div>Ub:230V</div>
-            <div>Uc:230V</div>
-            <div>Ia:264A</div>
-            <div>Ib:264A</div>
-            <div>Ic:264A</div>
-            <div>F:50Hz</div>
-            <div>PF:95%</div>
-          </div>
-          <div class="content_5">
-            <div>P:268kW U:12V I:208A</div>
-          </div>
-        </div>
-      </article>
-      <CardHeader title="电网信息" />
-      <article class="card-box">
-        <ElTable
-          :data="messList"
-          row-key="label"
-          border
-          :span-method="spanMethod"
-          :show-header="false"
-        >
-          <ElTableColumn width="40" label="类别" prop="type"  />
-          <ElTableColumn label="电压" prop="voltage"  />
-          <ElTableColumn label="电流" prop="first.key"  >
-            <template #default="{row}">
-              {{getValue(row.voltage)}}
-            </template>
-          </ElTableColumn>
-          <ElTableColumn label="有功" prop="next.label"  >
-            <template #default="{row}">
-              {{getValue(row.voltage)}}
-            </template>
-          </ElTableColumn>
-          <ElTableColumn label="功率因数" prop="next.key"  >
-            <template #default="{row}">
-              {{getValue(row.voltage)}}
-            </template>
-          </ElTableColumn>
-          <ElTableColumn label="需量" prop="next.key"  >
-            <template #default="{row}">
-              {{getValue(row.voltage)}}
-            </template>
-          </ElTableColumn>
-          <ElTableColumn label="参数" prop="next.key"  >
-            <template #default="{row}">
-              {{getValue(row.voltage)}}
-            </template>
-          </ElTableColumn>
-        </ElTable>
-      </article>
-    </ElCol>
-    <ElCol :span="7">
-      <CardHeader title="当日数据" />
-      <article class="card-box ">
-        <ElTable
-          :data="todayDataShowList"
-          row-key="label"
-          border
-          :show-header="false"
-        >
-          <ElTableColumn :width="90" label="名称" prop="first.label"  />
-          <ElTableColumn label="值" prop="first.key"  >
-            <template #default="{row}">
-              {{getValue(row.first.key)}}
-            </template>
-          </ElTableColumn>
-          <ElTableColumn :width="90" label="名称" prop="next.label"  />
-          <ElTableColumn label="值" prop="next.key"  >
-            <template #default="{row}">
-              {{getValue(row.next.key)}}
-            </template>
-          </ElTableColumn>
-        </ElTable>
-      </article>
-      <article class="card-box">
-        <header class="card-header text-left">
-          <h3>电网调度指令</h3>
-        </header>
-        <ElTable
-          :data="[{id: 1}, {id: 2}]"
-          row-key="id"
-          border
-        >
-          <ElTableColumn :width="60" label="序号" type="index"  />
-          <ElTableColumn label="并网功率" prop="index1"  />
-          <ElTableColumn label="所属部分" prop="index2"  />
-          <ElTableColumn label="发生时间"  prop="index3"  />
-          <ElTableColumn label="重要度" prop="index4"  />
-        </ElTable>
-        <footer class="card-footer">
-          <ElButton >更多调度指令</ElButton>
-          <ElButton >告警数据更新</ElButton>
-        </footer>
-      </article>
-      <article class="card-box">
-        <header class="card-header text-left">
-          <h3>运行参数</h3>
-        </header>
-        <ElTable
-          :data="[{id: 1}, {id: 2}]"
-          row-key="id"
-          border
-          :show-header="false"
-        >
-          <ElTableColumn label="序号" prop="index"  />
-          <ElTableColumn label="并网功率" prop="index1"  />
-          <ElTableColumn label="所属部分" prop="index2"  />
-          <ElTableColumn label="重要度" prop="index4"  />
-        </ElTable>
-        <footer class="card-footer">
-          <ElButton>更多运行参数</ElButton>
-          <ElButton>修改参数</ElButton>
-          <ElButton>本地参数上传</ElButton>
-        </footer>
-      </article>
-    </ElCol>
-  </ElRow>
+        </article>
+        <CardHeader title="电网信息" />
+        <article class="card-box">
+          <ElTable
+            :data="messList"
+            row-key="label"
+            border
+            :span-method="spanMethod"
+            :show-header="false"
+          >
+            <ElTableColumn width="40" label="类别" prop="type"  />
+            <ElTableColumn label="电压" prop="voltage"  />
+            <ElTableColumn label="电流" prop="first.key"  >
+              <template #default="{row}">
+                {{getValue(row.voltage)}}
+              </template>
+            </ElTableColumn>
+            <ElTableColumn label="有功" prop="next.label"  >
+              <template #default="{row}">
+                {{getValue(row.voltage)}}
+              </template>
+            </ElTableColumn>
+            <ElTableColumn label="功率因数" prop="next.key"  >
+              <template #default="{row}">
+                {{getValue(row.voltage)}}
+              </template>
+            </ElTableColumn>
+            <ElTableColumn label="需量" prop="next.key"  >
+              <template #default="{row}">
+                {{getValue(row.voltage)}}
+              </template>
+            </ElTableColumn>
+            <ElTableColumn label="参数" prop="next.key"  >
+              <template #default="{row}">
+                {{getValue(row.voltage)}}
+              </template>
+            </ElTableColumn>
+          </ElTable>
+        </article>
+      </ElCol>
+      <ElCol :span="7">
+        <CardHeader title="当日数据" />
+        <article class="card-box ">
+          <ElTable
+            :data="todayDataShowList"
+            row-key="label"
+            border
+            :show-header="false"
+          >
+            <ElTableColumn :width="90" label="名称" prop="first.label"  />
+            <ElTableColumn label="值" prop="first.key"  >
+              <template #default="{row}">
+                {{getValue(row.first.key)}}
+              </template>
+            </ElTableColumn>
+            <ElTableColumn :width="90" label="名称" prop="next.label"  />
+            <ElTableColumn label="值" prop="next.key"  >
+              <template #default="{row}">
+                {{getValue(row.next.key)}}
+              </template>
+            </ElTableColumn>
+          </ElTable>
+        </article>
+        <article class="card-box">
+          <header class="card-header text-left">
+            <h3>电网调度指令</h3>
+          </header>
+          <ElTable
+            :data="[{id: 1}, {id: 2}]"
+            row-key="id"
+            border
+          >
+            <ElTableColumn :width="60" label="序号" type="index"  />
+            <ElTableColumn label="并网功率" prop="index1"  />
+            <ElTableColumn label="所属部分" prop="index2"  />
+            <ElTableColumn label="发生时间"  prop="index3"  />
+            <ElTableColumn label="重要度" prop="index4"  />
+          </ElTable>
+          <footer class="card-footer">
+            <ElButton >更多调度指令</ElButton>
+            <ElButton >告警数据更新</ElButton>
+          </footer>
+        </article>
+        <article class="card-box">
+          <header class="card-header text-left">
+            <h3>运行参数</h3>
+          </header>
+          <ElTable
+            :data="[{id: 1}, {id: 2}]"
+            row-key="id"
+            border
+            :show-header="false"
+          >
+            <ElTableColumn label="序号" prop="index"  />
+            <ElTableColumn label="并网功率" prop="index1"  />
+            <ElTableColumn label="所属部分" prop="index2"  />
+            <ElTableColumn label="重要度" prop="index4"  />
+          </ElTable>
+          <footer class="card-footer">
+            <ElButton>更多运行参数</ElButton>
+            <ElButton>修改参数</ElButton>
+            <ElButton>本地参数上传</ElButton>
+          </footer>
+        </article>
+      </ElCol>
+    </ElRow>
+  </section>
+
   <ElDialog
     :title="getValue('projectName')"
     lock-scroll

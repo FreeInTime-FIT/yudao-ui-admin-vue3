@@ -588,6 +588,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           title: '首页',
           noCache: true,
           hidden: true,
+          full: true,
           activeMenu: '/screen/map'
         },
         component: () => import('@/views/screen/map.vue')
@@ -598,6 +599,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
         meta: {
           title: '首页',
           noCache: true,
+          full: true,
           activeMenu: '/screen/index'
         },
         component: () => import('@/views/screen/index.vue')

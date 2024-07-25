@@ -40,7 +40,7 @@ onMounted(() => {
       visualMap: {
         type: 'piecewise',
         left: '40%',
-        top: 'bottom',
+        bottom: '2%',
         calculable: true,
         realtime: false,
         pieces: [
@@ -449,87 +449,98 @@ console.log(provinceList);
 </script>
 
 <template>
-  <header class="flex flex-justify-between index-header  gap-10px pa-10px color-[var(--screen-content-text-color)]">
-    <div>尊敬的{{userName}}{{sex}}，您好</div>
-    <div>数据更新时间：{{ time }}</div>
-    <div class="flex gap-[10px]"><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
-  </header>
-  <article class="pos-relative flex-[1]">
-    <section class="sideLeft">
-      <aside class="side-list">
-        <div class="side-item" v-for="item in totalList" :key="item.key">
-          <span>{{item.label}}</span>
-          <span>{{item.value}}{{item.unit}}</span>
-        </div>
-      </aside>
-      <div class="echarts" ref="echartsDomRef"></div>
-    </section>
-    <div class="mapCharts" ref="mapDomRef"></div>
-<!--    <baidu-map
-      class="bm-view"
-      @ready="handleMapReady"
-      :zoom="5"
-      :dragging="false"
-      scroll-wheel-zoom
-      :mapStyle="mapStyle"
-      :center="{lng: 105.404, lat: 38.915}"
-    >
-      <bm-marker
-        v-for="item in projectList"
-        :position="{lat: item.lat, lng: item.lng}"
-        :key="item.name"
-        @click="handleClickMarker(item)"
-        :icon="{url: icon, size: {width: 32, height: 32}}"
-      />
-    </baidu-map>-->
-    <header class="sideHeader">
-      <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
-      <ElButton type="primary">新增项目</ElButton>
+  <section class="pos-relative flex-[1]">
+    <header class="flex flex-justify-between index-header  gap-10px pa-10px color-[var(--screen-content-text-color)]">
+      <div>尊敬的{{userName}}{{sex}}，您好</div>
+      <div>数据更新时间：{{ time }}</div>
+      <div class="flex gap-[10px]"><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
     </header>
-    <ElDrawer
-      v-model="drawer"
-      direction="btt"
-      modal-class="drawer-project"
-      size="92%"
-    >
-      <template #title>
-        <div>
-          <ElButton type="primary" @click="handleHideProject"> 全局看板</ElButton>
-        </div>
-      </template>
+    <article class="index-content">
+      <section class="sideLeft">
+        <aside class="side-list">
+          <div class="side-item" v-for="item in totalList" :key="item.key">
+            <span>{{item.label}}</span>
+            <span>{{item.value}}{{item.unit}}</span>
+          </div>
+        </aside>
+        <div class="echarts" ref="echartsDomRef"></div>
+      </section>
+      <div class="mapCharts" ref="mapDomRef"></div>
+      <!--    <baidu-map
+            class="bm-view"
+            @ready="handleMapReady"
+            :zoom="5"
+            :dragging="false"
+            scroll-wheel-zoom
+            :mapStyle="mapStyle"
+            :center="{lng: 105.404, lat: 38.915}"
+          >
+            <bm-marker
+              v-for="item in projectList"
+              :position="{lat: item.lat, lng: item.lng}"
+              :key="item.name"
+              @click="handleClickMarker(item)"
+              :icon="{url: icon, size: {width: 32, height: 32}}"
+            />
+          </baidu-map>-->
+      <header class="sideHeader">
+        <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
+        <ElButton type="primary">新增项目</ElButton>
+      </header>
+      <ElDrawer
+        v-model="drawer"
+        direction="btt"
+        modal-class="drawer-project"
+        size="92%"
+      >
+        <template #title>
+          <div>
+            <ElButton type="primary" @click="handleHideProject"> 全局看板</ElButton>
+          </div>
+        </template>
 
-      <nav>
-        <div v-for="province in provinceList" class="flex mb-[12px]" :key="province.province">
-          <div class="font-size-[24px] w-[120px]">{{province.province}}</div>
-          <div class="flex-[1] flex flex-wrap gap-[10px]">
-            <div v-for="item in province.children" class="province-item" :key="item.name">
-              {{item.name}}
+        <nav>
+          <div v-for="province in provinceList" class="flex mb-[12px]" :key="province.province">
+            <div class="font-size-[24px] w-[120px]">{{province.province}}</div>
+            <div class="flex-[1] flex flex-wrap gap-[10px]">
+              <div v-for="item in province.children" class="province-item" :key="item.name">
+                {{item.name}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="flex mb-[12px]">
-          <div class="font-size-[24px] w-[120px]"></div>
-          <div class="flex-[1] flex flex-wrap gap-[10px]">
-            <div class="province-item text-center">
-              +
-            </div>
-            <div class="province-item text-center">
-              -
+          <div class="flex mb-[12px]">
+            <div class="font-size-[24px] w-[120px]"></div>
+            <div class="flex-[1] flex flex-wrap gap-[10px]">
+              <div class="province-item text-center">
+                +
+              </div>
+              <div class="province-item text-center">
+                -
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
-    </ElDrawer>
-  </article>
+        </nav>
+      </ElDrawer>
+    </article>
+  </section>
+
 </template>
 
 <style scoped lang="scss">
 .index-header{
-  border-top: 1px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #999;
   background: linear-gradient(to bottom, #666,  #333,50%, #222);
   box-shadow:0 10px 10px 0 #333;
-  position: relative;
   z-index: 8;
+}
+.index-content{
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 60px;
 }
 :deep{
   .drawer-project{
@@ -552,7 +563,7 @@ console.log(provinceList);
   .sideHeader{
     position: absolute;
     z-index: 20;
-    top: 10px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -572,7 +583,7 @@ console.log(provinceList);
   }
   .mapCharts{
     width: 100%;
-    height: calc(100vh - 100px);
+    height: 100%;
   }
   .side-list{
     display: flex;
