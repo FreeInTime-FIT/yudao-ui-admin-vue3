@@ -57,6 +57,7 @@ const todayDataList = [
   {
     label: '发电总量',
     key: '2',
+    valKey:  'calc_addr_162+addr_164',
   },
   {
     label: '储电总量',
@@ -115,12 +116,12 @@ const todayDataShowList = todayDataList.reduce((res, item, idx) => {
   ]
 }, [])
 const messList = [
-  {id: 1, voltage: 'A相电压', electric: 'A相电流', type: '并网点'},
+  {id: 1, voltage: 'A相电压',  electric: 'A相电流', type: '并网点'},
   {id: 2, voltage: 'B相电压', type: '并网点'},
   {id: 3, voltage: 'C相电压', type: '并网点'},
-  {id: 4, voltage: 'A相电压', electric: 'A相电流', type: '负载点'},
-  {id: 5, voltage: 'B相电压', type: '负载点'},
-  {id: 6, voltage: 'C相电压', type: '负载点'},
+  {id: 4, voltage: 'A相电压', voltageKey: '4#addr_2100H', electric: 'A相电流', electricKey: '4#addr_210CH', powerKey: '4#addr_2114H', powerFactorKey: '4#addr_212CH', type: '负载点'},
+  {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102H', electricKey: '4#addr_210EH', powerKey: '4#addr_2116H', powerFactorKey: '4#addr_212EH', type: '负载点',otherKey: '4#addr_2134H'},
+  {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2102H', electricKey: '4#addr_2110H', powerKey: '4#addr_2118H', powerFactorKey: '4#addr_2130H', type: '负载点'},
 ]
 type UseItem = {
   title: string;
@@ -142,16 +143,16 @@ const useList: UseItem[] = [{
   unit: 'kWh',
 },{
   title: '光伏发电量',
-  key: '3',
+  key: 'addr_162',
   unit: 'kWh',
+  async: true,
   successValue: '光伏1发电量',
-  value: 1300,
 },{
   title: '光伏发电量',
-  key: '4',
+  key: 'addr_164',
+  async: true,
   successValue: '光伏2发电量',
   unit: 'kWh',
-  value: 1200,
 },{
   title: '充电调用量',
   key: '5',
@@ -164,7 +165,11 @@ const useList: UseItem[] = [{
   value: 1300,
 },]
 const getData = async () => {
-  const keys = [...useList.filter(i => i.async).map(i => i.key)];
+
+  const keys = [...useList.filter(i => i.async).map(i => i.key),
+    ...messList.reduce((res, item) =>[...res, ...['voltageKey', 'electricKey', 'powerKey', 'powerFactorKey', 'otherKey'].filter(i => item[i]).map(i => item[i])], []),
+    ...todayDataList.filter(i => i.valKey).map(i => i.valKey),
+  ];
   const res = await  getLatestForKeys({}, {
     keys,
   })
@@ -260,9 +265,7 @@ const handleProjectEdit = () => {
             </ElTableColumn>
           </ElTable>
           <footer class="card-footer">
-            <ElButton @click="handleProject">更多档案信息</ElButton>
-            <ElButton @click="handleProjectEdit">修改档案</ElButton>
-            <ElButton>删除项目</ElButton>
+            <ElButton @click="handleProject">查看详情</ElButton>
           </footer>
         </article>
       </ElCol>
@@ -375,7 +378,7 @@ const handleProjectEdit = () => {
             <h3>电网调度指令</h3>
           </header>
           <ElTable
-            :data="[{id: 1}, {id: 2}]"
+            :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
             row-key="id"
             border
           >
@@ -390,27 +393,27 @@ const handleProjectEdit = () => {
             <ElButton >告警数据更新</ElButton>
           </footer>
         </article>
-        <article class="card-box">
-          <header class="card-header text-left">
-            <h3>运行参数</h3>
-          </header>
-          <ElTable
-            :data="[{id: 1}, {id: 2}]"
-            row-key="id"
-            border
-            :show-header="false"
-          >
-            <ElTableColumn label="序号" prop="index"  />
-            <ElTableColumn label="并网功率" prop="index1"  />
-            <ElTableColumn label="所属部分" prop="index2"  />
-            <ElTableColumn label="重要度" prop="index4"  />
-          </ElTable>
-          <footer class="card-footer">
-            <ElButton>更多运行参数</ElButton>
-            <ElButton>修改参数</ElButton>
-            <ElButton>本地参数上传</ElButton>
-          </footer>
-        </article>
+<!--        <article class="card-box">-->
+<!--          <header class="card-header text-left">-->
+<!--            <h3>运行参数</h3>-->
+<!--          </header>-->
+<!--          <ElTable-->
+<!--            :data="[{id: 1}, {id: 2}]"-->
+<!--            row-key="id"-->
+<!--            border-->
+<!--            :show-header="false"-->
+<!--          >-->
+<!--            <ElTableColumn label="序号" prop="index"  />-->
+<!--            <ElTableColumn label="并网功率" prop="index1"  />-->
+<!--            <ElTableColumn label="所属部分" prop="index2"  />-->
+<!--            <ElTableColumn label="重要度" prop="index4"  />-->
+<!--          </ElTable>-->
+<!--          <footer class="card-footer">-->
+<!--            <ElButton>更多运行参数</ElButton>-->
+<!--            <ElButton>修改参数</ElButton>-->
+<!--            <ElButton>本地参数上传</ElButton>-->
+<!--          </footer>-->
+<!--        </article>-->
       </ElCol>
     </ElRow>
   </section>

@@ -2,10 +2,14 @@
 import dayjs from "dayjs";
 import {ref, computed } from "vue";
 import {useRouter} from "vue-router";
+import {CaretBottom} from "@element-plus/icons-vue";
+import { useProjectStore } from '@/store/modules/project'
 const now = ref(dayjs());
 const router = useRouter();
+const projectVisible = ref(false);
 const menu = router.options.routes.find(i => i.path === '/screen').children?.filter(i => !i.meta.hidden);
 
+const projectStore = useProjectStore();
 const date = computed(() => ({
   time: now.value.format('HH:mm:ss'),
   date: now.value.format('YYYY-MM-DD'),
@@ -17,6 +21,11 @@ function handleClick(item) {
   })
 }
 
+const changeProject = (project) => {
+  projectStore.changeProject(project)
+  projectVisible.value = false;
+  console.log(projectVisible.value);
+}
 setInterval(() => {
    now.value = dayjs();
 }, 1000)
@@ -27,10 +36,32 @@ defineOptions({ name: 'ScreenLayout' })
 <template>
   <section class="h-[100%] flex flex-col dark">
     <header class="flex pa-[12px] shadow-[var(--el-box-shadow-dark)] bg-[var(--screen-header-bg)] color-[var(--screen-header-text-color)]">
-      <div class="flex-1 flex-items-center">
+      <div class="flex-1 flex-items-center flex">
         <a type="info" href="/screen/index" class="font-size-[30px] color-[var(--screen-header-text-color)] logo">
-          能量管理云监控系统
+          <img src="/logo.png" alt="" />
+          <span>云监控系统</span>
         </a>
+        <span>{{$route.meta.title}}</span>
+
+        <ElPopover v-model:visible="projectVisible" placement="bottom" :width="400" trigger="click">
+          <template #reference>
+            <div class="select-project">
+              <span>当前项目：</span>
+              <span class="project-name">{{projectStore.projectInfo?.name}}</span>
+              <el-icon><CaretBottom /></el-icon>
+            </div>
+
+          </template>
+          <div>
+            <div  v-for="item in projectStore.projectList"
+                  class="project-item"
+                  :class="{selected: projectStore.projectInfo.id === item.id}"
+                  @click="changeProject(item)"
+                  :key="item.id">
+              <span>{{item.name}}</span>
+            </div>
+          </div>
+        </ElPopover>
       </div>
       <div class="flex flex-items-center gap-10px">
         <RouterLink to="/screen/warning/index">
@@ -149,9 +180,40 @@ defineOptions({ name: 'ScreenLayout' })
     }
   }
   .logo{
+    display: flex;
     text-decoration: none;
     font-weight: bold;
     white-space: nowrap;
+    margin-right: 12px;
+    img{
+      width: 30px;
+      display: block;
+      margin-right: 4px;
+    }
+  }
+  .select-project{
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-left: 12px;
+    cursor: pointer;
+    background-color: var(--el-bg-color);
+    .project-name{
+      font-weight: bold;
+      margin-right: 4px;
+    }
+  }
+  .project-item{
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: var(--el-text-font-size + 2);
+    font-weight: bold;
+    &:hover{
+      background-color: var(--el-color-primary-light-9);
+    }
+    &.selected{
+      color: var(--el-color-primary);
+    }
   }
   .full{
     padding-top: 0;

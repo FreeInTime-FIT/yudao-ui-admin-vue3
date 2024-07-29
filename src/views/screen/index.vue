@@ -22,6 +22,42 @@ useResizeObserver(echartsDomRef, () => {
     chartRef.value.resize();
   }
 });
+const projectList = [{
+  name: '项目1',
+  lng: 116.404,
+  lat: 39.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 120.404,
+  lat: 30.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 119.404,
+  lat: 30.915,
+  province: '北京',
+}, {
+  name: '项目2',
+  lng: 118.404,
+  lat: 30.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 117.404,
+  lat: 27.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 115.404,
+  lat: 28.915,
+  province: '浙江',
+}, {
+  name: '项目2',
+  lng: 121.404,
+  lat: 31.915,
+  province: '浙江',
+}]
 onMounted(() => {
   mapChart = echarts.init(mapDomRef.value);
   mapChart.showLoading();
@@ -114,7 +150,14 @@ onMounted(() => {
             {name: '香港', value: 800},
           ],
           markPoint: {
-
+            symbol: `image://${icon}`,
+            symbolSize: 24,
+            symbolOffset: [12, 24] ,
+            data: projectList.map(item => ({
+              coord: [item.lng, item.lat],
+              name: item.name,
+              id: item.id,
+            })),
           },
           itemStyle: {
             borderColor: '#8ac2d0',
@@ -282,42 +325,7 @@ onUnmounted(() => {
 });
 const userStore = useUserStore()
 const userName = computed(() => userStore.user.nickname ?? 'Admin')
-const projectList = [{
-  name: '项目1',
-  lng: 116.404,
-  lat: 39.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 120.404,
-  lat: 33.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 119.404,
-  lat: 31.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 118.404,
-  lat: 32.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 117.404,
-  lat: 27.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 115.404,
-  lat: 28.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 121.404,
-  lat: 31.915,
-  province: '浙江',
-}]
+
 const provinceList = computed(() => {
  return projectList.reduce((res, item) => {
    let hasAdd = false;
@@ -453,7 +461,6 @@ console.log(provinceList);
     <header class="flex flex-justify-between index-header  gap-10px pa-10px color-[var(--screen-content-text-color)]">
       <div>尊敬的{{userName}}{{sex}}，您好</div>
       <div>数据更新时间：{{ time }}</div>
-      <div class="flex gap-[10px]"><ElButton type="primary">数据维护</ElButton><ElButton type="primary">退出登录</ElButton></div>
     </header>
     <article class="index-content">
       <section class="sideLeft">
@@ -483,10 +490,6 @@ console.log(provinceList);
               :icon="{url: icon, size: {width: 32, height: 32}}"
             />
           </baidu-map>-->
-      <header class="sideHeader">
-        <ElButton type="primary" @click="handleShowProject">项目列表</ElButton>
-        <ElButton type="primary">新增项目</ElButton>
-      </header>
       <ElDrawer
         v-model="drawer"
         direction="btt"
@@ -554,7 +557,7 @@ console.log(provinceList);
     position: absolute;
     z-index: 2;
     left: 50px;
-    top: 20px;
+    top: 80px;
     bottom: 10px;
     font-size: 24px;
     display: flex;

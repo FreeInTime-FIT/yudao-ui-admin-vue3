@@ -27,7 +27,10 @@
     return {
       ...nowData,
       profits: [
-        ...nowData.profits,
+        ...nowData.profits.map(i => ({
+          updateTime: dayjs(nowData.updateTime).format('HH:mm:ss.SSS'),
+          ...i,
+        })),
         ...(prev?.profits || []).filter(i => nowData.profits.every(item => item.addr !== i.addr)),
       ].sort((a, b) => {
         const aArr = a.addr.split('#').map(i => parseInt(i));
@@ -294,6 +297,12 @@
       )
     },
   })), {
+    key: 'updateTime',
+    dataKey: 'updateTime',
+    title: '更新时间',
+    width: 120,
+    minWidth: 120,
+  },{
     key: 'id',
     dataKey: 'id',
     title: '操作',
@@ -635,7 +644,7 @@
       </div>
     </template>
   </el-dialog>
-  <article class="flex-[1] m-[0px_16px_24px_32px] h-[0]">
+  <article class="flex-[1] m-[0px_16px_24px_16px] h-[0]">
     <ElAutoResizer>
       <template #default="{ height, width }">
         <el-table-v2
@@ -681,6 +690,6 @@
   }
   .charts{
     height: 300px;
-    margin: 0 16px 0 32px;
+    margin: 0 16px 0 16px;
   }
 </style>
