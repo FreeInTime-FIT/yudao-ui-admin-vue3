@@ -168,7 +168,7 @@ const useList: UseItem[] = [{
 const getData = async () => {
 
   const keys = uniq([...useList.filter(i => i.async).map(i => i.key),
-    ...messList.reduce((res, item) =>[...res, ...['voltageKey', 'electricKey', 'powerKey', 'powerFactorKey', 'otherKey'].filter(i => item[i]).map(i => item[i])], []),
+    // ...messList.reduce((res, item) =>[...res, ...['voltageKey', 'electricKey', 'powerKey', 'powerFactorKey', 'otherKey'].filter(i => item[i]).map(i => item[i])], []),
     ...todayDataList.filter(i => i.valKey).map(i => i.valKey),
   ]);
   const res = await  getLatestForKeys({}, {
@@ -363,13 +363,13 @@ const handleProjectEdit = () => {
             <ElTableColumn :width="90" label="名称" prop="first.label"  />
             <ElTableColumn label="值" prop="first.key"  >
               <template #default="{row}">
-                {{getValue(row.first.key)}}
+                {{getValue(row.first.valKey || row.first.key)}}
               </template>
             </ElTableColumn>
             <ElTableColumn :width="90" label="名称" prop="next.label"  />
             <ElTableColumn label="值" prop="next.key"  >
               <template #default="{row}">
-                {{getValue(row.next.key)}}
+                {{getValue(row.next.valKey ||row.next.key)}}
               </template>
             </ElTableColumn>
           </ElTable>
