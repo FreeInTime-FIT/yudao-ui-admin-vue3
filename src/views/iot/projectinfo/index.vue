@@ -53,33 +53,6 @@
           class="!w-240px"
         />
       </el-form-item>
-      <el-form-item label="变压器容量" prop="transformerCapacity">
-        <el-input
-          v-model="queryParams.transformerCapacity"
-          placeholder="请输入变压器容量"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="总负荷功率" prop="totalLoadPower">
-        <el-input
-          v-model="queryParams.totalLoadPower"
-          placeholder="请输入总负荷功率"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
-      <el-form-item label="逾期寿命" prop="lifeExpectancy">
-        <el-input
-          v-model="queryParams.lifeExpectancy"
-          placeholder="请输入逾期寿命"
-          clearable
-          @keyup.enter="handleQuery"
-          class="!w-240px"
-        />
-      </el-form-item>
       <el-form-item label="创建时间" prop="createTime">
         <el-date-picker
           v-model="queryParams.createTime"
@@ -92,24 +65,30 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button @click="handleQuery">
+          <Icon icon="ep:search" class="mr-5px"/>
+          搜索
+        </el-button>
+        <el-button @click="resetQuery">
+          <Icon icon="ep:refresh" class="mr-5px"/>
+          重置
+        </el-button>
         <el-button
           type="primary"
           plain
           @click="openForm('create')"
-          v-hasPermi="['iot:project-info:create']"
         >
-          <Icon icon="ep:plus" class="mr-5px" /> 新增
+          <Icon icon="ep:plus" class="mr-5px"/>
+          新增
         </el-button>
         <el-button
           type="success"
           plain
           @click="handleExport"
           :loading="exportLoading"
-          v-hasPermi="['iot:project-info:export']"
         >
-          <Icon icon="ep:download" class="mr-5px" /> 导出
+          <Icon icon="ep:download" class="mr-5px"/>
+          导出
         </el-button>
       </el-form-item>
     </el-form>
@@ -118,15 +97,17 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-      <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="项目编码" align="center" prop="code" />
-      <el-table-column label="项目名称" align="center" prop="name" />
-      <el-table-column label="项目地址" align="center" prop="address" />
-      <el-table-column label="经度" align="center" prop="lng" />
-      <el-table-column label="纬度" align="center" prop="lat" />
-      <el-table-column label="变压器容量" align="center" prop="transformerCapacity" />
-      <el-table-column label="总负荷功率" align="center" prop="totalLoadPower" />
-      <el-table-column label="逾期寿命" align="center" prop="lifeExpectancy" />
+      <el-table-column label="项目编码" align="center" prop="code"/>
+      <el-table-column label="项目名称" align="center" prop="name"/>
+      <el-table-column label="项目地址" align="center" prop="address"/>
+      <el-table-column label="经纬度" align="center">
+        <template #default="scope">
+          {{ scope.row.lng }}, {{ scope.row.lat }}
+        </template>
+      </el-table-column>
+      <el-table-column label="变压器容量" align="center" prop="transformerCapacity"/>
+      <el-table-column label="总负荷功率" align="center" prop="totalLoadPower"/>
+      <el-table-column label="逾期寿命" align="center" prop="lifeExpectancy"/>
       <el-table-column
         label="创建时间"
         align="center"
@@ -137,10 +118,25 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button
+            v-if="scope.row.state === 0"
+            link
+            type="primary"
+            @click="handleState(scope.row.id, 1)"
+          >
+            启用
+          </el-button>
+          <el-button
+            v-if="scope.row.state === 1"
+            link
+            type="primary"
+            @click="handleState(scope.row.id, 0)"
+          >
+            禁用
+          </el-button>
+          <el-button
             link
             type="primary"
             @click="openForm('update', scope.row.id)"
-            v-hasPermi="['iot:project-info:update']"
           >
             编辑
           </el-button>
@@ -148,7 +144,6 @@
             link
             type="danger"
             @click="handleDelete(scope.row.id)"
-            v-hasPermi="['iot:project-info:delete']"
           >
             删除
           </el-button>
@@ -165,20 +160,20 @@
   </ContentWrap>
 
   <!-- 表单弹窗：添加/修改 -->
-  <ProjectInfoForm ref="formRef" @success="getList" />
+  <ProjectInfoForm ref="formRef" @success="getList"/>
 </template>
 
 <script setup lang="ts">
-import { dateFormatter } from '@/utils/formatTime'
+import {dateFormatter} from '@/utils/formatTime'
 import download from '@/utils/download'
-import { ProjectInfoApi, ProjectInfoVO } from '@/api/iot/projectinfo'
+import {ProjectInfoApi, ProjectInfoVO} from '@/api/iot/projectinfo'
 import ProjectInfoForm from './ProjectInfoForm.vue'
 
 /** 项目信息 列表 */
-defineOptions({ name: 'ProjectInfo' })
+defineOptions({name: 'ProjectInfo'})
 
 const message = useMessage() // 消息弹窗
-const { t } = useI18n() // 国际化
+const {t} = useI18n() // 国际化
 
 const loading = ref(true) // 列表的加载中
 const list = ref<ProjectInfoVO[]>([]) // 列表的数据
@@ -239,7 +234,21 @@ const handleDelete = async (id: number) => {
     message.success(t('common.delSuccess'))
     // 刷新列表
     await getList()
-  } catch {}
+  } catch {
+  }
+}
+/** 删除按钮操作 */
+const handleState = async (id: number, state: number) => {
+  try {
+    // 删除的二次确认
+    await message.confirm("确认操作", "是否确认操作？")
+    // 发起删除
+    await ProjectInfoApi.updateProjectState(id, state)
+    message.success('修改成功')
+    // 刷新列表
+    await getList()
+  } catch {
+  }
 }
 
 /** 导出按钮操作 */
