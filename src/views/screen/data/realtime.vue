@@ -119,9 +119,9 @@ const messList = [
   {id: 1, voltage: 'A相电压',  electric: 'A相电流', type: '并网点'},
   {id: 2, voltage: 'B相电压', type: '并网点'},
   {id: 3, voltage: 'C相电压', type: '并网点'},
-  {id: 4, voltage: 'A相电压', voltageKey: '4#addr_2100H', electric: 'A相电流', electricKey: '4#addr_210CH', powerKey: '4#addr_2114H', powerFactorKey: '4#addr_212CH', type: '负载点'},
-  {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102H', electricKey: '4#addr_210EH', powerKey: '4#addr_2116H', powerFactorKey: '4#addr_212EH', type: '负载点',otherKey: '4#addr_2134H'},
-  {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2102H', electricKey: '4#addr_2110H', powerKey: '4#addr_2118H', powerFactorKey: '4#addr_2130H', type: '负载点'},
+  {id: 4, voltage: 'A相电压', voltageKey: '4#addr_2100h', electric: 'A相电流', electricKey: '4#addr_210ch', powerKey: '4#addr_2114h', powerFactorKey: '4#addr_212ch', type: '负载点'},
+  {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_210eh', powerKey: '4#addr_2116h', powerFactorKey: '4#addr_212eh', type: '负载点',otherKey: '4#addr_2134h'},
+  {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_2110h', powerKey: '4#addr_2118h', powerFactorKey: '4#addr_2130h', type: '负载点'},
 ]
 type UseItem = {
   title: string;
