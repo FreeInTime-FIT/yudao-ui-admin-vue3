@@ -23,13 +23,19 @@
         <el-input v-model="formData.lat" placeholder="请输入纬度" />
       </el-form-item>
       <el-form-item label="变压器容量" prop="transformerCapacity">
-        <el-input v-model="formData.transformerCapacity" placeholder="请输入变压器容量" />
+        <el-input v-model="formData.transformerCapacity" placeholder="请输入变压器容量" >
+          <template #append>kVA</template>
+        </el-input>
       </el-form-item>
       <el-form-item label="总负荷功率" prop="totalLoadPower">
-        <el-input v-model="formData.totalLoadPower" placeholder="请输入总负荷功率" />
+        <el-input v-model="formData.totalLoadPower" placeholder="请输入总负荷功率" >
+          <template #append>kW</template>
+        </el-input>
       </el-form-item>
       <el-form-item label="逾期寿命" prop="lifeExpectancy">
-        <el-input v-model="formData.lifeExpectancy" placeholder="请输入逾期寿命" />
+        <el-input v-model="formData.lifeExpectancy" placeholder="请输入逾期寿命" >
+          <template #append>年</template>
+        </el-input>
       </el-form-item>
     </el-form>
     <template #footer>

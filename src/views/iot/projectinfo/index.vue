@@ -97,6 +97,7 @@
   <!-- 列表 -->
   <ContentWrap>
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
+      <el-table-column type="index" width="50" />
       <el-table-column label="项目编码" align="center" prop="code"/>
       <el-table-column label="项目名称" align="center" prop="name"/>
       <el-table-column label="项目地址" align="center" prop="address"/>
@@ -105,9 +106,21 @@
           {{ scope.row.lng }}, {{ scope.row.lat }}
         </template>
       </el-table-column>
-      <el-table-column label="变压器容量" align="center" prop="transformerCapacity"/>
-      <el-table-column label="总负荷功率" align="center" prop="totalLoadPower"/>
-      <el-table-column label="逾期寿命" align="center" prop="lifeExpectancy"/>
+      <el-table-column label="变压器容量" align="center" prop="transformerCapacity">
+        <template #default="scope">
+          {{ scope.row.transformerCapacity }} kVA
+        </template>
+      </el-table-column>
+      <el-table-column label="总负荷功率" align="center" prop="totalLoadPower">
+        <template #default="scope">
+          {{ scope.row.totalLoadPower }} kW
+        </template>
+      </el-table-column>
+      <el-table-column label="逾期寿命" align="center" prop="lifeExpectancy">
+        <template #default="scope">
+          {{ scope.row.lifeExpectancy }} 年
+        </template>
+      </el-table-column>
       <el-table-column
         label="创建时间"
         align="center"
