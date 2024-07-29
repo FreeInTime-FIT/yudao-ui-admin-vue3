@@ -4,6 +4,7 @@ import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
 import bg from '@/views/screen/assets/real-bg.png'
+import uniq from 'lodash/uniq'
 import {
   getLatestForKeys,
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
@@ -121,7 +122,7 @@ const messList = [
   {id: 3, voltage: 'C相电压', type: '并网点'},
   {id: 4, voltage: 'A相电压', voltageKey: '4#addr_2100h', electric: 'A相电流', electricKey: '4#addr_210ch', powerKey: '4#addr_2114h', powerFactorKey: '4#addr_212ch', type: '负载点'},
   {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_210eh', powerKey: '4#addr_2116h', powerFactorKey: '4#addr_212eh', type: '负载点',otherKey: '4#addr_2134h'},
-  {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_2110h', powerKey: '4#addr_2118h', powerFactorKey: '4#addr_2130h', type: '负载点'},
+  {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2104h', electricKey: '4#addr_2110h', powerKey: '4#addr_2118h', powerFactorKey: '4#addr_2130h', type: '负载点'},
 ]
 type UseItem = {
   title: string;
@@ -166,10 +167,10 @@ const useList: UseItem[] = [{
 },]
 const getData = async () => {
 
-  const keys = [...useList.filter(i => i.async).map(i => i.key),
+  const keys = uniq([...useList.filter(i => i.async).map(i => i.key),
     ...messList.reduce((res, item) =>[...res, ...['voltageKey', 'electricKey', 'powerKey', 'powerFactorKey', 'otherKey'].filter(i => item[i]).map(i => item[i])], []),
     ...todayDataList.filter(i => i.valKey).map(i => i.valKey),
-  ];
+  ]);
   const res = await  getLatestForKeys({}, {
     keys,
   })
