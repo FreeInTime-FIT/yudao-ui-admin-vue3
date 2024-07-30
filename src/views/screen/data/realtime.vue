@@ -54,15 +54,18 @@ const todayDataList = [
   {
     label: '购电总量',
     key: '1',
+    unit: 'kWh',
   },
   {
     label: '发电总量',
     key: '2',
     valKey:  'calc_addr_162+addr_164',
+    unit: 'kWh',
   },
   {
     label: '储电总量',
     key: '3',
+    unit: 'kWh',
   },
   {
     label: '用电总量',
@@ -364,12 +367,14 @@ const handleProjectEdit = () => {
             <ElTableColumn label="值" prop="first.key"  >
               <template #default="{row}">
                 {{getValue(row.first.valKey || row.first.key)}}
+                {{getValue(row.first.valKey || row.first.key) ? row.first.unit : ''}}
               </template>
             </ElTableColumn>
             <ElTableColumn :width="90" label="名称" prop="next.label"  />
             <ElTableColumn label="值" prop="next.key"  >
               <template #default="{row}">
                 {{getValue(row.next.valKey ||row.next.key)}}
+                {{getValue(row.next.valKey ||row.next.key) ? row.next.unit : ''}}
               </template>
             </ElTableColumn>
           </ElTable>
