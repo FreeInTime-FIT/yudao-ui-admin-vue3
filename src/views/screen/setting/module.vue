@@ -61,11 +61,8 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
         { id: 21, name: '光伏模型1', status : '经济模式', person: 'xxxx'},
         { id: 31, name: '储能模型', status : '经济模式', person: 'xxxx'},
         {id: 111, name: '负荷模型', status : '经济模式', person: 'xxxx'},
-        { id: 211, name: '电网模型', status : '经济模式'},
-        { id: 311, time: '2024-05-05 09:09:09', level : 3},
-        {id: 1111, time: '2024-05-05 09:09:09', level : 1},
-        { id: 2111, time: '2024-05-05 09:09:09', level : 2},
-        { id: 3111, time: '2024-05-05 09:09:09', level : 3}, ] as RecordItem[],
+        { id: 211, name: '电网模型', status : '经济模式', person: '张三'}
+      ] as RecordItem[],
       total: 20,
     };
   }, props: undefined, response: undefined,
@@ -214,7 +211,6 @@ const handleConfirm = () => {
         </template>
       </ElTableColumn>
       <ElTableColumn prop="person" label="操作人" />
-      <ElTableColumn prop="7" label="用户编号" />
     </ElTable>
     <ElPagination
       :total="tableObject.total"
