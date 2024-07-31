@@ -33,13 +33,13 @@
             title="电池电量"
             :api="getLatest1"
             :params="{c: 'addr_6003'}"
-            unit="kWh"
+            unit="%"
             success-value="电池soc"
           />
           <UseInfoItem
             title="充放电次数(当日)"
             :value="keyValue['addr_6000']"
-            success-value="两充两放"
+            success-value="充放电次数"
           />
           <UseInfoItem
             title="功率"
@@ -103,12 +103,12 @@
             <div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日用电量：</span>
-                <span class="font-size-[24px]">{{keyValue['3#addr_0x3000']}}</span>
+                <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3000', true)}}</span>
                 <span>kW</span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
-                <span class="font-size-[24px]">{{keyValue['3#addr_0x3001']}}</span>
+                <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3001', true)}}</span>
                 <span>kW</span>
               </div>
             </div>
@@ -286,6 +286,13 @@ onMounted(() => {
     getterTotalRef.value = res.data;
   })
 })
+const getValue = (key, hasEmpty) => {
+  const v = unref(keyValue)[key];
+  if (!v && v !== 0 && hasEmpty) {
+    return '-'
+  }
+  return v;
+}
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
   const now = dayjs('00:00', 'HH:mm');
@@ -480,19 +487,19 @@ const solarList = [{
   font-size: 16px;
 }
 .board-pos1{
-  top: 42%;
+  top: 45%;
   left: 2%;
 }
 .board-pos2{
-  top: 44%;
+  top: 46%;
   left: 78%;
 }
 .board-pos3{
-  top: 95%;
+  top: 98%;
   left: 3%;
 }
 .board-pos4{
-  top: 93%;
+  top: 98%;
   left: 74%;
 }
 .pie-chart{
