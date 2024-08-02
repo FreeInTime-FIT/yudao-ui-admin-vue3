@@ -117,7 +117,7 @@
             </div>
             <div>
               <span>天气：</span>
-              <span>37°</span>
+              <span>{{getValue(`addr_3#1212`, true)}}°</span>
             </div>
           </div>
           <div class="flex-[2] ml-[12px]">
@@ -178,20 +178,20 @@
             <nav class="flex flex-[1] flex-col mt-[16px] gap-[16px] flex-items-start">
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
-                <span class="font-size-[24px] font-600">5.55</span>
-                <span>kWh</span>
+                <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
+                <span class="font-600 ml-[4px]">kWh</span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
                 <span>
-              <span class="font-size-[24px] font-600">5.55</span>
+              <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
               <span class="font-600 ml-[4px]">kg</span>
             </span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
                 <span>
-              <span class="font-size-[24px] font-600">5.55</span>
+              <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
               <span class="font-600 ml-[4px]">元</span>
             </span>
               </div>
