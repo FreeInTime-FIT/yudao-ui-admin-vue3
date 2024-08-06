@@ -448,7 +448,7 @@ const solarTypes = [{
 },{
   value: 'fdl34',
   label: '功率',
-  unit: 'kw',
+  unit: 'kW',
   gf1: '152',
   gf2: '155',
 },]
