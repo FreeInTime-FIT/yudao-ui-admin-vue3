@@ -104,12 +104,12 @@
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日用电量：</span>
                 <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3000', true)}}</span>
-                <span>kW</span>
+                <span>kWh</span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
                 <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3001', true)}}</span>
-                <span>kW</span>
+                <span>kWh</span>
               </div>
             </div>
             <div class="split-title">
