@@ -71,11 +71,10 @@ onMounted(() => {
 onMounted(() => {
   const chart = echarts.init(domRef.value, 'screen');
   const customList = [
-    {name: '月用电', value: 1},
-    {name: '购电', value: 2},
-    {name: '发电', value: 3},
-    {name: '调电量', value: 4},
-    {name: '碳排放', value: 5},
+    {name: '发电量', value: 1, unit: 'kWh'},
+    {name: '用电量', value: 2, unit: 'kWh'},
+    {name: '储能电量', value: 3, unit: 'kWh'},
+    {name: '并网电量', value: 4, unit: 'kWh'},
   ];
   const axisProps = {
     nameTextStyle: {
@@ -120,15 +119,13 @@ onMounted(() => {
     },
   }
   const group = [{
-    name: '日用电',
+    name: '发电量',
   },{
-    name: '调电量',
+    name: '储能电量',
   },{
-    name: '购电',
+    name: '用电量',
   },{
-    name: '发电',
-  },{
-    name: '碳排放',
+    name: '并网电量',
   }];
   chart.setOption({
     dataset: [
@@ -154,11 +151,16 @@ onMounted(() => {
       },
     ],
     title: [
-      ...[...group, {name: '历史数据'}].map((item, i) => ({
+      ...group.map((item, i) => ({
         text: item.name,
-        left: ['3%', '30%', '64%' ][i % 3],
-        top: ['2%', '48%'][Number(i < 3)],
+        left:  ['4%', '32%'][i % 2],
+        top: ['2%', '48%'][Number(i > 1)],
       })),
+      {
+        text: '数据总览',
+        left: '64%',
+        top: '2%',
+      },
     ],
     tooltip: {},
     grid: [
@@ -172,10 +174,6 @@ onMounted(() => {
         bottom: '55%',
       },
       {
-        left: '70%',
-        bottom: '55%',
-      },
-      {
         right: '70%',
         top: '55%',
       },
@@ -186,7 +184,6 @@ onMounted(() => {
       },
       {
         left: '70%',
-        top: '55%',
       },
     ],
 
@@ -194,7 +191,7 @@ onMounted(() => {
       gridIndex: i,
       ...axisProps,
     })), {
-      gridIndex: 5,
+      gridIndex: 4,
       ...customProps,
 
     }],
@@ -202,7 +199,7 @@ onMounted(() => {
       gridIndex: i,
       ...axisProps,
     })), {
-      gridIndex: 5,
+      gridIndex: 4,
       ...customProps,
     }],
     series: [...group.map((item, i) => ({
@@ -235,8 +232,8 @@ onMounted(() => {
     })), {
       type: 'custom',
       // coordinateSystem: 'none',
-      yAxisIndex: 5,
-      xAxisIndex: 5,
+      yAxisIndex: 4,
+      xAxisIndex: 4,
       encode: {
         x: 'name',
         y: 'value',
@@ -246,8 +243,8 @@ onMounted(() => {
         const item = customList[params.dataIndex]
         return  {
           type: 'group',
-          x: params.coordSys.x,
-          y: params.coordSys.y + params.dataIndex * 36 + 10,
+          x: params.coordSys.x - 80,
+          y: params.coordSys.y + params.dataIndex * 80 + 10,
           children: [
             {
               type: 'line',
@@ -271,18 +268,18 @@ onMounted(() => {
               style: {
                 text: item.name + ':',
                 fill: '#FFF',
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: 'bold',
               },
 
             },
             {
               type: 'text',
-              x: 200,
+              x: params.coordSys.width - 40,
               style: {
-                text: item.value,
+                text: item.value + item.unit,
                 fill: '#FFF',
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: 'bold',
               },
             },
@@ -308,7 +305,6 @@ onMounted(() => {
     />
     <ElFormItem>
       <ElButton type="primary">查询</ElButton>
-      <ElButton type="primary">下载</ElButton>
     </ElFormItem>
   </ElForm>
   <div class=" chartBox">
