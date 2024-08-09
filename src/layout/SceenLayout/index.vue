@@ -68,7 +68,7 @@ defineOptions({ name: 'ScreenLayout' })
           <ElButton link>实时告警</ElButton>
         </RouterLink>
         <ElDivider direction='vertical' />
-        <RouterLink to="/screen/setting/index">
+        <RouterLink to="/screen/index">
           <ElButton link>
             <ElAvatar />
             <span class="ml-[6px]">管理中心</span>
