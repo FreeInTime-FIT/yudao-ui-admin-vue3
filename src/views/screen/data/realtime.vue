@@ -4,9 +4,9 @@ import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
 import bg from '@/views/screen/assets/real-bg.png'
-import uniq from 'lodash/uniq'
+
 import {
-  getLatestForKeys,
+  getPanelData
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 echarts.registerTheme('screen', screenConfig);
 
@@ -54,12 +54,13 @@ const todayDataList = [
   {
     label: '购电总量',
     key: '1',
+    valKay:'购电量',
     unit: 'kWh',
   },
   {
     label: '发电总量',
     key: '2',
-    valKey:  'calc_addr_162+addr_164',
+    valKey:  '发电总量',
     unit: 'kWh',
   },
   {
@@ -123,7 +124,7 @@ const messList = [
   {id: 1, voltage: 'A相电压',  electric: 'A相电流', type: '并网点'},
   {id: 2, voltage: 'B相电压', type: '并网点'},
   {id: 3, voltage: 'C相电压', type: '并网点'},
-  {id: 4, voltage: 'A相电压', voltageKey: '4#addr_2100h', electric: 'A相电流', electricKey: '4#addr_210ch', powerKey: '4#addr_2114h', powerFactorKey: '4#addr_212ch', type: '负载点'},
+  {id: 4, voltage: 'A相电压', voltageKey: '1_174', electric: 'A相电流', electricKey: '4#addr_210ch', powerKey: '4#addr_2114h', powerFactorKey: '4#addr_212ch', type: '负载点'},
   {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_210eh', powerKey: '4#addr_2116h', powerFactorKey: '4#addr_212eh', type: '负载点',otherKey: '4#addr_2134h'},
   {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2104h', electricKey: '4#addr_2110h', powerKey: '4#addr_2118h', powerFactorKey: '4#addr_2130h', type: '负载点'},
 ]
@@ -137,45 +138,40 @@ type UseItem = {
 }
 const useList: UseItem[] = [{
   title: '购电量',
-  key: '1',
+  key: '购电量',
   unit: 'kWh',
   value: 0,
 }, {
   title: '用电量',
-  key: '3#addr_0x3000',
+  key: '用电量',
   async: true,
   unit: 'kWh',
 },{
   title: '光伏发电量',
-  key: 'addr_162',
+  key: '光伏1发电量',
   unit: 'kWh',
   async: true,
   successValue: '光伏1发电量',
 },{
   title: '光伏发电量',
-  key: 'addr_164',
+  key: '光伏2发电量',
   async: true,
   successValue: '光伏2发电量',
   unit: 'kWh',
 },{
   title: '充电调用量',
-  key: '5',
+  key: '储能调电量',
   value: 1300,
   unit: 'kWh',
 },{
   title: '放电调用量',
-  key: '6',
+  key: '储能调电量',
   unit: 'kWh',
   value: 1300,
 },]
 const getData = async () => {
-
-  const keys = uniq([...useList.filter(i => i.async).map(i => i.key),
-    // ...messList.reduce((res, item) =>[...res, ...['voltageKey', 'electricKey', 'powerKey', 'powerFactorKey', 'otherKey'].filter(i => item[i]).map(i => item[i])], []),
-    ...todayDataList.filter(i => i.valKey).map(i => i.valKey),
-  ]);
-  const res = await  getLatestForKeys({}, {
-    keys,
+  const res = await  getPanelData({
+    key: 'realtime'
   })
   keyValue.value = res.data || {};
   return res;
@@ -279,34 +275,34 @@ const handleProjectEdit = () => {
           <img :src="bg" class="bg" alt="" />
           <div class="content">
             <div class="content_1">
-              <div>P:50kW</div>
-              <div>U:400V</div>
-              <div>I:125A</div>
+              <div>P:{{keyValue['光伏板1_P']}}kw</div>
+              <div>U:{{keyValue['光伏板1_U']}}V</div>
+              <div>I:{{keyValue['光伏板1_A']}}A</div>
             </div>
             <div class="content_2">
-              <div>P:50kW</div>
-              <div>U:400V</div>
-              <div>I:125A</div>
+              <div>P:{{keyValue['光伏板2_P']}}kw</div>
+              <div>U:{{keyValue['光伏板2_U']}}V</div>
+              <div>I:{{keyValue['光伏板2_A']}}A</div>
             </div>
             <div class="content_3">
               <div>P:50kW</div>
-              <div>Ua:230V</div>
-              <div>Ub:230V</div>
-              <div>Uc:230V</div>
-              <div>Ia:1321A</div>
-              <div>Ib:1321A</div>
-              <div>Ic:1321A</div>
+              <div>Ua:{{keyValue['hub_UA']}}V</div>
+              <div>Ub:{{keyValue['hub_UB']}}V</div>
+              <div>Uc:{{keyValue['hub_UC']}}V</div>
+              <div>Ia:{{keyValue['hub_IA']}}VA</div>
+              <div>Ib:{{keyValue['hub_IB']}}VA</div>
+              <div>Ic:{{keyValue['hub_IC']}}VA</div>
               <div>F:50Hz</div>
               <div>PF:95%</div>
             </div>
             <div class="content_4">
               <div>P:100kW</div>
-              <div>Ua:230V</div>
-              <div>Ub:230V</div>
-              <div>Uc:230V</div>
-              <div>Ia:264A</div>
-              <div>Ib:264A</div>
-              <div>Ic:264A</div>
+              <div>Ua:{{keyValue['hub_负载_UA']}}V</div>
+              <div>Ub:{{keyValue['hub_负载_UB']}}V</div>
+              <div>Uc:{{keyValue['hub_负载_UC']}}V</div>
+              <div>Ia:{{keyValue['hub_负载_IA']}}VA</div>
+              <div>Ib:{{keyValue['hub_负载_IB']}}VA</div>
+              <div>Ic:{{keyValue['hub_负载_IC']}}VA</div>
               <div>F:50Hz</div>
               <div>PF:95%</div>
             </div>
