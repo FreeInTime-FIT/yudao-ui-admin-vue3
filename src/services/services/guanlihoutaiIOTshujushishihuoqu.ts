@@ -67,6 +67,28 @@ export async function getLatestForKeys(
   });
 }
 
+/** 此处后端没有提供注释 GET /admin-api/iot/report/get-panel-data */
+export async function getPanelData(
+  params: APITypes.getPanelDataParams & {
+    // header
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<APITypes.CommonResultObject>({
+    url: `/admin-api/iot/report/get-panel-data`,
+    method: 'GET',
+    headers: {},
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /admin-api/iot/report/sql */
 export async function getLatest(
   params: APITypes.getLatestParams & {

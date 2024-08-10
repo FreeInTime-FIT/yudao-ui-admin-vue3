@@ -131,3 +131,24 @@ export async function updateProjectInfo(
     ...(options || {}),
   });
 }
+
+/** 更新项目状态 PUT /admin-api/iot/project-info/updateState */
+export async function updateState(
+  params: APITypes.updateStateParams & {
+    // header
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  },
+  body: APITypes.ProjectInfoUpdateStateReqVO,
+  options?: { [key: string]: any },
+) {
+  return request<APITypes.CommonResultBoolean>({
+    url: `/admin-api/iot/project-info/updateState`,
+    method: 'PUT',
+    params: { ...params },
+    data: body,
+    ...(options || {}),
+  });
+}

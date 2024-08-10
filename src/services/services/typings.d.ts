@@ -2312,10 +2312,22 @@ declare namespace APITypes {
   };
 
   type exportProjectInfoExcelParams = {
-    /** name */
+    /** 项目编码 */
+    code?: string;
+    /** 项目名称 */
     name?: string;
-    /** 描述 */
-    description?: string;
+    /** 项目地址 */
+    address?: string;
+    /** 经度 */
+    lng?: string;
+    /** 纬度 */
+    lat?: string;
+    /** 变压器容量 */
+    transformerCapacity?: string;
+    /** 总负荷功率 */
+    totalLoadPower?: string;
+    /** 逾期寿命 */
+    lifeExpectancy?: string;
     /** 创建时间 */
     createTime?: string;
     /** 页码，从 1 开始 */
@@ -3397,6 +3409,14 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getPanelDataParams = {
+    key: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getParams = {
     /** 租户编号 */
     'tenant-id'?: number;
@@ -3438,10 +3458,22 @@ declare namespace APITypes {
   };
 
   type getProjectInfoPageParams = {
-    /** name */
+    /** 项目编码 */
+    code?: string;
+    /** 项目名称 */
     name?: string;
-    /** 描述 */
-    description?: string;
+    /** 项目地址 */
+    address?: string;
+    /** 经度 */
+    lng?: string;
+    /** 纬度 */
+    lat?: string;
+    /** 变压器容量 */
+    transformerCapacity?: string;
+    /** 总负荷功率 */
+    totalLoadPower?: string;
+    /** 逾期寿命 */
+    lifeExpectancy?: string;
     /** 创建时间 */
     createTime?: string;
     /** 页码，从 1 开始 */
@@ -5255,23 +5287,56 @@ declare namespace APITypes {
   };
 
   type ProjectInfoRespVO = {
-    /** ID */
+    /** id */
     id: string;
-    /** name */
+    /** 项目编码 */
+    code: string;
+    /** 项目名称 */
     name?: string;
-    /** 描述 */
-    description?: string;
+    /** 项目地址 */
+    address?: string;
+    /** 经度 */
+    lng?: string;
+    /** 纬度 */
+    lat?: string;
+    /** 变压器容量 */
+    transformerCapacity?: number;
+    /** 总负荷功率 */
+    totalLoadPower?: number;
+    /** 逾期寿命 */
+    lifeExpectancy?: number;
     /** 创建时间 */
     createTime: string;
+    /** 状态 */
+    state: number;
   };
 
   type ProjectInfoSaveReqVO = {
-    /** ID */
+    /** id */
     id: string;
-    /** name */
+    /** 项目编码 */
+    code: string;
+    /** 项目名称 */
     name?: string;
-    /** 描述 */
-    description?: string;
+    /** 项目地址 */
+    address?: string;
+    /** 经度 */
+    lng?: string;
+    /** 纬度 */
+    lat?: string;
+    /** 变压器容量 */
+    transformerCapacity?: number;
+    /** 总负荷功率 */
+    totalLoadPower?: number;
+    /** 逾期寿命 */
+    lifeExpectancy?: number;
+    state?: number;
+  };
+
+  type ProjectInfoUpdateStateReqVO = {
+    /** id */
+    id: string;
+    state?: number;
   };
 
   type pushParams = {
@@ -5354,7 +5419,6 @@ declare namespace APITypes {
     repCode?: string;
     repMsg?: string;
     repData?: Record<string, any>;
-    success?: boolean;
     repCodeEnum?:
       | 'SUCCESS'
       | 'ERROR'
@@ -5375,6 +5439,7 @@ declare namespace APITypes {
       | 'API_REQ_LOCK_GET_ERROR'
       | 'API_REQ_LIMIT_CHECK_ERROR'
       | 'API_REQ_LIMIT_VERIFY_ERROR';
+    success?: boolean;
   };
 
   type revokeTokenParams = {
@@ -6086,6 +6151,13 @@ declare namespace APITypes {
   };
 
   type updateSocialClientParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type updateStateParams = {
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */

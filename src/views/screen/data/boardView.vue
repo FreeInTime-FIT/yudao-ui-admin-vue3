@@ -9,7 +9,7 @@
         <div class="board-bg-box">
           <div class="board-bg">
             <img :src="board" alt="" />
-            <div class="board-pos board-pos1">光伏发电量：34521kWh</div>
+            <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
             <div class="board-pos board-pos2">变压器频率：55Hz</div>
             <div class="board-pos board-pos3">储能电量：3452kWh</div>
             <div class="board-pos board-pos4">
@@ -31,31 +31,30 @@
         <nav class="flex">
           <UseInfoItem
             title="电池电量"
-            :api="getLatest1"
-            :params="{c: 'addr_6003'}"
+            :value="keyValue['电池电量']"
             unit="%"
             success-value="电池soc"
           />
           <UseInfoItem
             title="充放电次数(当日)"
-            :value="keyValue['addr_6000']"
+            :value="keyValue['充放电次数']"
             success-value="充放电次数"
           />
           <UseInfoItem
             title="功率"
-            :value="keyValue['addr_141']"
+            :value="keyValue['电池功率']"
             unit="kw"
             success-value="功率"
           />
           <UseInfoItem
             title="温度"
-            :value="keyValue.addr_6013"
+            :value="keyValue['单体温度最大值']"
             unit="°"
             success-value="单体温度最大值"
           />
           <UseInfoItem
             title="温度"
-            :value="keyValue.addr_6014"
+            :value="keyValue['单体温度最小值']"
             unit="°"
             success-value="单体温度最小值"
           />
@@ -65,13 +64,13 @@
             <CardHeader title="负载" />
             <div class="flex">
               <UseInfoItem
-                value="4.6"
+                :value="keyValue['用电功率']"
                 unit="kW"
                 success-value="用电功率"
               />
               <UseInfoItem
-                value="3.4"
                 unit="kWh"
+                :value="keyValue['当日用电量']"
                 success-value="用电量(当日)"
               />
             </div>
@@ -80,7 +79,7 @@
             <CardHeader title="电网" />
             <div class="flex">
               <UseInfoItem
-                :value="keyValue['addr_192']"
+                :value="keyValue['电网功率']"
                 success-value="功率"
                 unit="kW"
               />
@@ -103,12 +102,12 @@
             <div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日用电量：</span>
-                <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3000', true)}}</span>
+                <span class="font-size-[24px] mr-[4px]">{{getValue('当日用电量', true)}}</span>
                 <span>kWh</span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
-                <span class="font-size-[24px] mr-[4px]">{{getValue('3#addr_0x3001', true)}}</span>
+                <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', true)}}</span>
                 <span>kWh</span>
               </div>
             </div>
@@ -135,7 +134,7 @@
                   <div class="flex-[1] mt-[8px]" v-for="type in solarTypes" :key="type.value">
                     <div class="color-[var(--el-color-warning)] fw-500">{{item.name}}{{type.label}}:</div>
                     <div>
-                      <span class="font-size-[18px] fw-600">{{keyValue[`addr_${type[item.key]}`]}}</span>
+                      <span class="font-size-[18px] fw-600">{{keyValue[`${type[item.key]}`]}}</span>
                       <span class="font-500 ml-[3px]">{{type.unit}}</span>
                     </div>
                   </div>
@@ -178,20 +177,20 @@
             <nav class="flex flex-[1] flex-col mt-[16px] gap-[16px] flex-items-start">
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
-                <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
+                <span class="font-size-[24px] font-600">{{getValue(`节电量`, true)}}</span>
                 <span class="font-600 ml-[4px]">kWh</span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
                 <span>
-              <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
+              <span class="font-size-[24px] font-600">{{getValue(`减碳量`, true)}}</span>
               <span class="font-600 ml-[4px]">kg</span>
             </span>
               </div>
               <div>
                 <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
                 <span>
-              <span class="font-size-[24px] font-600">{{getValue(`addr_3#1212`, true)}}</span>
+              <span class="font-size-[24px] font-600">{{getValue(`节省金额`, true)}}</span>
               <span class="font-600 ml-[4px]">元</span>
             </span>
               </div>
@@ -216,7 +215,7 @@ import screenConfig from "@/views/screen/config/echart.json";
 import {
   getLatest1,
   getLatestForKeys,
-  getLatestPrice
+  getLatestPrice, getPanelData
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 import dayjs from "dayjs";
 defineOptions({ name: '数据中心' })
@@ -224,26 +223,30 @@ const keyValue = ref<any>({});
 const keys = []
 
 const getLastData = async () => {
-  const res = await getLatestForKeys({},{
-    "keys":[
-      "addr_6003",
-      "addr_141",
-      "addr_6013",
-      "addr_6014",
-      "addr_192",
-      "addr_32",
-      "addr_162",
-      "addr_164",
-      "addr_151",
-      "addr_154",
-      "addr_153",
-      "addr_152",
-      "addr_155",
-      'addr_150',
-      '3#addr_0x3000',
-      'calc_addr_162+addr_164',
-    ]
+  const res = await getPanelData({
+    key: 'boardView'
   })
+  //
+  // const res = await getLatestForKeys({},{
+  //   "keys":[
+  //     "addr_6003",
+  //     "addr_141",
+  //     "addr_6013",
+  //     "addr_6014",
+  //     "addr_192",
+  //     "addr_32",
+  //     "addr_162",
+  //     "addr_164",
+  //     "addr_151",
+  //     "addr_154",
+  //     "addr_153",
+  //     "addr_152",
+  //     "addr_155",
+  //     'addr_150',
+  //     '3#addr_0x3000',
+  //     'calc_addr_162+addr_164',
+  //   ]
+  // })
   keyValue.value = res.data || {};
   return res;
 }
@@ -431,26 +434,26 @@ const solarTypes = [{
   value: 'fdl',
   label: '发电量',
   unit: 'kWh',
-  gf1: '162',
-  gf2: '164',
+  gf1: '光伏1发电量',
+  gf2: '光伏2发电量',
 },{
   value: 'fdl1',
   label: '电流',
   unit: 'A',
-  gf1: '151',
-  gf2: '154',
+  gf1: 'pv1电流',
+  gf2: 'pv2电流',
 },{
   value: 'fdl12',
   label: '电压',
   unit: 'V',
-  gf1: '150',
-  gf2: '153',
+  gf1: 'pv1电压',
+  gf2: 'pv2电压',
 },{
   value: 'fdl34',
   label: '功率',
   unit: 'kW',
-  gf1: '152',
-  gf2: '155',
+  gf1: 'pv1功率',
+  gf2: 'pv1功率',
 },]
 const solarList = [{
   id: '1',
