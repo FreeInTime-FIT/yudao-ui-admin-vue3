@@ -82,7 +82,7 @@
                 </div>
                 <div class="mt-12px text-9px text-gray-400">{{ t(item.message) }}</div>
                 <div class="mt-12px flex justify-between text-12px text-gray-400">
-                  <span>{{ item.personal }}</span>
+                  <span><a :underline="false" href="/screen/index">{{item.personal }}</a></span>
                   <span>{{ formatTime(item.time, 'yyyy-MM-dd') }}</span>
                 </div>
               </el-card>
@@ -124,7 +124,7 @@
             <el-col v-for="item in shortcut" :key="`team-${item.name}`" :span="8" class="mb-8px">
               <div class="flex items-center">
                 <Icon :icon="item.icon" class="mr-8px" />
-                <el-link type="default" :underline="false" @click="setWatermark(item.name)">
+                <el-link type="default" :underline="false" :href="`${item.url}`">
                   {{ item.name }}
                 </el-link>
               </div>
@@ -203,10 +203,10 @@ let projects = reactive<Project[]>([])
 const getProject = async () => {
   const data = [
     {
-      name: 'ruoyi-vue-pro',
-      icon: 'akar-icons:github-fill',
-      message: '/go-view/#/login',
-      personal: '大屏配置',
+      name: '测试项目1',
+      icon: 'akar-icons:airplay-video',
+      message: '/screen/index',
+      personal: '进入大屏',
       time: new Date()
     },
   ]
@@ -229,8 +229,8 @@ const getShortcut = async () => {
   const data = [
     {
       name: '进入大屏',
-      icon: 'akar-icons:github-fill',
-      url: '/screen/data/board'
+      icon: 'akar-icons:airplay-video',
+      url: '/screen/index'
     },
   ]
   shortcut = Object.assign(shortcut, data)

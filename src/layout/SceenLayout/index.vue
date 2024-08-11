@@ -53,7 +53,8 @@ defineOptions({ name: 'ScreenLayout' })
 
           </template>
           <div>
-            <div  v-for="item in projectStore.projectList"
+            <div
+v-for="item in projectStore.projectList"
                   class="project-item"
                   :class="{selected: projectStore.projectInfo.id === item.id}"
                   @click="changeProject(item)"
@@ -68,7 +69,7 @@ defineOptions({ name: 'ScreenLayout' })
           <ElButton link>实时告警</ElButton>
         </RouterLink>
         <ElDivider direction='vertical' />
-        <RouterLink to="/screen/index">
+        <RouterLink to="/index">
           <ElButton link>
             <ElAvatar />
             <span class="ml-[6px]">管理中心</span>
