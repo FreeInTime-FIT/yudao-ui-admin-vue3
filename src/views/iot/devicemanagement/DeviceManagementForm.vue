@@ -106,9 +106,7 @@ const projectList = ref<ProjectInfoVO[]>([]) // 列表的数据
 
 const formRef = ref() // 表单 Ref
 const getProjectList = async () => {
-  const data = await ProjectInfoApi.getProjectInfoPage({
-    pageSize: 100
-  })
+  const data = await ProjectInfoApi.getProjectInfoList()
   projectList.value = data.list
 }
 

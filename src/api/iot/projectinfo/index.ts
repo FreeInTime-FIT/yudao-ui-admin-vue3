@@ -21,6 +21,10 @@ export const ProjectInfoApi = {
   getProjectInfoPage: async (params: any) => {
     return await request.get({ url: `/iot/project-info/page`, params })
   },
+  // 查询项目信息分页
+  getProjectInfoList: async (params: any) => {
+    return await request.get({ url: `/iot/project-info/list`, params })
+  },
 
   // 查询项目信息详情
   getProjectInfo: async (id: number) => {
