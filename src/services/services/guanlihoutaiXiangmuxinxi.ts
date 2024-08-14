@@ -89,6 +89,26 @@ export async function getProjectInfo(
   });
 }
 
+/** 获得项目信息分页 GET /admin-api/iot/project-info/list */
+export async function getProjectInfoList(
+  params: APITypes.getProjectInfoListParams & {
+    // header
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<APITypes.CommonResultPageResultProjectInfoRespVO>({
+    url: `/admin-api/iot/project-info/list`,
+    method: 'GET',
+    headers: {},
+    params: { ...params },
+    ...(options || {}),
+  });
+}
+
 /** 获得项目信息分页 GET /admin-api/iot/project-info/page */
 export async function getProjectInfoPage(
   params: APITypes.getProjectInfoPageParams & {

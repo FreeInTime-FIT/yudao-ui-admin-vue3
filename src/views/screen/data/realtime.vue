@@ -210,7 +210,6 @@ const projectInfo = reactive({
   wdfw: '-20℃至60℃',
 })
 const getValue = (key, unit = '') => {
-  console.log(unref(keyValue), key, unref(keyValue)[key]);
   const v =  {
     ...(unref(projectInfo)),
     ...(unref(keyValue)),

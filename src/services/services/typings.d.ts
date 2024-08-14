@@ -574,6 +574,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultDeviceManagementRespVO = {
+    code?: number;
+    data?: DeviceManagementRespVO;
+    msg?: string;
+  };
+
   type CommonResultDictDataRespVO = {
     code?: number;
     data?: DictDataRespVO;
@@ -607,6 +613,12 @@ declare namespace APITypes {
   type CommonResultGoViewProjectRespVO = {
     code?: number;
     data?: GoViewProjectRespVO;
+    msg?: string;
+  };
+
+  type CommonResultInteger = {
+    code?: number;
+    data?: number;
     msg?: string;
   };
 
@@ -901,6 +913,12 @@ declare namespace APITypes {
   type CommonResultPageResultDemo03StudentRespVO = {
     code?: number;
     data?: PageResultDemo03StudentRespVO;
+    msg?: string;
+  };
+
+  type CommonResultPageResultDeviceManagementRespVO = {
+    code?: number;
+    data?: PageResultDeviceManagementRespVO;
     msg?: string;
   };
 
@@ -1269,6 +1287,13 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type createDeviceManagementParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type createDictDataParams = {
     /** 租户编号 */
     'tenant-id'?: number;
@@ -1566,6 +1591,15 @@ declare namespace APITypes {
   };
 
   type deleteDeptParams = {
+    /** 编号 */
+    id: number;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type deleteDeviceManagementParams = {
     /** 编号 */
     id: number;
     /** 租户编号 */
@@ -1924,6 +1958,79 @@ declare namespace APITypes {
     parentId: number;
   };
 
+  type DeviceManagementRespVO = {
+    /** 主键ID */
+    id: number;
+    /** 设备编号 */
+    deviceCode: string;
+    /** 项目编号 */
+    projectId: string;
+    projectCode?: string;
+    /** 变压器容量(kVA) */
+    transformerCapacity?: number;
+    /** 负荷功率(kW) */
+    loadPower?: number;
+    /** 储能类型 */
+    energyStorageType?: string;
+    /** 储能容量(kWh) */
+    energyStorageCapacity?: number;
+    /** 额定功率(kW) */
+    ratedPower?: number;
+    /** 电池类型 */
+    batteryType?: string;
+    /** 电池电压范围(V) */
+    batteryVoltageRange?: string;
+    /** 放电深度(%) */
+    dischargeDepth?: number;
+    /** 循环寿命(次) */
+    cycleLife?: number;
+    /** 充放电速率(C) */
+    chargeDischargeRate?: string;
+    /** 预期寿命(年) */
+    expectedLifespan?: number;
+    /** 温度范围(°C) */
+    temperatureRange?: string;
+    /** 备注 */
+    remark?: string;
+    /** 创建时间 */
+    createTime?: string;
+  };
+
+  type DeviceManagementSaveReqVO = {
+    /** 主键ID */
+    id: number;
+    /** 设备编号 */
+    deviceCode: string;
+    /** 项目编号 */
+    projectId: string;
+    /** 变压器容量(kVA) */
+    transformerCapacity?: number;
+    /** 负荷功率(kW) */
+    loadPower?: number;
+    /** 储能类型 */
+    energyStorageType?: string;
+    /** 储能容量(kWh) */
+    energyStorageCapacity?: number;
+    /** 额定功率(kW) */
+    ratedPower?: number;
+    /** 电池类型 */
+    batteryType?: string;
+    /** 电池电压范围(V) */
+    batteryVoltageRange?: string;
+    /** 放电深度(%) */
+    dischargeDepth?: number;
+    /** 循环寿命(次) */
+    cycleLife?: number;
+    /** 充放电速率(C) */
+    chargeDischargeRate?: string;
+    /** 预期寿命(年) */
+    expectedLifespan?: number;
+    /** 温度范围(°C) */
+    temperatureRange?: string;
+    /** 备注 */
+    remark?: string;
+  };
+
   type DictDataRespVO = {
     /** 字典数据编号 */
     id: number;
@@ -2231,6 +2338,49 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type exportDeviceManagementExcelParams = {
+    /** 设备编号 */
+    deviceCode?: string;
+    /** 项目编号 */
+    projectId?: string;
+    /** 变压器容量(kVA) */
+    transformerCapacity?: string;
+    /** 负荷功率(kW) */
+    loadPower?: string;
+    /** 储能类型 */
+    energyStorageType?: string;
+    /** 储能容量(kWh) */
+    energyStorageCapacity?: string;
+    /** 额定功率(kW) */
+    ratedPower?: string;
+    /** 电池类型 */
+    batteryType?: string;
+    /** 电池电压范围(V) */
+    batteryVoltageRange?: string;
+    /** 放电深度(%) */
+    dischargeDepth?: string;
+    /** 循环寿命(次) */
+    cycleLife?: string;
+    /** 充放电速率(C) */
+    chargeDischargeRate?: string;
+    /** 预期寿命(年) */
+    expectedLifespan?: string;
+    /** 温度范围(°C) */
+    temperatureRange?: string;
+    /** 备注 */
+    remark?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type exportJobExcelParams = {
     /** 任务名称，模糊匹配 */
     name?: string;
@@ -2322,14 +2472,18 @@ declare namespace APITypes {
     lng?: string;
     /** 纬度 */
     lat?: string;
-    /** 变压器容量 */
-    transformerCapacity?: string;
-    /** 总负荷功率 */
-    totalLoadPower?: string;
-    /** 逾期寿命 */
-    lifeExpectancy?: string;
     /** 创建时间 */
     createTime?: string;
+    /** 项目负责人姓名 */
+    ownerName?: string;
+    /** 联系人 */
+    contentUser?: string;
+    /** 联系电话 */
+    contentMobile?: string;
+    /** 备注 */
+    remark?: string;
+    /** 状态（1：正常，0：禁用） */
+    state?: string;
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -2946,6 +3100,58 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getDeviceManagementPageParams = {
+    /** 设备编号 */
+    deviceCode?: string;
+    /** 项目编号 */
+    projectId?: string;
+    /** 变压器容量(kVA) */
+    transformerCapacity?: string;
+    /** 负荷功率(kW) */
+    loadPower?: string;
+    /** 储能类型 */
+    energyStorageType?: string;
+    /** 储能容量(kWh) */
+    energyStorageCapacity?: string;
+    /** 额定功率(kW) */
+    ratedPower?: string;
+    /** 电池类型 */
+    batteryType?: string;
+    /** 电池电压范围(V) */
+    batteryVoltageRange?: string;
+    /** 放电深度(%) */
+    dischargeDepth?: string;
+    /** 循环寿命(次) */
+    cycleLife?: string;
+    /** 充放电速率(C) */
+    chargeDischargeRate?: string;
+    /** 预期寿命(年) */
+    expectedLifespan?: string;
+    /** 温度范围(°C) */
+    temperatureRange?: string;
+    /** 备注 */
+    remark?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type getDeviceManagementParams = {
+    /** 编号 */
+    id: number;
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getDictDataListByTypeParams = {
     /** 字典类型 */
     type: string;
@@ -3457,6 +3663,13 @@ declare namespace APITypes {
     Authorization?: string;
   };
 
+  type getProjectInfoListParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
   type getProjectInfoPageParams = {
     /** 项目编码 */
     code?: string;
@@ -3468,14 +3681,18 @@ declare namespace APITypes {
     lng?: string;
     /** 纬度 */
     lat?: string;
-    /** 变压器容量 */
-    transformerCapacity?: string;
-    /** 总负荷功率 */
-    totalLoadPower?: string;
-    /** 逾期寿命 */
-    lifeExpectancy?: string;
     /** 创建时间 */
     createTime?: string;
+    /** 项目负责人姓名 */
+    ownerName?: string;
+    /** 联系人 */
+    contentUser?: string;
+    /** 联系电话 */
+    contentMobile?: string;
+    /** 备注 */
+    remark?: string;
+    /** 状态（1：正常，0：禁用） */
+    state?: string;
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -4952,6 +5169,13 @@ declare namespace APITypes {
     total: number;
   };
 
+  type PageResultDeviceManagementRespVO = {
+    /** 数据 */
+    list: DeviceManagementRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
   type PageResultDictDataRespVO = {
     /** 数据 */
     list: DictDataRespVO[];
@@ -5287,8 +5511,6 @@ declare namespace APITypes {
   };
 
   type ProjectInfoRespVO = {
-    /** id */
-    id: string;
     /** 项目编码 */
     code: string;
     /** 项目名称 */
@@ -5299,21 +5521,23 @@ declare namespace APITypes {
     lng?: string;
     /** 纬度 */
     lat?: string;
-    /** 变压器容量 */
-    transformerCapacity?: number;
-    /** 总负荷功率 */
-    totalLoadPower?: number;
-    /** 逾期寿命 */
-    lifeExpectancy?: number;
     /** 创建时间 */
     createTime: string;
-    /** 状态 */
+    /** 主键ID */
+    id: string;
+    /** 项目负责人姓名 */
+    ownerName?: string;
+    /** 联系人 */
+    contentUser?: string;
+    /** 联系电话 */
+    contentMobile?: string;
+    /** 备注 */
+    remark?: string;
+    /** 状态（1：正常，0：禁用） */
     state: number;
   };
 
   type ProjectInfoSaveReqVO = {
-    /** id */
-    id: string;
     /** 项目编码 */
     code: string;
     /** 项目名称 */
@@ -5324,13 +5548,18 @@ declare namespace APITypes {
     lng?: string;
     /** 纬度 */
     lat?: string;
-    /** 变压器容量 */
-    transformerCapacity?: number;
-    /** 总负荷功率 */
-    totalLoadPower?: number;
-    /** 逾期寿命 */
-    lifeExpectancy?: number;
-    state?: number;
+    /** 主键ID */
+    id: string;
+    /** 项目负责人姓名 */
+    ownerName?: string;
+    /** 联系人 */
+    contentUser?: string;
+    /** 联系电话 */
+    contentMobile?: string;
+    /** 备注 */
+    remark?: string;
+    /** 状态（1：正常，0：禁用） */
+    state: number;
   };
 
   type ProjectInfoUpdateStateReqVO = {
@@ -5419,6 +5648,7 @@ declare namespace APITypes {
     repCode?: string;
     repMsg?: string;
     repData?: Record<string, any>;
+    success?: boolean;
     repCodeEnum?:
       | 'SUCCESS'
       | 'ERROR'
@@ -5439,7 +5669,6 @@ declare namespace APITypes {
       | 'API_REQ_LOCK_GET_ERROR'
       | 'API_REQ_LIMIT_CHECK_ERROR'
       | 'API_REQ_LIMIT_VERIFY_ERROR';
-    success?: boolean;
   };
 
   type revokeTokenParams = {
@@ -6004,6 +6233,13 @@ declare namespace APITypes {
   };
 
   type updateDeptParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
+  };
+
+  type updateDeviceManagementParams = {
     /** 租户编号 */
     'tenant-id'?: number;
     /** 认证 Token */

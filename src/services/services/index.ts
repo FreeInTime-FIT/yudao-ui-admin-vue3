@@ -24,6 +24,7 @@ import * as guanlihoutai Zidianshuju from './guanlihoutai Zidianshuju'
 import * as guanlihoutai Bumen from './guanlihoutai Bumen'
 import * as guanlihoutaiGoViewXiangmu from './guanlihoutaiGoViewXiangmu'
 import * as guanlihoutai Xiangmuxinxi from './guanlihoutai Xiangmuxinxi'
+import * as guanlihoutai Shebeiguanli from './guanlihoutai Shebeiguanli'
 import * as guanlihoutai Dingshirenwu from './guanlihoutai Dingshirenwu'
 import * as guanlihoutai Wenjianpeizhi from './guanlihoutai Wenjianpeizhi'
 import * as guanlihoutai Xuesheng from './guanlihoutai Xuesheng'
@@ -78,6 +79,7 @@ export default {
   guanlihoutai Bumen,
   guanlihoutaiGoViewXiangmu,
   guanlihoutai Xiangmuxinxi,
+  guanlihoutai Shebeiguanli,
   guanlihoutai Dingshirenwu,
   guanlihoutai Wenjianpeizhi,
   guanlihoutai Xuesheng,

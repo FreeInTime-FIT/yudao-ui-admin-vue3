@@ -15,6 +15,9 @@ const date = computed(() => ({
   date: now.value.format('YYYY-MM-DD'),
 }));
 
+onMounted(() => {
+  projectStore.getProjectList();
+})
 function handleClick(item) {
   router.push({
     name: item.name,
