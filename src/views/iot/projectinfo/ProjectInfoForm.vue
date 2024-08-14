@@ -22,20 +22,17 @@
       <el-form-item label="纬度" prop="lat">
         <el-input v-model="formData.lat" placeholder="请输入纬度" />
       </el-form-item>
-      <el-form-item label="变压器容量" prop="transformerCapacity">
-        <el-input v-model="formData.transformerCapacity" placeholder="请输入变压器容量" >
-          <template #append>kVA</template>
-        </el-input>
+      <el-form-item label="业主名称" prop="ownerName">
+        <el-input v-model="formData.ownerName" placeholder="请输入业主名称" />
       </el-form-item>
-      <el-form-item label="总负荷功率" prop="totalLoadPower">
-        <el-input v-model="formData.totalLoadPower" placeholder="请输入总负荷功率" >
-          <template #append>kW</template>
-        </el-input>
+      <el-form-item label="负责人" prop="contentUser">
+        <el-input v-model="formData.contentUser" placeholder="请输入负责人" />
       </el-form-item>
-      <el-form-item label="逾期寿命" prop="lifeExpectancy">
-        <el-input v-model="formData.lifeExpectancy" placeholder="请输入逾期寿命" >
-          <template #append>年</template>
-        </el-input>
+      <el-form-item label="联系电话" prop="contentMobile">
+        <el-input v-model="formData.contentMobile" placeholder="请输入联系电话" />
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="formData.remark" placeholder="请输入备注" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -58,15 +55,17 @@ const dialogTitle = ref('') // 弹窗的标题
 const formLoading = ref(false) // 表单的加载中：1）修改时的数据加载；2）提交的按钮禁用
 const formType = ref('') // 表单的类型：create - 新增；update - 修改
 const formData = ref({
-  id: undefined,
   code: undefined,
   name: undefined,
   address: undefined,
   lng: undefined,
   lat: undefined,
-  transformerCapacity: undefined,
-  totalLoadPower: undefined,
-  lifeExpectancy: undefined
+  id: undefined,
+  ownerName: undefined,
+  contentUser: undefined,
+  contentMobile: undefined,
+  remark: undefined,
+  state: undefined
 })
 const formRules = reactive({
   code: [{ required: true, message: '项目编码不能为空', trigger: 'blur' }]
@@ -116,17 +115,20 @@ const submitForm = async () => {
 }
 
 /** 重置表单 */
+/** 重置表单 */
 const resetForm = () => {
   formData.value = {
-    id: undefined,
     code: undefined,
     name: undefined,
     address: undefined,
     lng: undefined,
     lat: undefined,
-    transformerCapacity: undefined,
-    totalLoadPower: undefined,
-    lifeExpectancy: undefined
+    id: undefined,
+    ownerName: undefined,
+    contentUser: undefined,
+    contentMobile: undefined,
+    remark: undefined,
+    state: undefined
   }
   formRef.value?.resetFields()
 }

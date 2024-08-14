@@ -106,21 +106,11 @@
           {{ scope.row.lng }}, {{ scope.row.lat }}
         </template>
       </el-table-column>
-      <el-table-column label="变压器容量" align="center" prop="transformerCapacity">
-        <template #default="scope">
-          {{ scope.row.transformerCapacity }} kVA
-        </template>
-      </el-table-column>
-      <el-table-column label="总负荷功率" align="center" prop="totalLoadPower">
-        <template #default="scope">
-          {{ scope.row.totalLoadPower }} kW
-        </template>
-      </el-table-column>
-      <el-table-column label="逾期寿命" align="center" prop="lifeExpectancy">
-        <template #default="scope">
-          {{ scope.row.lifeExpectancy }} 年
-        </template>
-      </el-table-column>
+      <el-table-column label="业主名称" align="center" prop="ownerName" />
+      <el-table-column label="负责人" align="center" prop="contentUser" />
+      <el-table-column label="联系电话" align="center" prop="contentMobile" />
+      <el-table-column label="备注" align="center" prop="remark" />
+
       <el-table-column
         label="创建时间"
         align="center"
@@ -199,10 +189,12 @@ const queryParams = reactive({
   address: undefined,
   lng: undefined,
   lat: undefined,
-  transformerCapacity: undefined,
-  totalLoadPower: undefined,
-  lifeExpectancy: undefined,
-  createTime: []
+  createTime: [],
+  ownerName: undefined,
+  contentUser: undefined,
+  contentMobile: undefined,
+  remark: undefined,
+  state: undefined
 })
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
