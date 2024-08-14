@@ -121,12 +121,21 @@ const todayDataShowList = todayDataList.reduce((res, item, idx) => {
   ]
 }, [])
 const messList = [
-  {id: 1, voltage: 'A相电压',  electric: 'A相电流', type: '并网点'},
-  {id: 2, voltage: 'B相电压', type: '并网点'},
-  {id: 3, voltage: 'C相电压', type: '并网点'},
-  {id: 4, voltage: 'A相电压', voltageKey: '1_174', electric: 'A相电流', electricKey: '4#addr_210ch', powerKey: '4#addr_2114h', powerFactorKey: '4#addr_212ch', type: '负载点'},
+  {id: 1, v: 'A相', voltageKey: '1_177', electricKey: '1_174', powerKey: '1_180', powerFactorKey: '1_186', otherKey: '',  type: '并网点'},
+  {id: 2, v: 'B相', voltageKey: '1_178', electricKey: '1_175', powerKey: '1_181', powerFactorKey: '1_187', otherKey: '', type: '并网点'},
+  {id: 3, v: 'C相', voltageKey: '1_179', electricKey: '1_176', powerKey: '1_182', powerFactorKey: '1_188', otherKey: '', type: '并网点'},
+  {id: 4, voltage: 'A相电压', type: '负载点'},
   {id: 5, voltage: 'B相电压', voltageKey: '4#addr_2102h', electricKey: '4#addr_210eh', powerKey: '4#addr_2116h', powerFactorKey: '4#addr_212eh', type: '负载点',otherKey: '4#addr_2134h'},
   {id: 6, voltage: 'C相电压', voltageKey: '4#addr_2104h', electricKey: '4#addr_2110h', powerKey: '4#addr_2118h', powerFactorKey: '4#addr_2130h', type: '负载点'},
+]
+const messNewList = [
+  {id: 1, name: '电压（V）', aValue: '1_177', bValue: '1_178', cValue: '1_179', total: ''},
+  {id: 2,  name: '电流（A）', aValue: '1_174', bValue: '1_175', cValue: '1_176', total: ''},
+  {id: 3,  name: '功率因数', aValue: '', bValue: '', cValue: '', total: ''},
+  {id: 4, name: '有功功率（KW）', aValue: '1_180', bValue: '1_181', cValue: '1_182', total: '1_180'},
+  {id: 5, name: '无功功率（Kvar）', voltageKey: '4#addr_2102h', electricKey: '4#addr_210eh', powerKey: '4#addr_2116h', powerFactorKey: '4#addr_212eh', type: '负载点',otherKey: '4#addr_2134h'},
+  {id: 6, name: '视在功率（KVA）', aValue: '1_186', bValue: '1_187', cValue: '1_188', total: '1_194'},
+
 ]
 type UseItem = {
   title: string;
@@ -200,12 +209,16 @@ const projectInfo = reactive({
   yqsm: '10年',
   wdfw: '-20℃至60℃',
 })
-const getValue = (key) => {
+const getValue = (key, unit = '') => {
   console.log(unref(keyValue), key, unref(keyValue)[key]);
-  return {
+  const v =  {
     ...(unref(projectInfo)),
     ...(unref(keyValue)),
   }[key] || '';
+  if (v) {
+    return v + (unit || '');
+  }
+  return v;
 }
 const spanMethod = ({ rowIndex, columnIndex}) => {
   if (columnIndex === 0) {
@@ -314,37 +327,33 @@ const handleProjectEdit = () => {
         <CardHeader title="电网信息" />
         <article class="card-box">
           <ElTable
-            :data="messList"
+            :data="messNewList"
             row-key="label"
             border
-            :span-method="spanMethod"
-            :show-header="false"
           >
-            <ElTableColumn width="40" label="类别" prop="type"  />
-            <ElTableColumn label="电压" prop="voltage"  />
-            <ElTableColumn label="电流" prop="first.key"  >
+            <ElTableColumn label="电网" width="140" prop="name"  >
               <template #default="{row}">
-                {{getValue(row.voltage)}}
+                <span class="font-bold">{{row.name}}</span>
               </template>
             </ElTableColumn>
-            <ElTableColumn label="有功" prop="next.label"  >
+            <ElTableColumn label="A" prop="voltageKey"  >
               <template #default="{row}">
-                {{getValue(row.voltage)}}
+                {{getValue(row.aValue)}}
               </template>
             </ElTableColumn>
-            <ElTableColumn label="功率因数" prop="next.key"  >
+            <ElTableColumn label="B" prop="electricKey"  >
               <template #default="{row}">
-                {{getValue(row.voltage)}}
+                {{getValue(row.bValue)}}
               </template>
             </ElTableColumn>
-            <ElTableColumn label="需量" prop="next.key"  >
+            <ElTableColumn label="C" width="100" prop="powerKey"  >
               <template #default="{row}">
-                {{getValue(row.voltage)}}
+                {{getValue(row.cValue)}}
               </template>
             </ElTableColumn>
-            <ElTableColumn label="参数" prop="next.key"  >
+            <ElTableColumn label="总" prop="powerFactorKey"  >
               <template #default="{row}">
-                {{getValue(row.voltage)}}
+                {{getValue(row.total, '')}}
               </template>
             </ElTableColumn>
           </ElTable>

@@ -655,16 +655,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
         },
         component: () => import('@/views/screen/warning/index.vue')
       },
-      {
-        path: 'setting/archives',
-        name: 'ScreenSettingArchives',
-        meta: {
-          title: '档案设置',
-          noCache: true,
-          activeMenu: '/screen/setting/archives'
-        },
-        component: () => import('@/views/screen/setting/archives.vue')
-      },
+      // {
+      //   path: 'setting/archives',
+      //   name: 'ScreenSettingArchives',
+      //   meta: {
+      //     title: '档案设置',
+      //     noCache: true,
+      //     activeMenu: '/screen/setting/archives'
+      //   },
+      //   component: () => import('@/views/screen/setting/archives.vue')
+      // },
       {
         path: 'setting/module',
         name: 'ScreenSettingModule',

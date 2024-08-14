@@ -1,15 +1,18 @@
 <script setup lang="tsx">
 import {computed, onMounted, ref} from "vue";
 import { useUserStore } from '@/store/modules/user'
+import { useProjectStore } from '@/store/modules/project'
 import * as echarts from 'echarts';
 import { useResizeObserver } from '@vueuse/core'
 import dayjs from "dayjs";
 import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
+import {getPanelData} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 const echartsDomRef = ref<HTMLElement>()
 const chartRef = ref()
 const mapDomRef = ref();
 const drawer = ref(false)
+const keyValue = ref({});
 const mapStyle = {
   styleJson,
 }
@@ -17,6 +20,7 @@ let mapChart;
 console.log(mapStyle);
 
 const time = dayjs().format('YYYY-MM-DD HH:mm')
+const { projectInfo } = useProjectStore();
 useResizeObserver(echartsDomRef, () => {
   if (chartRef.value) {
     chartRef.value.resize();
@@ -58,9 +62,18 @@ const projectList = [{
   lat: 31.915,
   province: '浙江',
 }]
+const getData = async () => {
+  const res = await  getPanelData({
+    key: 'indexView',
+    // projectId: projectInfo.id,
+  })
+  keyValue.value = res.data || {};
+  return res;
+}
 onMounted(() => {
   mapChart = echarts.init(mapDomRef.value);
   mapChart.showLoading();
+  getData();
   import('@/views/screen/config/china.json').then(res => {
     console.log(res.default);
     mapChart.hideLoading();
@@ -352,18 +365,15 @@ const provinceList = computed(() => {
   const sex = '先生'
 const totalList = [{
   label: '用户总量',
-  key: 'user',
-  value: 5,
+  key: 'userCount',
   unit: '个',
 }, {
   label: '项目总量',
-  key: 'user1',
-  value: 5,
+  key: 'projectCount',
   unit: '个',
 }, {
   label: '设备总量',
-  key: 'user2',
-  value: 10,
+  key: 'deviceCount',
   unit: '台',
 }, {
   label: '负荷总量',
@@ -467,7 +477,7 @@ console.log(provinceList);
         <aside class="side-list">
           <div class="side-item" v-for="item in totalList" :key="item.key">
             <span>{{item.label}}</span>
-            <span>{{item.value}}{{item.unit}}</span>
+            <span>{{keyValue[item.key] || item.value}}{{item.unit}}</span>
           </div>
         </aside>
         <div class="echarts" ref="echartsDomRef"></div>
