@@ -33,7 +33,7 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
         { id: 3, time: '2024-05-05 09:09:09', level : 2, product: '垂直轴风机', user: '张工', message: '正在过载告警', type: '警告'},
         { id: 2, time: '2024-05-05 09:09:09', level : 3, product: '光伏逆变器 ',user: '张工', message: ' 烟雾报警器', type: '消防   '},
       ] as RecordItem[],
-      total: 20,
+      total: 4,
     };
   }, props: undefined, response: undefined,
   defaultParams: queryParams,

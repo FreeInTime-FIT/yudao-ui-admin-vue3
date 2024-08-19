@@ -32,7 +32,7 @@
       <div class="battery-info-block">充电</div>
       <div class="battery-info-block">soc %</div>
     </header>
-    <div class="flex">
+    <div class="flex ">
       <div class="p-[12px] battery-info-list">
         <div class="flex">
           <div class="battery-info-block">
@@ -41,12 +41,12 @@
             </div>
             <div class="battery-info_name">电池剩余电量</div>
           </div>
-          <div class="battery-info-block">
-            <div class="battery-info_value">
-              <span>xxxkWh</span>
-            </div>
-            <div class="battery-info_name">可离网运行时间</div>
-          </div>
+<!--          <div class="battery-info-block">-->
+<!--            <div class="battery-info_value">-->
+<!--              <span>xxxkWh</span>-->
+<!--            </div>-->
+<!--            <div class="battery-info_name">可离网运行时间</div>-->
+<!--          </div>-->
         </div>
         <div class="battery-info-block">
           <div class="battery-info_value">
@@ -54,12 +54,12 @@
           </div>
           <div class="battery-info_name">电池充放电功率</div>
         </div>
-        <div class="battery-info-block">
-          <div class="battery-info_value">
-            <span>xxx h</span>
-          </div>
-          <div class="battery-info_name">充放电截止时间</div>
-        </div>
+<!--        <div class="battery-info-block">-->
+<!--          <div class="battery-info_value">-->
+<!--            <span>xxx h</span>-->
+<!--          </div>-->
+<!--          <div class="battery-info_name">充放电截止时间</div>-->
+<!--        </div>-->
       </div>
       <div>
         <ElTable
@@ -90,7 +90,9 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-
+  background-color: #253861;
+  margin-right: 12px;
+  flex: 1;
 }
 .battery-info_value{
   font-size: 18px;
@@ -98,8 +100,9 @@
 .battery-info_name{
   font-size: 16px;
 }
+
 .battery-info-block{
-  background-color: #253861;
+
   padding: 6px 12px;
   text-align: center;
 }

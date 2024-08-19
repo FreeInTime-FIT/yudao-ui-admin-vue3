@@ -8,12 +8,14 @@ import bg from '@/views/screen/assets/real-bg.png'
 import {
   getPanelData
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import {useProjectStore} from "@/store/modules/project";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
   name: 'ScreenDataHistory',
 })
 
+const { projectInfo: project } = useProjectStore();
 const detailVisible = ref(false)
 const isEdit = ref(false)
 const keyValue = ref({});
@@ -188,26 +190,29 @@ const getData = async () => {
 onMounted(() => {
   getData();
 })
-const projectInfo = reactive({
-  projectCode: '03123033',
-  projectName: '电力A项目',
-  address: '杭州市余杭区万达广场',
-  userName: '万达管理集团',
-  code4: '8000kVA',
-  code5: '8000kW',
-  latlng: '120.0000,31.000',
-  r1: '6000kVA',
-  fh: '6000kW',
-  cn: '电池储能',
-  cnrl: '8000kWh',
-  edgl: '8000kW',
-  dclx: '铅酸电池',
-  dcdy: '48V',
-  fdsd: '90%',
-  xhsm: '1000次循环',
-  cfdsl: '2C',
-  yqsm: '10年',
-  wdfw: '-20℃至60℃',
+const projectInfo = computed(() => {
+ return {
+   projectCode: project?.code,
+   projectName: project?.name,
+   address: project?.address,
+   userName: project?.ownerName,
+   code4: '8000kVA',
+   code5: '8000kW',
+   latlng: [project.lng, project.lat].join(','),
+   ...project,
+   r1: '6000kVA',
+   fh: '6000kW',
+   cn: '电池储能',
+   cnrl: '8000kWh',
+   edgl: '8000kW',
+   dclx: '铅酸电池',
+   dcdy: '48V',
+   fdsd: '90%',
+   xhsm: '1000次循环',
+   cfdsl: '2C',
+   yqsm: '10年',
+   wdfw: '-20℃至60℃',
+ }
 })
 const getValue = (key, unit = '') => {
   const v =  {

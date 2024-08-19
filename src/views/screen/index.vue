@@ -18,50 +18,14 @@ const mapStyle = {
 }
 let mapChart;
 console.log(mapStyle);
-
 const time = dayjs().format('YYYY-MM-DD HH:mm')
-const { projectInfo } = useProjectStore();
+const { projectList } = useProjectStore();
 useResizeObserver(echartsDomRef, () => {
   if (chartRef.value) {
     chartRef.value.resize();
   }
 });
-const projectList = [{
-  name: '项目1',
-  lng: 116.404,
-  lat: 39.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 120.404,
-  lat: 30.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 119.404,
-  lat: 30.915,
-  province: '北京',
-}, {
-  name: '项目2',
-  lng: 118.404,
-  lat: 30.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 117.404,
-  lat: 27.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 115.404,
-  lat: 28.915,
-  province: '浙江',
-}, {
-  name: '项目2',
-  lng: 121.404,
-  lat: 31.915,
-  province: '浙江',
-}]
+
 const getData = async () => {
   const res = await  getPanelData({
     key: 'indexView',
@@ -84,6 +48,29 @@ onMounted(() => {
       tooltip: {
         trigger: 'item',
         showDelay: 0,
+        show: false, // 暂时隐藏，后续有需求在开
+        formatter(params) {
+          console.log(params);
+          if (params.componentType === 'markPoint') {
+            return `
+            <div>
+            <div>项目信息</div>
+            <div> <strong>${params.name}</strong></div>
+            <div><small>地址：${params.data.address}</small></div>
+            <div><small>负责人：${params.data.contentUser}</small></div>
+            <div><small>联系电话：${params.data.contentMobile}</small></div>
+</div>
+          `
+          }
+
+          return `
+            <div>
+            <div>项目数量</div>
+            <span>${params.data.name}:</span>
+            <span>${params.data.value}</span>
+</div>
+          `
+        },
         transitionDuration: 0.2
       },
       visualMap: {
@@ -167,6 +154,7 @@ onMounted(() => {
             symbolSize: 24,
             symbolOffset: [12, 24] ,
             data: projectList.map(item => ({
+              ...item,
               coord: [item.lng, item.lat],
               name: item.name,
               id: item.id,
@@ -339,29 +327,6 @@ onUnmounted(() => {
 const userStore = useUserStore()
 const userName = computed(() => userStore.user.nickname ?? 'Admin')
 
-const provinceList = computed(() => {
- return projectList.reduce((res, item) => {
-   let hasAdd = false;
-   res.some(pro => {
-     if (item.province === pro.province) {
-       hasAdd = true;
-       pro.children.push(item);
-       return true
-     }
-     return false
-   })
-   if (!hasAdd) {
-     return [
-       ...res,
-       {
-         province: item.province,
-         children: [item],
-       },
-     ]
-   }
-   return res;
- }, []);
-})
   const sex = '先生'
 const totalList = [{
   label: '用户总量',
@@ -384,7 +349,7 @@ const totalList = [{
   label: '电源总量',
   key: 'user4',
   value: 20000,
-  unit: 'kWp',
+  unit: 'kWh',
 }, {
   label: '储能总量',
   key: 'user5',
@@ -463,7 +428,6 @@ const handleHideProject = () => {
   drawer.value = false;
 }
 
-console.log(provinceList);
 </script>
 
 <template>
@@ -500,40 +464,6 @@ console.log(provinceList);
               :icon="{url: icon, size: {width: 32, height: 32}}"
             />
           </baidu-map>-->
-      <ElDrawer
-        v-model="drawer"
-        direction="btt"
-        modal-class="drawer-project"
-        size="92%"
-      >
-        <template #title>
-          <div>
-            <ElButton type="primary" @click="handleHideProject"> 全局看板</ElButton>
-          </div>
-        </template>
-
-        <nav>
-          <div v-for="province in provinceList" class="flex mb-[12px]" :key="province.province">
-            <div class="font-size-[24px] w-[120px]">{{province.province}}</div>
-            <div class="flex-[1] flex flex-wrap gap-[10px]">
-              <div v-for="item in province.children" class="province-item" :key="item.name">
-                {{item.name}}
-              </div>
-            </div>
-          </div>
-          <div class="flex mb-[12px]">
-            <div class="font-size-[24px] w-[120px]"></div>
-            <div class="flex-[1] flex flex-wrap gap-[10px]">
-              <div class="province-item text-center">
-                +
-              </div>
-              <div class="province-item text-center">
-                -
-              </div>
-            </div>
-          </div>
-        </nav>
-      </ElDrawer>
     </article>
   </section>
 
