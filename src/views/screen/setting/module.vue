@@ -2,8 +2,12 @@
 import { SuccessFilled, CircleCloseFilled} from "@element-plus/icons-vue";
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import InputWarp from "@/views/screen/components/InputWarp.vue";
+import { useProjectStore } from '@/store/modules/project'
 
 import {useTable} from "@/hooks/web/useTable";
+import {switchMode} from "@/services/services/guanlihoutaiShebeixiaoxifasong";
+
+const projectStore = useProjectStore();
 type QueryParams = {
   startTime?: string;
   endTime?: string;
@@ -25,27 +29,24 @@ const queryParams = reactive<{
 })
 const changeVisible = ref(false);
 const selected = ref(
-  'normal'
+  'OFFLINE'
 );
 const innerModule = ref();
 const moduleList = [{
-  label: '经济模式',
-  value: 'jj',
+  label: '离网模式',
+  value: 'OFFLINE',
 }, {
-  label: '普通模式',
-  value: 'normal',
+  label: '绿电模式',
+  value: 'GREEN',
 }, {
-  label: '微网运行模式',
-  value: 'ww',
+  label: '电能质量调节模式',
+  value: 'ENERGY',
 }, {
-  label: '零碳运行模式',
-  value: 'lt',
+  label: '虚拟电厂模式',
+  value: 'VIRTUAL',
 }, {
-  label: '控功率模式',
-  value: 'kgs',
-}, {
-  label: '控电量模式',
-  value: 'kdl',
+  label: '自定义模式',
+  value: 'CUSTOM',
 }]
 const selectedModule = computed(() => {
   return moduleList.find(i => i.value === unref(selected));
@@ -71,6 +72,7 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
 const { getList, setSearchParams } = tableMethods
 onMounted(() => {
   getList()
+  innerModule.value = projectStore.projectInfo?.platformInfo?.mode
 })
 const handleEdit = (row) => {
   console.log(row);
@@ -85,9 +87,13 @@ const handleChangeVisible = () => {
   changeVisible.value = true;
   innerModule.value = unref(selected);
 }
-const handleConfirm = () => {
+const handleConfirm = async () => {
   changeVisible.value = false;
   selected.value = unref(innerModule);
+  await switchMode({},{
+    projectId: projectStore.projectInfo?.id,
+    mode: selected.value
+  })
 }
 </script>
 

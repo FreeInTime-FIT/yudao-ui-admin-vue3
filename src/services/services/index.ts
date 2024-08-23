@@ -42,6 +42,7 @@ import * as 0Shouquan from './0Shouquan'
 import * as guanlihoutai Yanzhengma from './guanlihoutai Yanzhengma'
 import * as guanlihoutai Renzheng from './guanlihoutai Renzheng'
 import * as guanlihoutaiIOTshujushishihuoqu from './guanlihoutaiIOTshujushishihuoqu'
+import * as guanlihoutai Shebeixiaoxifasong from './guanlihoutai Shebeixiaoxifasong'
 import * as guanlihoutai Wenjiancunchu from './guanlihoutai Wenjiancunchu'
 import * as yonghuApp Zidianshuju from './yonghuApp Zidianshuju'
 import * as yonghuApp Dequ from './yonghuApp Dequ'
@@ -97,6 +98,7 @@ export default {
   guanlihoutai Yanzhengma,
   guanlihoutai Renzheng,
   guanlihoutaiIOTshujushishihuoqu,
+  guanlihoutai Shebeixiaoxifasong,
   guanlihoutai Wenjiancunchu,
   yonghuApp Zidianshuju,
   yonghuApp Dequ,
