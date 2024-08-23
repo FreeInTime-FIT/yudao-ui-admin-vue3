@@ -205,7 +205,7 @@
 
 </template>
 <script lang="ts" setup>
-import { useIntervalFn, useResizeObserver } from '@vueuse/core'
+import { useResizeObserver } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
@@ -213,8 +213,6 @@ import board from '@/views/screen/assets/board-bg.png'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
 import {
-  getLatest1,
-  getLatestForKeys,
   getLatestPrice, getPanelData
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 import dayjs from "dayjs";
@@ -267,11 +265,7 @@ const useTotalOptions = {
     top: 20,
   },
 }
-useIntervalFn(() => {
-  getLastData({
-    projectId: projectStore.projectInfo?.id,
-  });
-}, 3000)
+
 watchEffect(() => {
   if (projectStore.projectInfo) {
     getLastData({
@@ -291,11 +285,19 @@ watchEffect(() => {
     })
   }
 })
+let timer = setInterval(() => {
+  getLastData({
+    projectId: projectStore.projectInfo?.id,
+  });
+}, 5000)
 useResizeObserver(realRef, () => {
   if (realChartRef.value) {
     realChartRef.value.resize();
   }
 });
+onUnmounted(() => {
+  clearInterval(timer);
+})
 onMounted(() => {
   getLastData({
     projectId: projectStore.projectInfo?.id,

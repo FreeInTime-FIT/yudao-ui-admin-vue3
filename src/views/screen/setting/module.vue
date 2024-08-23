@@ -1,6 +1,5 @@
 <script setup lang="tsx">
 import { SuccessFilled, CircleCloseFilled} from "@element-plus/icons-vue";
-import CardHeader from "@/views/screen/components/CardHeader.vue";
 import InputWarp from "@/views/screen/components/InputWarp.vue";
 import { useProjectStore } from '@/store/modules/project'
 
@@ -72,8 +71,10 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
 const { getList, setSearchParams } = tableMethods
 onMounted(() => {
   getList()
-  innerModule.value = projectStore.projectInfo?.platformInfo?.mode
 })
+watchEffect(() => {
+  innerModule.value = projectStore.projectInfo?.platformInfo?.mode || 'OFFLINE'
+});
 const handleEdit = (row) => {
   console.log(row);
 }
