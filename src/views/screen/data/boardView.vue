@@ -218,10 +218,11 @@ import {
   getLatestPrice, getPanelData
 } from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
 import dayjs from "dayjs";
+import {useProjectStore} from "@/store/modules/project";
 defineOptions({ name: '数据中心' })
 const keyValue = ref<any>({});
 const keys = []
-
+const projectStore = useProjectStore();
 const getLastData = async () => {
   const res = await getPanelData({
     key: 'boardView'
@@ -266,25 +267,48 @@ const useTotalOptions = {
     top: 20,
   },
 }
-onMounted(() => {
-  getLastData()
-})
 useIntervalFn(() => {
-  getLastData();
+  getLastData({
+    projectId: projectStore.projectInfo?.id,
+  });
 }, 3000)
+watchEffect(() => {
+  if (projectStore.projectInfo) {
+    getLastData({
+      projectId: projectStore.projectInfo?.id,
+    });
+    getLatestPrice({
+      key: '用电统计',
+      projectId: projectStore.projectInfo?.id,
+    }).then(res => {
+      useTotalRef.value = res.data;
+    })
+    getLatestPrice({
+      key: '发电统计',
+      projectId: projectStore.projectInfo?.id,
+    }).then(res => {
+      getterTotalRef.value = res.data;
+    })
+  }
+})
 useResizeObserver(realRef, () => {
   if (realChartRef.value) {
     realChartRef.value.resize();
   }
 });
 onMounted(() => {
+  getLastData({
+    projectId: projectStore.projectInfo?.id,
+  })
   getLatestPrice({
     key: '用电统计',
+    projectId: projectStore.projectInfo?.id,
   }).then(res => {
     useTotalRef.value = res.data;
   })
   getLatestPrice({
     key: '发电统计',
+    projectId: projectStore.projectInfo?.id,
   }).then(res => {
     getterTotalRef.value = res.data;
   })

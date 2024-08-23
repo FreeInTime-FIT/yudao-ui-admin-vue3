@@ -3,11 +3,12 @@ import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
 import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import dayjs from "dayjs";
+import {useProjectStore} from "@/store/modules/project";
 
 const domRef = ref();
 const realRef = ref();
 echarts.registerTheme('screen', screenConfig);
-
+const projectStore = useProjectStore();
 defineOptions({
   name: 'ScreenDataHistory',
 })

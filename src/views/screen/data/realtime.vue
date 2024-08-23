@@ -15,7 +15,7 @@ defineOptions({
   name: 'ScreenDataHistory',
 })
 
-const { projectInfo: project } = useProjectStore();
+const projectStore = useProjectStore();
 const detailVisible = ref(false)
 const isEdit = ref(false)
 const keyValue = ref({});
@@ -182,7 +182,8 @@ const useList: UseItem[] = [{
 },]
 const getData = async () => {
   const res = await  getPanelData({
-    key: 'realtime'
+    key: 'realtime',
+    projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
   return res;
@@ -191,6 +192,7 @@ onMounted(() => {
   getData();
 })
 const projectInfo = computed(() => {
+  const project = projectStore.projectInfo;
  return {
    projectCode: project?.code,
    projectName: project?.name,

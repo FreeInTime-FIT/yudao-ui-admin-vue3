@@ -19,21 +19,77 @@ const mapStyle = {
 let mapChart;
 console.log(mapStyle);
 const time = dayjs().format('YYYY-MM-DD HH:mm')
-const { projectList } = useProjectStore();
+const projectStore = useProjectStore();
 useResizeObserver(echartsDomRef, () => {
-  if (chartRef.value) {
-    chartRef.value.resize();
+  if (mapChart) {
+    mapChart.resize();
   }
 });
 
 const getData = async () => {
   const res = await  getPanelData({
     key: 'indexView',
-    // projectId: projectInfo.id,
+    projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
   return res;
 }
+watchEffect(() => {
+  if (mapChart && projectStore.projectList) {
+    mapChart.setOption({
+      series: [
+        {
+          name: '项目数量',
+          type: 'map',
+          roam: false,
+          map: 'CHINA',
+          emphasis: {
+            label: {
+              show: true
+            },
+            itemStyle: {
+              color: '#02bce8'
+            },
+          },
+          nameMap: {
+
+          },
+          colorBy: 'data',
+          data: [
+            {name: '河北', value: 1},
+          ],
+          markPoint: {
+            symbol: `image://${icon}`,
+            symbolSize: 24,
+            symbolOffset: [12, 24] ,
+            data: projectStore.projectList.map(item => ({
+              ...item,
+              coord: [item.lng, item.lat],
+              name: item.name,
+              id: item.id,
+            })),
+          },
+          itemStyle: {
+            borderColor: '#8ac2d0',
+            areaColor: '#1a1b1e',
+            shadowColor: '#fff',
+            shadowBlur:  3,
+          },
+          markLine: {
+            lineStyle: {
+              color: 'green',
+            },
+          },
+          select: {
+            label: {
+              show: true,
+            },
+          },
+        },
+      ],
+    })
+  }
+})
 onMounted(() => {
   mapChart = echarts.init(mapDomRef.value);
   mapChart.showLoading();
@@ -129,31 +185,13 @@ onMounted(() => {
           },
           colorBy: 'data',
           data: [
-            {name: '河南', value: 30},
-            {name: '浙江', value: 30},
-            {name: '北京', value: 100},
-            {name: '江苏', value: 1},
-            {name: '上海', value: 300},
-            {name: '河北', value: 800},
-            {name: '天津', value: 1200},
-            {name: '山东', value: 1200},
-            {name: '山西', value: 800},
-            {name: '新疆', value: 800},
-            {name: '内蒙古', value: 100},
-            {name: '黑龙江', value: 100},
-            {name: '吉林', value: 400},
-            {name: '湖南', value: 400},
-            {name: '湖北', value: 400},
-            {name: '广东', value: 400},
-            {name: '广西', value: 800},
-            {name: '福建', value: 800},
-            {name: '香港', value: 800},
+            {name: '河北', value: 1},
           ],
           markPoint: {
             symbol: `image://${icon}`,
             symbolSize: 24,
             symbolOffset: [12, 24] ,
-            data: projectList.map(item => ({
+            data: projectStore.projectList.map(item => ({
               ...item,
               coord: [item.lng, item.lat],
               name: item.name,
@@ -319,7 +357,6 @@ onMounted(() => {
       ...item,
     }))
   });
-  chartRef.value = myChart
 });
 
 onUnmounted(() => {
