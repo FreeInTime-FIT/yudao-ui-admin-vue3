@@ -1961,6 +1961,10 @@ declare namespace APITypes {
   type DeviceManagementRespVO = {
     /** 主键ID */
     id: number;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
     /** 设备编号 */
     deviceCode: string;
     /** 项目编号 */
@@ -2001,6 +2005,10 @@ declare namespace APITypes {
     id: number;
     /** 设备编号 */
     deviceCode: string;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
     /** 项目编号 */
     projectId: string;
     /** 变压器容量(kVA) */
@@ -2371,6 +2379,10 @@ declare namespace APITypes {
     remark?: string;
     /** 创建时间 */
     createTime?: string;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -3133,6 +3145,10 @@ declare namespace APITypes {
     remark?: string;
     /** 创建时间 */
     createTime?: string;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -5535,6 +5551,16 @@ declare namespace APITypes {
     remark?: string;
     /** 状态（1：正常，0：禁用） */
     state: number;
+    town?: string;
+    nation?: string;
+    city?: string;
+    countyCode?: string;
+    county?: string;
+    cityCode?: string;
+    poi?: string;
+    provinceCode?: string;
+    province?: string;
+    road?: string;
   };
 
   type ProjectInfoSaveReqVO = {
@@ -6033,6 +6059,19 @@ declare namespace APITypes {
     type: number;
     /** 社交用户的 openid */
     openid: string;
+  };
+
+  type SwitchModeParam = {
+    projectId?: string;
+    mode?: 'OFFLINE' | 'GREEN' | 'ENERGY' | 'VIRTUAL' | 'CUSTOM';
+    params?: Record<string, any>;
+  };
+
+  type switchModeParams = {
+    /** 租户编号 */
+    'tenant-id'?: number;
+    /** 认证 Token */
+    Authorization?: string;
   };
 
   type syncCodegenFromDBParams = {
