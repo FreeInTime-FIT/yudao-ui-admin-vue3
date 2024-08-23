@@ -68,6 +68,8 @@
       <el-table-column label="预期寿命(年)" align="center" prop="expectedLifespan" />
       <el-table-column label="温度范围(°C)" align="center" prop="temperatureRange" />
       <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="平台项目Key" align="center" prop="productKey" />
+      <el-table-column label="平台设备名称" align="center" prop="deviceName" />
       <el-table-column
         label="创建时间"
         align="center"

@@ -59,6 +59,12 @@
       <el-form-item label="备注" prop="remark">
         <el-input v-model="formData.remark" placeholder="请输入备注"/>
       </el-form-item>
+      <el-form-item label="平台项目Key" prop="productKey">
+        <el-input v-model="formData.productKey" placeholder="请输入平台项目Key"/>
+      </el-form-item>
+      <el-form-item label="平台设备名称" prop="deviceName">
+        <el-input v-model="formData.deviceName" placeholder="请输入平台设备名称"/>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>
@@ -96,7 +102,9 @@ const formData = ref({
   chargeDischargeRate: undefined,
   expectedLifespan: undefined,
   temperatureRange: undefined,
-  remark: undefined
+  remark: undefined,
+  deviceName: undefined,
+  productKey: undefined,
 })
 const formRules = reactive({
   deviceCode: [{required: true, message: '设备编号不能为空', trigger: 'blur'}],
