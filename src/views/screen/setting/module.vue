@@ -73,7 +73,7 @@ onMounted(() => {
   getList()
 })
 watchEffect(() => {
-  innerModule.value = projectStore.projectInfo?.platformInfo?.mode || 'OFFLINE'
+  selected.value = projectStore.projectInfo?.platformInfo?.mode || 'OFFLINE'
 });
 const handleEdit = (row) => {
   console.log(row);
