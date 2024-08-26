@@ -10,7 +10,6 @@
       <el-form-item label="年月" prop="month">
         <el-date-picker
           v-model="formData.month"
-          type="month"
           value-format="YYYY-MM"
           placeholder="选择日期"
         />

@@ -225,27 +225,6 @@ const getLastData = async () => {
   const res = await getPanelData({
     key: 'boardView'
   })
-  //
-  // const res = await getLatestForKeys({},{
-  //   "keys":[
-  //     "addr_6003",
-  //     "addr_141",
-  //     "addr_6013",
-  //     "addr_6014",
-  //     "addr_192",
-  //     "addr_32",
-  //     "addr_162",
-  //     "addr_164",
-  //     "addr_151",
-  //     "addr_154",
-  //     "addr_153",
-  //     "addr_152",
-  //     "addr_155",
-  //     'addr_150',
-  //     '3#addr_0x3000',
-  //     'calc_addr_162+addr_164',
-  //   ]
-  // })
   keyValue.value = res.data || {};
   return res;
 }
