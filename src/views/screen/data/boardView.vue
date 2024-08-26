@@ -327,10 +327,6 @@ onMounted(() => {
     },
   }
   const valueTypes = [{
-    value: 'yesterday_avg',
-    label: '昨天',
-    color: '#e49134',
-  },{
     value: 'today_avg',
     label: '今天',
     color: '#3b76e8',
@@ -341,7 +337,7 @@ onMounted(() => {
     chart.setOption({
       dataset:  {
         ...res.data,
-        source: (res.data.source.length ? res.data.source : [
+        source: (res.data.source?.length ? res.data.source : [
           {
             hour: '00:00',
             yesterday_avg: 0.3,
@@ -394,6 +390,7 @@ onMounted(() => {
         icon: 'circle',
         right: 20,
         top: 20,
+        show: false,
         data: valueTypes.map((type) => ({
           name: type.label,
           itemStyle: {
