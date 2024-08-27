@@ -32,7 +32,7 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
         {id: 1, time: '2024-05-05 09:09:09', level : 1, project: '万达A', userName: '业主1',},
         { id: 2, time: '2024-05-05 09:09:09', level : 2, project: '万达B', userName: '业主1',},
         { id: 3, time: '2024-05-05 09:09:09', level : 3, project: '万达C', userName: '业主1',}] as RecordItem[],
-      total: 20,
+      total: 3,
     };
   }, props: undefined, response: undefined,
   defaultParams: queryParams,

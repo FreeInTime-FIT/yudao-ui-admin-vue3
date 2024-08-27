@@ -695,16 +695,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
         },
         component: () => import('@/views/screen/module/custom.vue')
       },
-      {
-        path: 'statistic/analysis',
-        name: 'ScreenStatisticAnalysis',
-        meta: {
-          title: '统计分析',
-          noCache: true,
-          activeMenu: '/screen/statistic/analysis'
-        },
-        component: () => import('@/views/screen/statistic/analysis.vue')
-      },
+      // {
+      //   path: 'statistic/analysis',
+      //   name: 'ScreenStatisticAnalysis',
+      //   meta: {
+      //     title: '统计分析',
+      //     noCache: true,
+      //     activeMenu: '/screen/statistic/analysis'
+      //   },
+      //   component: () => import('@/views/screen/statistic/analysis.vue')
+      // },
       {
         path: 'info/prices',
         name: 'ScreenInfoPrices',
