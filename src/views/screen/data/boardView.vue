@@ -225,27 +225,6 @@ const getLastData = async () => {
   const res = await getPanelData({
     key: 'boardView'
   })
-  //
-  // const res = await getLatestForKeys({},{
-  //   "keys":[
-  //     "addr_6003",
-  //     "addr_141",
-  //     "addr_6013",
-  //     "addr_6014",
-  //     "addr_192",
-  //     "addr_32",
-  //     "addr_162",
-  //     "addr_164",
-  //     "addr_151",
-  //     "addr_154",
-  //     "addr_153",
-  //     "addr_152",
-  //     "addr_155",
-  //     'addr_150',
-  //     '3#addr_0x3000',
-  //     'calc_addr_162+addr_164',
-  //   ]
-  // })
   keyValue.value = res.data || {};
   return res;
 }
@@ -348,10 +327,6 @@ onMounted(() => {
     },
   }
   const valueTypes = [{
-    value: 'yesterday_avg',
-    label: '昨天',
-    color: '#e49134',
-  },{
     value: 'today_avg',
     label: '今天',
     color: '#3b76e8',
@@ -362,7 +337,7 @@ onMounted(() => {
     chart.setOption({
       dataset:  {
         ...res.data,
-        source: (res.data.source.length ? res.data.source : [
+        source: (res.data.source?.length ? res.data.source : [
           {
             hour: '00:00',
             yesterday_avg: 0.3,
@@ -415,6 +390,7 @@ onMounted(() => {
         icon: 'circle',
         right: 20,
         top: 20,
+        show: false,
         data: valueTypes.map((type) => ({
           name: type.label,
           itemStyle: {
