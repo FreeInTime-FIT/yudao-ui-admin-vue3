@@ -44,7 +44,8 @@ const {getList, setSearchParams} = tableMethods
 
 const getLastData = async () => {
   const res = await getPanelData({
-    key: 'equipment'
+    key: 'equipment',
+    projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
   return res;
