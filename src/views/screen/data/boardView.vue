@@ -223,7 +223,8 @@ const keys = []
 const projectStore = useProjectStore();
 const getLastData = async () => {
   const res = await getPanelData({
-    key: 'boardView'
+    key: 'boardView',
+    projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
   return res;
