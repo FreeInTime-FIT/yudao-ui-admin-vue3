@@ -705,16 +705,16 @@ const remainingRouter: AppRouteRecordRaw[] = [
       //   },
       //   component: () => import('@/views/screen/statistic/analysis.vue')
       // },
-      {
-        path: 'info/prices',
-        name: 'ScreenInfoPrices',
-        meta: {
-          title: '电价信息',
-          noCache: true,
-          activeMenu: '/screen/info/prices'
-        },
-        component: () => import('@/views/screen/info/prices.vue')
-      },
+      // {
+      //   path: 'info/prices',
+      //   name: 'ScreenInfoPrices',
+      //   meta: {
+      //     title: '电价信息',
+      //     noCache: true,
+      //     activeMenu: '/screen/info/prices'
+      //   },
+      //   component: () => import('@/views/screen/info/prices.vue')
+      // },
       {
         path: 'setting/fields',
         name: 'ScreenSettingFields',
