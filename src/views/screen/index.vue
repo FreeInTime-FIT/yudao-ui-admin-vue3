@@ -34,6 +34,14 @@ const getData = async () => {
   keyValue.value = res.data || {};
   return res;
 }
+watch(() => [projectStore.projectInfo], (val) => {
+  if (!val) {
+    return
+  }
+  getData();
+}, {
+  immediate: true,
+})
 watchEffect(() => {
   if (mapChart && projectStore.projectList) {
     mapChart.setOption({
@@ -93,7 +101,6 @@ watchEffect(() => {
 onMounted(() => {
   mapChart = echarts.init(mapDomRef.value);
   mapChart.showLoading();
-  getData();
   import('@/views/screen/config/china.json').then(res => {
     console.log(res.default);
     mapChart.hideLoading();
