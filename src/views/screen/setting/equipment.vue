@@ -3,7 +3,13 @@ import InputWarp from "@/views/screen/components/InputWarp.vue";
 import {useTable} from "@/hooks/web/useTable";
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import {getPanelData} from "@/services/services/IotReportController";
-import {useIntervalFn} from "@vueuse/core";
+import {useIntervalFn, useLocalStorage, useWebSocket} from "@vueuse/core";
+import {useProjectStore} from "@/store/modules/project";
+import dayjs from "dayjs";
+import type {Ref} from "vue";
+import queryString from "query-string";
+import {getAccessToken} from "@/utils/auth";
+import {ElNotification, notificationProps} from "element-plus";
 
 type QueryParams = {
   startTime?: string;
@@ -23,24 +29,14 @@ const queryParams = reactive<{
   module: '',
   startTime: undefined,
   endTime: undefined,
+  deviceType:'1#'
 })
-const {tableObject, tableMethods} = useTable<RecordItem>({
-  async getListApi(option: any) {
-    console.log(option);
-    return {
-      list: [{id: 1, name: '光伏模型      ', status: '经济模式', person: 'xxxx'},
-        {id: 2, name: '储能模型', status: '经济模式', person: 'xxxx'},
-        {id: 3, name: '负荷模型 ', status: '经济模式', person: 'xxxx'},
-        {id: 11, name: '电网模型', status: '经济模式', person: 'xxxx'},
-        {id: 21, name: '光伏模型1', status: '经济模式', person: 'xxxx'},
-        {id: 31, name: '储能模型', status: '经济模式', person: 'xxxx'}
-      ] as RecordItem[],
-      total: 20,
-    };
-  }, props: undefined, response: undefined,
-  defaultParams: queryParams,
-});
-const {getList, setSearchParams} = tableMethods
+const WRITE_KEY = 'device-write-addr';
+const READ_KEY = 'device-read-addr'
+const DEVICE_LIST_KEY = 'device-project-last-data';
+const DEVICE_LIST_DATA = 'device-last-data';
+
+const projectStore = useProjectStore();
 
 const getLastData = async () => {
   const res = await getPanelData({
@@ -53,24 +49,115 @@ const getLastData = async () => {
 
 
 const keyValue = ref<any>({});
+const notifyRef = ref([]);
 
+const server = queryString.stringifyUrl({
+  url: (import.meta.env.VITE_BASE_URL + '/infra/ws').replace(/^http/, 'ws'),
+  query: {
+    token: getAccessToken(),
+  }});
+const { status, data, send, close, open } = useWebSocket<string>(server as any, {
+  autoReconnect: false,
+  heartbeat: !import.meta.env.DEV,
+  autoClose: false,
+  immediate: false,
+})
+const updateValue = ref({})
+const resData: Ref<any> = useLocalStorage<any>('sc:screen-setting-field', {}) as Ref<any>;
+const tableList = ref([])
+const sendData = (type, content) => {
+  send(JSON.stringify({
+    type,
+    content: JSON.stringify(content),
+  }));
+}
+const handleEdit = (rowData) => {
+  sendData(WRITE_KEY, {
+    ...rowData,
+    set: (updateValue.value[rowData.addr] || undefined),
+  });
+}
+const handleRead = (rowData) => {
+  sendData(READ_KEY, {
+    ...rowData,
+    set: (updateValue.value[rowData.addr] || {}),
+  });
+  updateValue.value[rowData.addr] = undefined;
+}
+function handleRefresh() {
+  sendData(DEVICE_LIST_KEY, {
+    projectId: projectStore.projectInfo?.id,
+  });
+}
+const dealData = (prev, nowData) => {
+  return {
+    ...nowData,
+    profits: [
+      ...nowData.profits.map(i => ({
+        updateTime: dayjs(nowData.updateTime).format('HH:mm:ss.SSS'),
+        ...i,
+      })),
+      ...(prev?.profits || []).filter(i => nowData.profits.every(item => item.addr !== i.addr)),
+    ].sort((a, b) => {
+      const aArr = a.addr.split('#').map(i => parseInt(i));
+      const bArr = b.addr.split('#').map(i => parseInt(i));
+      if (aArr[0] !== bArr[0]) {
+        return aArr[0] - bArr[0]
+      }
+      return aArr[1] - bArr[1]
+    }),
+  }
+}
+watch(data, () => {
+  if (!unref(data)) {
+    return
+  }
+
+  if (unref(data) === 'pong' || unref(data) === '"pong"') {
+    return;
+  }
+  try {
+    const jsonMessage = JSON.parse(unref(data) as string)
+    if (jsonMessage.type === DEVICE_LIST_DATA) {
+      // resData.value = dealData(resData.value || {}, JSON.parse(jsonMessage.content))
+      resData.value = JSON.parse(jsonMessage.content)
+      tableList.value = resData.value.profits.filter(it=> it.access == 'RW')
+      console.log(tableList.value);
+    }
+    if (jsonMessage.type === 'success') {
+      if (notifyRef.value && notifyRef.value.length > 3) {
+        notifyRef.value.shift().close();
+      }
+      const res = JSON.parse(jsonMessage.content);
+      notifyRef.value.push(
+        ElNotification({
+          title: '操作成功',
+          message: res.msg,
+          type: 'success',
+        } as notificationProps)
+      )
+      return;
+    }
+    return;
+  }catch (e) {
+    console.warn(e);
+  }
+})
 onMounted(() => {
-  getList()
+  open() ;
   getLastData()
-
+})
+watch(() => [projectStore.projectInfo], (val) => {
+  if (!val) {
+    return
+  }
+  handleRefresh()
+}, {
+  immediate: true,
 })
 useIntervalFn(() => {
   getLastData();
 }, 3000)
-const handleEdit = (row) => {
-  console.log(row);
-}
-const handleClose = () => {
-
-}
-const handleOpen = () => {
-
-}
 
 </script>
 
@@ -83,47 +170,53 @@ const handleOpen = () => {
   >
     <ElFormItem prop="d">
       <InputWarp>
-        <ElSelect placeholder="参数名称">
-          <ElOption value="a">所有设备</ElOption>
+        <ElSelect placeholder="设备选择" v-model="queryParams.deviceType">
+          <ElOption value="1#" label="1#:逆变器" />
+          <ElOption value="2#" label="2#:空调"/>
+          <ElOption value="11#" label="11#电表"/>
         </ElSelect>
       </InputWarp>
-    </ElFormItem>
-    <ElFormItem prop="12">
-      <InputWarp>
-        <ElSelect placeholder="参数用途">
-          <ElOption value="a">所有设备</ElOption>
-        </ElSelect>
-      </InputWarp>
-
     </ElFormItem>
 
     <ElFormItem>
-      <ElButton type="primary">查询</ElButton>
+      <ElButton type="primary" @click="handleRefresh">查询</ElButton>
     </ElFormItem>
   </ElForm>
   <ContentWrap
     title="设备配置列表"
   >
-    <ElTable
-      v-loading="tableObject.loading"
-      :data="tableObject.tableList"
-      stripe
-    >
-      <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1"/>
-      <ElTableColumn prop="name" label="参数名称"/>
-      <ElTableColumn prop="status" label="参数用途"/>
-      <ElTableColumn prop="3" label="默认值"/>
-      <ElTableColumn prop="4" label="设置值"/>
-      <ElTableColumn prop="person" label="回传值"/>
-      <ElTableColumn prop="7" label="回传时间"/>
-      <ElTableColumn prop="6" label="操作">
-        <template #default="scope">
-          <a @click="handleEdit(scope.row)">招采</a>
-          <a @click="handleEdit(scope.row)">下发</a>
-        </template>
-      </ElTableColumn>
-    </ElTable>
-
+    <ElAutoResizer>
+      <template #default="{ height, width }">
+        <ElTable
+          :data="tableList.filter(i => i.addr.includes(queryParams.deviceType))"
+          fixed
+          :width="width || 800"
+          :height="height || 800"
+        >
+          <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1"/>
+          <ElTableColumn prop="addr" label="addr"/>
+          <ElTableColumn prop="type" label="type"/>
+          <ElTableColumn prop="access" label="access"/>
+          <ElTableColumn prop="value" label="value">
+            <template #default="scope">
+              <el-input v-model="scope.row.value" />
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="set" label="set">
+            <template #default="scope">
+              <el-input v-model="updateValue[scope.row.addr]" />
+            </template>
+          </ElTableColumn>
+          <ElTableColumn prop="des" label="desc"/>
+          <ElTableColumn label="操作">
+            <template #default="scope">
+              <ElButton @click="handleRead(scope.row)">招采</ElButton>
+              <ElButton @click="handleEdit(scope.row)">下发</ElButton>
+            </template>
+          </ElTableColumn>
+        </ElTable>
+      </template>
+    </ElAutoResizer>
   </ContentWrap>
   <CardHeader title="环控设备"/>
   <section class="flex  gap-[40px] mt-[30px]">
@@ -316,7 +409,11 @@ const handleOpen = () => {
     align-items: center;
   }
 }
-
+.el-table{
+  :deep(.el-input){
+    --el-input-bg-color: #000;
+  }
+}
 a {
   color: #fff;
   text-decoration: none;
