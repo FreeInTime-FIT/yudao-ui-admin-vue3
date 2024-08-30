@@ -419,6 +419,7 @@
     }
     historyList.value = [];
     selectedList.value = [];
+    resData.value = {}
     sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   });
 

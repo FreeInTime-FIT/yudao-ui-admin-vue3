@@ -387,18 +387,18 @@ const totalList = [{
 }, {
   label: '负荷总量',
   key: 'user3',
-  value: 20000,
+  value: '-',
   unit: 'kW',
 }, {
   label: '电源总量',
   key: 'user4',
-  value: 20000,
+  value: '-',
   unit: 'kWh',
 }, {
   label: '储能总量',
   key: 'user5',
   unit: 'kWh',
-  value: 20000,
+  value: '-',
 }]
 const todayData = [
   {
