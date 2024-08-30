@@ -174,9 +174,10 @@
                         v-if="checkPermi(['system:permission:assign-user-role'])"
                       >
                         <Icon icon="ep:circle-check" />分配角色
-                      </el-dropdown-item                      >
+                      </el-dropdown-item>
                       <el-dropdown-item
                         command="handleProject"
+                        v-if="checkPermi(['system:permission:assign-user-role'])"
                       >
                         <Icon icon="ep:circle-check" />分配项目
                       </el-dropdown-item>
@@ -201,10 +202,10 @@
   <UserForm ref="formRef" @success="getList" />
   <!-- 用户导入对话框 -->
   <UserImportForm ref="importFormRef" @success="getList" />
-  <!-- 分配角色 -->
-  <UserAssignRoleForm ref="assignRoleFormRef" @success="getList" />
   <!--分配项目 -->
   <UserAssignProjectForm ref="assignProjectFormRef" @success="getList" />
+  <!-- 分配角色 -->
+  <UserAssignRoleForm ref="assignRoleFormRef" @success="getList" />
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -314,6 +315,8 @@ const handleExport = async () => {
 
 /** 操作分发 */
 const handleCommand = (command: string, row: UserApi.UserVO) => {
+  console.log('handleCommand', command, row  )
+  debugger
   switch (command) {
     case 'handleDelete':
       handleDelete(row.id)
