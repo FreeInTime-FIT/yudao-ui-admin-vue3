@@ -34,6 +34,9 @@ const getData = async () => {
   keyValue.value = res.data || {};
   return res;
 }
+watch(()=> projectStore.projectInfo,()=> {
+  getData()
+})
 watchEffect(() => {
   if (mapChart && projectStore.projectList) {
     mapChart.setOption({
