@@ -134,16 +134,17 @@
             :formatter="dateFormatter"
             width="180"
           />
-          <el-table-column label="操作" align="center" width="160">
+          <el-table-column fixed="right" label="操作" align="center" width="100">
             <template #default="scope">
-              <div class="flex items-center justify-center">
+              <div class="flex items-center gap-12px justify-center">
                 <el-button
                   type="primary"
                   link
                   @click="openForm('update', scope.row.id)"
                   v-hasPermi="['system:user:update']"
+                  title="修改"
                 >
-                  <Icon icon="ep:edit" />修改
+                  <Icon icon="ep:edit" />
                 </el-button>
                 <el-dropdown
                   @command="(command) => handleCommand(command, scope.row)"
@@ -153,7 +154,7 @@
                     'system:permission:assign-user-role'
                   ]"
                 >
-                  <el-button type="primary" link><Icon icon="ep:d-arrow-right" /> 更多</el-button>
+                  <el-button title="更多" type="primary" link><Icon icon="ep:more" /></el-button>
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item
@@ -215,13 +216,13 @@ import * as UserApi from '@/api/system/user'
 import UserForm from './UserForm.vue'
 import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
+import UserAssignProjectForm from './UserAssignProjectForm.vue'
 import DeptTree from './DeptTree.vue'
 
 defineOptions({ name: 'SystemUser' })
 
 const message = useMessage() // 消息弹窗
 const { t } = useI18n() // 国际化
-
 const loading = ref(true) // 列表的加载中
 const total = ref(0) // 列表的总页数
 const list = ref([]) // 列表的数
@@ -367,7 +368,7 @@ const handleRole = (row: UserApi.UserVO) => {
 /** 分配项目 */
 const assignProjectFormRef = ref()
 const handleProject = (row: UserApi.UserVO) => {
-  assignProjectFormRef.value.open(row)
+  unref(assignProjectFormRef)?.open(row)
 }
 
 /** 初始化 */
