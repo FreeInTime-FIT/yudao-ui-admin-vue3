@@ -7,7 +7,7 @@ import { useResizeObserver } from '@vueuse/core'
 import dayjs from "dayjs";
 import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
-import {getPanelData} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import {getPanelData} from "@/services/services/IotReportController";
 const echartsDomRef = ref<HTMLElement>()
 const chartRef = ref()
 const mapDomRef = ref();

@@ -2,7 +2,7 @@
 import InputWarp from "@/views/screen/components/InputWarp.vue";
 import {useTable} from "@/hooks/web/useTable";
 import CardHeader from "@/views/screen/components/CardHeader.vue";
-import {getPanelData} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+import {getPanelData} from "@/services/services/IotReportController";
 import {useIntervalFn} from "@vueuse/core";
 
 type QueryParams = {

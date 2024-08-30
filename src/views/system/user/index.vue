@@ -173,6 +173,11 @@
                         v-if="checkPermi(['system:permission:assign-user-role'])"
                       >
                         <Icon icon="ep:circle-check" />分配角色
+                      </el-dropdown-item                      >
+                      <el-dropdown-item
+                        command="handleProject"
+                      >
+                        <Icon icon="ep:circle-check" />分配项目
                       </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
@@ -197,6 +202,8 @@
   <UserImportForm ref="importFormRef" @success="getList" />
   <!-- 分配角色 -->
   <UserAssignRoleForm ref="assignRoleFormRef" @success="getList" />
+  <!--分配项目 -->
+  <UserAssignProjectForm ref="assignProjectFormRef" @success="getList" />
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -316,6 +323,9 @@ const handleCommand = (command: string, row: UserApi.UserVO) => {
     case 'handleRole':
       handleRole(row)
       break
+    case 'handleProject':
+      handleProject(row)
+      break
     default:
       break
   }
@@ -353,6 +363,11 @@ const handleResetPwd = async (row: UserApi.UserVO) => {
 const assignRoleFormRef = ref()
 const handleRole = (row: UserApi.UserVO) => {
   assignRoleFormRef.value.open(row)
+}
+/** 分配项目 */
+const assignProjectFormRef = ref()
+const handleProject = (row: UserApi.UserVO) => {
+  assignProjectFormRef.value.open(row)
 }
 
 /** 初始化 */

@@ -214,7 +214,7 @@ import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
 import {
   getLatestPrice, getPanelData
-} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+} from "@/services/services/IotReportController";
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
 defineOptions({ name: '数据中心' })

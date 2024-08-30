@@ -4,7 +4,7 @@ import InputWarp from "@/views/screen/components/InputWarp.vue";
 import { useProjectStore } from '@/store/modules/project'
 
 import {useTable} from "@/hooks/web/useTable";
-import {switchMode} from "@/services/services/guanlihoutaiShebeixiaoxifasong";
+import {switchMode} from "@/services/services/DeviceMessageController";
 
 const projectStore = useProjectStore();
 type QueryParams = {

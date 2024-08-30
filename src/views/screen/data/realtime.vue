@@ -7,7 +7,7 @@ import bg from '@/views/screen/assets/real-bg.png'
 
 import {
   getPanelData
-} from "@/services/services/guanlihoutaiIOTshujushishihuoqu";
+} from "@/services/services/IotReportController";
 import {useProjectStore} from "@/store/modules/project";
 echarts.registerTheme('screen', screenConfig);
 

@@ -2,115 +2,117 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as guanlihoutai Yonghugerenzhongxin from './guanlihoutai Yonghugerenzhongxin'
-import * as guanlihoutai Yonghu from './guanlihoutai Yonghu'
-import * as guanlihoutai Zuhu from './guanlihoutai Zuhu'
-import * as guanlihoutai Zuhutaocan from './guanlihoutai Zuhutaocan'
-import * as guanlihoutai Shejiaokehuduan from './guanlihoutai Shejiaokehuduan'
-import * as guanlihoutai Duanxinmoban from './guanlihoutai Duanxinmoban'
-import * as guanlihoutai Duanxinqudao from './guanlihoutai Duanxinqudao'
-import * as guanlihoutai Jiaose from './guanlihoutai Jiaose'
-import * as guanlihoutai Gangwei from './guanlihoutai Gangwei'
-import * as 0Yonghu from './0Yonghu'
-import * as guanlihoutaiOAuth2Kehuduan from './guanlihoutaiOAuth2Kehuduan'
-import * as guanlihoutai Zhanneixinmoban from './guanlihoutai Zhanneixinmoban'
-import * as guanlihoutai Wodezhanneixin from './guanlihoutai Wodezhanneixin'
-import * as guanlihoutai Tongzhigonggao from './guanlihoutai Tongzhigonggao'
-import * as guanlihoutai Caidan from './guanlihoutai Caidan'
-import * as guanlihoutai Youjianmoban from './guanlihoutai Youjianmoban'
-import * as guanlihoutai Youxiangzhanghao from './guanlihoutai Youxiangzhanghao'
-import * as guanlihoutai Zidianleixing from './guanlihoutai Zidianleixing'
-import * as guanlihoutai Zidianshuju from './guanlihoutai Zidianshuju'
-import * as guanlihoutai Bumen from './guanlihoutai Bumen'
-import * as guanlihoutaiGoViewXiangmu from './guanlihoutaiGoViewXiangmu'
-import * as guanlihoutai Xiangmuxinxi from './guanlihoutai Xiangmuxinxi'
-import * as guanlihoutai Shebeiguanli from './guanlihoutai Shebeiguanli'
-import * as guanlihoutai Dingshirenwu from './guanlihoutai Dingshirenwu'
-import * as guanlihoutai Wenjianpeizhi from './guanlihoutai Wenjianpeizhi'
-import * as guanlihoutai Xuesheng from './guanlihoutai Xuesheng'
-import * as guanlihoutai Shilifenlei from './guanlihoutai Shilifenlei'
-import * as guanlihoutai Shililianxiren from './guanlihoutai Shililianxiren'
-import * as guanlihoutai Shujuyuanpeizhi from './guanlihoutai Shujuyuanpeizhi'
-import * as guanlihoutai Canshupeizhi from './guanlihoutai Canshupeizhi'
-import * as guanlihoutai Daimashengchengqi from './guanlihoutai Daimashengchengqi'
-import * as guanlihoutaiAPICuowurizhi from './guanlihoutaiAPICuowurizhi'
-import * as yonghuApp Wenjiancunchu from './yonghuApp Wenjiancunchu'
-import * as guanlihoutai Shejiaoyonghu from './guanlihoutai Shejiaoyonghu'
-import * as guanlihoutai Duanxinhuidiao from './guanlihoutai Duanxinhuidiao'
-import * as guanlihoutai Quanxian from './guanlihoutai Quanxian'
-import * as 0Shouquan from './0Shouquan'
-import * as guanlihoutai Yanzhengma from './guanlihoutai Yanzhengma'
-import * as guanlihoutai Renzheng from './guanlihoutai Renzheng'
-import * as guanlihoutaiIOTshujushishihuoqu from './guanlihoutaiIOTshujushishihuoqu'
-import * as guanlihoutai Shebeixiaoxifasong from './guanlihoutai Shebeixiaoxifasong'
-import * as guanlihoutai Wenjiancunchu from './guanlihoutai Wenjiancunchu'
-import * as yonghuApp Zidianshuju from './yonghuApp Zidianshuju'
-import * as yonghuApp Dequ from './yonghuApp Dequ'
-import * as guanlihoutai Duanxinrizhi from './guanlihoutai Duanxinrizhi'
-import * as guanlihoutai Caozuorizhi from './guanlihoutai Caozuorizhi'
-import * as 0Lingpai from './0Lingpai'
-import * as guanlihoutai Youjianrizhi from './guanlihoutai Youjianrizhi'
-import * as guanlihoutai Denglurizhi from './guanlihoutai Denglurizhi'
-import * as guanlihoutai Dequ from './guanlihoutai Dequ'
-import * as guanlihoutaiRedisJiankong from './guanlihoutaiRedisJiankong'
-import * as guanlihoutai Dingshirenwurizhi from './guanlihoutai Dingshirenwurizhi'
-import * as guanlihoutaiAPIFangwenrizhi from './guanlihoutaiAPIFangwenrizhi'
-import * as guanlihoutaiGoViewShuju from './guanlihoutaiGoViewShuju'
-import * as defaultController from './defaultController'
+import * as UserProfileController from './UserProfileController';
+import * as UserController from './UserController';
+import * as TenantController from './TenantController';
+import * as TenantPackageController from './TenantPackageController';
+import * as SocialClientController from './SocialClientController';
+import * as SmsTemplateController from './SmsTemplateController';
+import * as SmsChannelController from './SmsChannelController';
+import * as RoleController from './RoleController';
+import * as PostController from './PostController';
+import * as OAuth2UserController from './OAuth2UserController';
+import * as OAuth2ClientController from './OAuth2ClientController';
+import * as NotifyTemplateController from './NotifyTemplateController';
+import * as NotifyMessageController from './NotifyMessageController';
+import * as NoticeController from './NoticeController';
+import * as MenuController from './MenuController';
+import * as MailTemplateController from './MailTemplateController';
+import * as MailAccountController from './MailAccountController';
+import * as DictTypeController from './DictTypeController';
+import * as DictDataController from './DictDataController';
+import * as DeptController from './DeptController';
+import * as GoViewProjectController from './GoViewProjectController';
+import * as ProjectInfoController from './ProjectInfoController';
+import * as HourlyPricesController from './HourlyPricesController';
+import * as DeviceManagementController from './DeviceManagementController';
+import * as JobController from './JobController';
+import * as FileConfigController from './FileConfigController';
+import * as Demo03StudentController from './Demo03StudentController';
+import * as Demo02CategoryController from './Demo02CategoryController';
+import * as Demo01ContactController from './Demo01ContactController';
+import * as DataSourceConfigController from './DataSourceConfigController';
+import * as ConfigController from './ConfigController';
+import * as CodegenController from './CodegenController';
+import * as ApiErrorLogController from './ApiErrorLogController';
+import * as AppFileController from './AppFileController';
+import * as SocialUserController from './SocialUserController';
+import * as SmsCallbackController from './SmsCallbackController';
+import * as PermissionController from './PermissionController';
+import * as OAuth2OpenController from './OAuth2OpenController';
+import * as CaptchaController from './CaptchaController';
+import * as AuthController from './AuthController';
+import * as IotReportController from './IotReportController';
+import * as DeviceMessageController from './DeviceMessageController';
+import * as FileController from './FileController';
+import * as AppDictDataController from './AppDictDataController';
+import * as AppAreaController from './AppAreaController';
+import * as SmsLogController from './SmsLogController';
+import * as OperateLogController from './OperateLogController';
+import * as OAuth2TokenController from './OAuth2TokenController';
+import * as MailLogController from './MailLogController';
+import * as LoginLogController from './LoginLogController';
+import * as AreaController from './AreaController';
+import * as RedisController from './RedisController';
+import * as JobLogController from './JobLogController';
+import * as ApiAccessLogController from './ApiAccessLogController';
+import * as GoViewDataController from './GoViewDataController';
+import * as DefaultController from './DefaultController';
 export default {
-  guanlihoutai Yonghugerenzhongxin,
-  guanlihoutai Yonghu,
-  guanlihoutai Zuhu,
-  guanlihoutai Zuhutaocan,
-  guanlihoutai Shejiaokehuduan,
-  guanlihoutai Duanxinmoban,
-  guanlihoutai Duanxinqudao,
-  guanlihoutai Jiaose,
-  guanlihoutai Gangwei,
-  0Yonghu,
-  guanlihoutaiOAuth2Kehuduan,
-  guanlihoutai Zhanneixinmoban,
-  guanlihoutai Wodezhanneixin,
-  guanlihoutai Tongzhigonggao,
-  guanlihoutai Caidan,
-  guanlihoutai Youjianmoban,
-  guanlihoutai Youxiangzhanghao,
-  guanlihoutai Zidianleixing,
-  guanlihoutai Zidianshuju,
-  guanlihoutai Bumen,
-  guanlihoutaiGoViewXiangmu,
-  guanlihoutai Xiangmuxinxi,
-  guanlihoutai Shebeiguanli,
-  guanlihoutai Dingshirenwu,
-  guanlihoutai Wenjianpeizhi,
-  guanlihoutai Xuesheng,
-  guanlihoutai Shilifenlei,
-  guanlihoutai Shililianxiren,
-  guanlihoutai Shujuyuanpeizhi,
-  guanlihoutai Canshupeizhi,
-  guanlihoutai Daimashengchengqi,
-  guanlihoutaiAPICuowurizhi,
-  yonghuApp Wenjiancunchu,
-  guanlihoutai Shejiaoyonghu,
-  guanlihoutai Duanxinhuidiao,
-  guanlihoutai Quanxian,
-  0Shouquan,
-  guanlihoutai Yanzhengma,
-  guanlihoutai Renzheng,
-  guanlihoutaiIOTshujushishihuoqu,
-  guanlihoutai Shebeixiaoxifasong,
-  guanlihoutai Wenjiancunchu,
-  yonghuApp Zidianshuju,
-  yonghuApp Dequ,
-  guanlihoutai Duanxinrizhi,
-  guanlihoutai Caozuorizhi,
-  0Lingpai,
-  guanlihoutai Youjianrizhi,
-  guanlihoutai Denglurizhi,
-  guanlihoutai Dequ,
-  guanlihoutaiRedisJiankong,
-  guanlihoutai Dingshirenwurizhi,
-  guanlihoutaiAPIFangwenrizhi,
-  guanlihoutaiGoViewShuju,
-  defaultController,
-  }
+  UserProfileController,
+  UserController,
+  TenantController,
+  TenantPackageController,
+  SocialClientController,
+  SmsTemplateController,
+  SmsChannelController,
+  RoleController,
+  PostController,
+  OAuth2UserController,
+  OAuth2ClientController,
+  NotifyTemplateController,
+  NotifyMessageController,
+  NoticeController,
+  MenuController,
+  MailTemplateController,
+  MailAccountController,
+  DictTypeController,
+  DictDataController,
+  DeptController,
+  GoViewProjectController,
+  ProjectInfoController,
+  HourlyPricesController,
+  DeviceManagementController,
+  JobController,
+  FileConfigController,
+  Demo03StudentController,
+  Demo02CategoryController,
+  Demo01ContactController,
+  DataSourceConfigController,
+  ConfigController,
+  CodegenController,
+  ApiErrorLogController,
+  AppFileController,
+  SocialUserController,
+  SmsCallbackController,
+  PermissionController,
+  OAuth2OpenController,
+  CaptchaController,
+  AuthController,
+  IotReportController,
+  DeviceMessageController,
+  FileController,
+  AppDictDataController,
+  AppAreaController,
+  SmsLogController,
+  OperateLogController,
+  OAuth2TokenController,
+  MailLogController,
+  LoginLogController,
+  AreaController,
+  RedisController,
+  JobLogController,
+  ApiAccessLogController,
+  GoViewDataController,
+  DefaultController,
+};

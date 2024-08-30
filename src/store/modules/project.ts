@@ -4,7 +4,9 @@
  * @date 2024/7/29
  */
 import { defineStore } from 'pinia'
-import {getProjectInfoList} from "@/services/services/guanlihoutaiXiangmuxinxi";
+import {
+  getProjectInfoListForAuth
+} from "@/services/services/ProjectInfoController";
 
 type ProjectParams = {
   projectInfo: APITypes.ProjectInfoRespVO | null;
@@ -20,7 +22,7 @@ export const useProjectStore = defineStore('projectStore', {
   },
   actions: {
     async getProjectList() {
-      const res = await getProjectInfoList({});
+      const res = await getProjectInfoListForAuth({});
       if(!res || !res.data) {
         return
       }

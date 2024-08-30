@@ -121,10 +121,6 @@ declare namespace APITypes {
     /** 用户是否接受 */
     auto_approve: boolean;
     state?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type AreaNodeRespVO = {
@@ -132,27 +128,6 @@ declare namespace APITypes {
     id: number;
     /** 名字 */
     name: string;
-  };
-
-  type assignRoleDataScopeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type assignRoleMenuParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type assignUserRoleParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type AuthLoginReqVO = {
@@ -185,10 +160,6 @@ declare namespace APITypes {
   type authorizeParams = {
     /** 客户端编号 */
     clientId: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type AuthPermissionInfoRespVO = {
@@ -224,41 +195,6 @@ declare namespace APITypes {
     state: string;
   };
 
-  type bpm4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type bpm4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type bpm4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type bpm4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type bpm404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type CaptchaVO = {
     captchaId?: string;
     projectCode?: string;
@@ -281,20 +217,9 @@ declare namespace APITypes {
     browserInfo?: string;
   };
 
-  type checkParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type checkTokenParams = {
     /** 访问令牌 */
     token: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type Client = {
@@ -613,6 +538,12 @@ declare namespace APITypes {
   type CommonResultGoViewProjectRespVO = {
     code?: number;
     data?: GoViewProjectRespVO;
+    msg?: string;
+  };
+
+  type CommonResultHourlyPricesRespVO = {
+    code?: number;
+    data?: HourlyPricesRespVO;
     msg?: string;
   };
 
@@ -952,6 +883,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultPageResultHourlyPricesRespVO = {
+    code?: number;
+    data?: PageResultHourlyPricesRespVO;
+    msg?: string;
+  };
+
   type CommonResultPageResultJobLogRespVO = {
     code?: number;
     data?: PageResultJobLogRespVO;
@@ -1224,258 +1161,6 @@ declare namespace APITypes {
     remark?: string;
   };
 
-  type createCodegenListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDataSourceConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDemo01ContactParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDemo02CategoryParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDemo03CourseParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDemo03GradeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDemo03StudentParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDeptParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDeviceManagementParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDictDataParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createDictTypeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createFileConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createFileParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createJobParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createMailAccountParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createMailTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createMenuParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createNoticeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createNotifyTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createOAuth2ClientParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createPostParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createProjectInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createProjectParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createRoleParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createSmsChannelParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createSmsTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createSocialClientParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createTenantPackageParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createTenantParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type createUserParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type crm4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type crm4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type crm4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type crm4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type crm404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type DatabaseTableRespVO = {
     /** 表名称 */
     name: string;
@@ -1512,288 +1197,165 @@ declare namespace APITypes {
   type deleteAccessTokenParams = {
     /** 访问令牌 */
     accessToken: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteCodegenParams = {
     /** 表编号 */
     tableId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDataSourceConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDemo01ContactParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDemo02CategoryParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDemo03CourseParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDemo03GradeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDemo03StudentParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDeptParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDeviceManagementParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDictDataParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteDictTypeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteFileConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteFileParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type deleteHourlyPricesParams = {
+    /** 编号 */
+    id: number;
   };
 
   type deleteJobParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteMailAccountParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteMailTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteMenuParams = {
     /** 菜单编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteNoticeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteNotifyTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteOAuth2ClientParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deletePostParams = {
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteProjectInfoParams = {
     /** 编号 */
     id: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteProjectParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteRoleParams = {
     /** 角色编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteSmsChannelParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteSmsTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteSocialClientParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteTenantPackageParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteTenantParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type deleteUserParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type Demo01ContactRespVO = {
@@ -2136,98 +1698,6 @@ declare namespace APITypes {
   type downloadCodegenParams = {
     /** 表编号 */
     tableId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type erp4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type erp4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type erp4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type erp4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type erp404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type export1Params = {
-    /** 岗位编码，模糊匹配 */
-    code?: string;
-    /** 岗位名称，模糊匹配 */
-    name?: string;
-    /** 展示状态，参见 CommonStatusEnum 枚举类 */
-    status?: string;
-    /** 页码，从 1 开始 */
-    pageNo: string;
-    /** 每页条数，最大值为 100 */
-    pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type export2Params = {
-    /** 字典类型名称，模糊匹配 */
-    name?: string;
-    /** 字典类型，模糊匹配 */
-    type?: string;
-    /** 展示状态，参见 CommonStatusEnum 枚举类 */
-    status?: string;
-    /** 创建时间 */
-    createTime?: string;
-    /** 页码，从 1 开始 */
-    pageNo: string;
-    /** 每页条数，最大值为 100 */
-    pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type export3Params = {
-    /** 字典标签 */
-    label?: string;
-    /** 字典类型，模糊匹配 */
-    dictType?: string;
-    /** 展示状态，参见 CommonStatusEnum 枚举类 */
-    status?: string;
-    /** 页码，从 1 开始 */
-    pageNo: string;
-    /** 每页条数，最大值为 100 */
-    pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportApiAccessLogExcelParams = {
@@ -2249,10 +1719,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportApiErrorLogExcelParams = {
@@ -2272,10 +1738,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportConfigParams = {
@@ -2291,10 +1753,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportDemo01ContactExcelParams = {
@@ -2308,10 +1766,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportDemo02CategoryExcelParams = {
@@ -2321,10 +1775,6 @@ declare namespace APITypes {
     parentId?: string;
     /** 创建时间 */
     createTime?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportDemo03StudentExcelParams = {
@@ -2340,10 +1790,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportDeviceManagementExcelParams = {
@@ -2387,10 +1833,67 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type exportHourlyPricesExcelParams = {
+    /** 存储年月，格式为YYYY-MM，例如2024-08，用于标识具体的年份和月份 */
+    month?: string;
+    /** 项目的唯一标识ID */
+    projectId?: string;
+    /** 第1小时的价格 */
+    price01?: string;
+    /** 第2小时的价格 */
+    price02?: string;
+    /** 第3小时的价格 */
+    price03?: string;
+    /** 第4小时的价格 */
+    price04?: string;
+    /** 第5小时的价格 */
+    price05?: string;
+    /** 第6小时的价格 */
+    price06?: string;
+    /** 第7小时的价格 */
+    price07?: string;
+    /** 第8小时的价格 */
+    price08?: string;
+    /** 第9小时的价格 */
+    price09?: string;
+    /** 第10小时的价格 */
+    price10?: string;
+    /** 第11小时的价格 */
+    price11?: string;
+    /** 第12小时的价格 */
+    price12?: string;
+    /** 第13小时的价格 */
+    price13?: string;
+    /** 第14小时的价格 */
+    price14?: string;
+    /** 第15小时的价格 */
+    price15?: string;
+    /** 第16小时的价格 */
+    price16?: string;
+    /** 第17小时的价格 */
+    price17?: string;
+    /** 第18小时的价格 */
+    price18?: string;
+    /** 第19小时的价格 */
+    price19?: string;
+    /** 第20小时的价格 */
+    price20?: string;
+    /** 第21小时的价格 */
+    price21?: string;
+    /** 第22小时的价格 */
+    price22?: string;
+    /** 第23小时的价格 */
+    price23?: string;
+    /** 第24小时的价格 */
+    price24?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
   };
 
   type exportJobExcelParams = {
@@ -2404,10 +1907,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportJobLogExcelParams = {
@@ -2425,10 +1924,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportLoginLogParams = {
@@ -2444,10 +1939,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportOperateLogParams = {
@@ -2467,10 +1958,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportProjectInfoExcelParams = {
@@ -2500,10 +1987,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportSmsLogExcelParams = {
@@ -2525,10 +2008,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportSmsTemplateExcelParams = {
@@ -2550,10 +2029,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportTenantExcelParams = {
@@ -2571,10 +2046,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportUserListParams = {
@@ -2592,10 +2063,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type exportUsingGETParams = {
@@ -2611,10 +2078,47 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type exportUsingGETParams = {
+    /** 岗位编码，模糊匹配 */
+    code?: string;
+    /** 岗位名称，模糊匹配 */
+    name?: string;
+    /** 展示状态，参见 CommonStatusEnum 枚举类 */
+    status?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+  };
+
+  type exportUsingGETParams = {
+    /** 字典类型名称，模糊匹配 */
+    name?: string;
+    /** 字典类型，模糊匹配 */
+    type?: string;
+    /** 展示状态，参见 CommonStatusEnum 枚举类 */
+    status?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+  };
+
+  type exportUsingGETParams = {
+    /** 字典标签 */
+    label?: string;
+    /** 字典类型，模糊匹配 */
+    dictType?: string;
+    /** 展示状态，参见 CommonStatusEnum 枚举类 */
+    status?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
   };
 
   type FileClientConfig = true;
@@ -2702,10 +2206,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getApiAccessLogPageParams = {
@@ -2727,10 +2227,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getApiErrorLogPageParams = {
@@ -2750,51 +2246,21 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getAreaByIpParams = {
     /** IP */
     ip: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getAreaTree1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getAreaTreeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getCodegenDetailParams = {
     /** 表编号 */
     tableId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getCodegenTableListParams = {
     /** 数据源配置的编号 */
     dataSourceConfigId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getCodegenTablePageParams = {
@@ -2810,19 +2276,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getConfigKeyParams = {
     /** 参数键 */
     key: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getConfigPageParams = {
@@ -2838,19 +2296,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDatabaseTableListParams = {
@@ -2860,98 +2310,19 @@ declare namespace APITypes {
     name?: string;
     /** 描述，模糊匹配 */
     comment?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataByHttp2Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataByHttp3Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataByHttp4Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataByHttp5Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDataByHttpParams = {
     body: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataBySQL2Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataBySQL3Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataBySQL4Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataBySQL5Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDataBySQLParams = {
     reqVO: GoViewDataGetBySqlReqVO;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getDataSourceConfigListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDataSourceConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo01ContactPageParams = {
@@ -2965,19 +2336,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo01ContactParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo02CategoryListParams = {
@@ -2987,28 +2350,16 @@ declare namespace APITypes {
     parentId?: string;
     /** 创建时间 */
     createTime?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo02CategoryParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03CourseListByStudentIdParams = {
     /** 学生编号 */
     studentId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03CoursePageParams = {
@@ -3018,28 +2369,16 @@ declare namespace APITypes {
     pageSize: string;
     /** 学生编号 */
     studentId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03CourseParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03GradeByStudentIdParams = {
     /** 学生编号 */
     studentId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03GradePageParams = {
@@ -3049,19 +2388,11 @@ declare namespace APITypes {
     pageSize: string;
     /** 学生编号 */
     studentId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03GradeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03StudentPageParams = {
@@ -3077,19 +2408,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDemo03StudentParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDeptListParams = {
@@ -3097,19 +2420,11 @@ declare namespace APITypes {
     name?: string;
     /** 展示状态，参见 CommonStatusEnum 枚举类 */
     status?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDeptParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDeviceManagementPageParams = {
@@ -3153,37 +2468,21 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDeviceManagementParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDictDataListByTypeParams = {
     /** 字典类型 */
     type: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDictDataParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDictTypePageParams = {
@@ -3197,19 +2496,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getDictTypeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getFileConfigPageParams = {
@@ -3223,28 +2514,16 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getFileConfigParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getFileContentParams = {
     /** 配置编号 */
     configId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getFilePageParams = {
@@ -3258,18 +2537,76 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getFilePresignedUrlParams = {
     path: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type getHourlyPricesPageParams = {
+    /** 存储年月，格式为YYYY-MM，例如2024-08，用于标识具体的年份和月份 */
+    month?: string;
+    /** 项目的唯一标识ID */
+    projectId?: string;
+    /** 第1小时的价格 */
+    price01?: string;
+    /** 第2小时的价格 */
+    price02?: string;
+    /** 第3小时的价格 */
+    price03?: string;
+    /** 第4小时的价格 */
+    price04?: string;
+    /** 第5小时的价格 */
+    price05?: string;
+    /** 第6小时的价格 */
+    price06?: string;
+    /** 第7小时的价格 */
+    price07?: string;
+    /** 第8小时的价格 */
+    price08?: string;
+    /** 第9小时的价格 */
+    price09?: string;
+    /** 第10小时的价格 */
+    price10?: string;
+    /** 第11小时的价格 */
+    price11?: string;
+    /** 第12小时的价格 */
+    price12?: string;
+    /** 第13小时的价格 */
+    price13?: string;
+    /** 第14小时的价格 */
+    price14?: string;
+    /** 第15小时的价格 */
+    price15?: string;
+    /** 第16小时的价格 */
+    price16?: string;
+    /** 第17小时的价格 */
+    price17?: string;
+    /** 第18小时的价格 */
+    price18?: string;
+    /** 第19小时的价格 */
+    price19?: string;
+    /** 第20小时的价格 */
+    price20?: string;
+    /** 第21小时的价格 */
+    price21?: string;
+    /** 第22小时的价格 */
+    price22?: string;
+    /** 第23小时的价格 */
+    price23?: string;
+    /** 第24小时的价格 */
+    price24?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+  };
+
+  type getHourlyPricesParams = {
+    /** 编号 */
+    id: number;
   };
 
   type getJobLogPageParams = {
@@ -3287,19 +2624,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getJobLogParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getJobNextTimesParams = {
@@ -3307,10 +2636,6 @@ declare namespace APITypes {
     id: number;
     /** 数量 */
     count?: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getJobPageParams = {
@@ -3324,53 +2649,26 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getJobParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getLatest1Params = {
-    c: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type GetLatestForKeys = {
     keys?: string[];
-  };
-
-  type getLatestForKeysParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+    projectId?: string;
   };
 
   type getLatestParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+    c: string;
+    projectId?: string;
   };
 
   type getLatestPriceParams = {
     key: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+    projectId?: string;
   };
 
   type getLoginLogPageParams = {
@@ -3386,10 +2684,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMailAccountPageParams = {
@@ -3401,19 +2695,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMailAccountParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMailLogPageParams = {
@@ -3435,19 +2721,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getMailTemplate1Params = {
-    /** 编号 */
-    id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMailTemplatePageParams = {
@@ -3465,19 +2738,16 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMailTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type getMailTemplateParams = {
+    /** 编号 */
+    id: number;
   };
 
   type getMenuListParams = {
@@ -3485,18 +2755,10 @@ declare namespace APITypes {
     name?: string;
     /** 展示状态，参见 CommonStatusEnum 枚举类 */
     status?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMenuParams = {
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMyMyNotifyMessagePageParams = {
@@ -3508,10 +2770,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getMyProjectPageParams = {
@@ -3519,10 +2777,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNoticePageParams = {
@@ -3534,19 +2788,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNoticeParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNotifyMessagePageParams = {
@@ -3564,19 +2810,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNotifyMessageParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNotifyTemplatePageParams = {
@@ -3592,19 +2830,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getNotifyTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getOAuth2ClientPageParams = {
@@ -3616,41 +2846,16 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getOAuth2ClientParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getPanelDataParams = {
     key: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getPermissionInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+    projectId?: string;
   };
 
   type getPostPageParams = {
@@ -3664,26 +2869,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getPostParams = {
     /** 岗位编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getProjectInfoListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getProjectInfoPageParams = {
@@ -3713,44 +2903,21 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getProjectInfoParams = {
     /** 编号 */
     id: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getProjectParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getRedisMonitorInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getRoleMenuListParams = {
     /** 角色编号 */
     roleId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getRolePageParams = {
@@ -3766,158 +2933,10 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getRoleParams = {
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDeptList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDeptListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDictDataList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDictDataListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDictTypeList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleDictTypeListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleMailAccountList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleMailAccountListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleMenuList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleMenuListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimplePostList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimplePostListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleRoleList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleRoleListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleSmsChannelList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleSmsChannelListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleTemplateList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleTemplateListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleUserList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getSimpleUserListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSmsChannelPageParams = {
@@ -3931,19 +2950,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSmsChannelParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSmsLogPageParams = {
@@ -3965,10 +2976,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSmsTemplatePageParams = {
@@ -3990,19 +2997,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSmsTemplateParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSocialClientPageParams = {
@@ -4020,19 +3019,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSocialClientParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSocialUserPageParams = {
@@ -4048,51 +3039,21 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getSocialUserParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantByWebsiteParams = {
     /** 域名 */
     website: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantIdByNameParams = {
     /** 租户名 */
     name: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getTenantPackageList1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getTenantPackageListParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantPackagePageParams = {
@@ -4108,19 +3069,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantPackageParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantPageParams = {
@@ -4138,42 +3091,16 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getTenantParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getUnreadNotifyMessageCountParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getUnreadNotifyMessageListParams = {
     /** 10 */
     size?: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getUserInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getUserPageParams = {
@@ -4191,26 +3118,11 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type getUserParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type getUserProfileParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type GoViewDataGetBySqlReqVO = {
@@ -4264,26 +3176,133 @@ declare namespace APITypes {
     remark?: string;
   };
 
+  type HourlyPricesRespVO = {
+    /** 主键 */
+    id: number;
+    /** 存储年月，格式为YYYY-MM，例如2024-08，用于标识具体的年份和月份 */
+    month?: string;
+    /** 项目的唯一标识ID */
+    projectId?: string;
+    /** 第1小时的价格 */
+    price01?: number;
+    /** 第2小时的价格 */
+    price02?: number;
+    /** 第3小时的价格 */
+    price03?: number;
+    /** 第4小时的价格 */
+    price04?: number;
+    /** 第5小时的价格 */
+    price05?: number;
+    /** 第6小时的价格 */
+    price06?: number;
+    /** 第7小时的价格 */
+    price07?: number;
+    /** 第8小时的价格 */
+    price08?: number;
+    /** 第9小时的价格 */
+    price09?: number;
+    /** 第10小时的价格 */
+    price10?: number;
+    /** 第11小时的价格 */
+    price11?: number;
+    /** 第12小时的价格 */
+    price12?: number;
+    /** 第13小时的价格 */
+    price13?: number;
+    /** 第14小时的价格 */
+    price14?: number;
+    /** 第15小时的价格 */
+    price15?: number;
+    /** 第16小时的价格 */
+    price16?: number;
+    /** 第17小时的价格 */
+    price17?: number;
+    /** 第18小时的价格 */
+    price18?: number;
+    /** 第19小时的价格 */
+    price19?: number;
+    /** 第20小时的价格 */
+    price20?: number;
+    /** 第21小时的价格 */
+    price21?: number;
+    /** 第22小时的价格 */
+    price22?: number;
+    /** 第23小时的价格 */
+    price23?: number;
+    /** 第24小时的价格 */
+    price24?: number;
+    /** 创建时间 */
+    createTime: string;
+    projectName?: string;
+  };
+
+  type HourlyPricesSaveReqVO = {
+    /** 主键 */
+    id: number;
+    /** 存储年月，格式为YYYY-MM，例如2024-08，用于标识具体的年份和月份 */
+    month?: string;
+    /** 项目的唯一标识ID */
+    projectId?: string;
+    /** 第1小时的价格 */
+    price01?: number;
+    /** 第2小时的价格 */
+    price02?: number;
+    /** 第3小时的价格 */
+    price03?: number;
+    /** 第4小时的价格 */
+    price04?: number;
+    /** 第5小时的价格 */
+    price05?: number;
+    /** 第6小时的价格 */
+    price06?: number;
+    /** 第7小时的价格 */
+    price07?: number;
+    /** 第8小时的价格 */
+    price08?: number;
+    /** 第9小时的价格 */
+    price09?: number;
+    /** 第10小时的价格 */
+    price10?: number;
+    /** 第11小时的价格 */
+    price11?: number;
+    /** 第12小时的价格 */
+    price12?: number;
+    /** 第13小时的价格 */
+    price13?: number;
+    /** 第14小时的价格 */
+    price14?: number;
+    /** 第15小时的价格 */
+    price15?: number;
+    /** 第16小时的价格 */
+    price16?: number;
+    /** 第17小时的价格 */
+    price17?: number;
+    /** 第18小时的价格 */
+    price18?: number;
+    /** 第19小时的价格 */
+    price19?: number;
+    /** 第20小时的价格 */
+    price20?: number;
+    /** 第21小时的价格 */
+    price21?: number;
+    /** 第22小时的价格 */
+    price22?: number;
+    /** 第23小时的价格 */
+    price23?: number;
+    /** 第24小时的价格 */
+    price24?: number;
+  };
+
   type importExcelParams = {
     /** 是否支持更新，默认为 false */
     updateSupport?: boolean;
     /** Excel 文件 */
     file: any;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type importTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type IotReportSqlQuery = {
     sql?: string;
+    projectId?: string;
   };
 
   type JobLogRespVO = {
@@ -4361,10 +3380,11 @@ declare namespace APITypes {
   type listAdminRolesParams = {
     /** 用户编号 */
     userId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type listUserProjectsParams = {
+    /** 用户编号 */
+    userId: number;
   };
 
   type LoginLogRespVO = {
@@ -4388,20 +3408,6 @@ declare namespace APITypes {
     userAgent?: string;
     /** 登录时间 */
     createTime: string;
-  };
-
-  type loginParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type logoutParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type MailAccountRespVO = {
@@ -4550,111 +3556,6 @@ declare namespace APITypes {
     name: string;
   };
 
-  type mall40410Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40411Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40412Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40414Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40416Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40417Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40418Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall40419Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4047Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall4049Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mall404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type MenuRespVO = {
     /** 菜单编号 */
     id: number;
@@ -4752,41 +3653,6 @@ declare namespace APITypes {
     /** 是否总是显示 */
     alwaysShow?: boolean;
     children?: MenuVO[];
-  };
-
-  type mp4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mp4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mp4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mp4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type mp404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type NoticeRespVO = {
@@ -5100,10 +3966,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type pageOperateLogParams = {
@@ -5123,10 +3985,6 @@ declare namespace APITypes {
     pageNo: string;
     /** 每页条数，最大值为 100 */
     pageSize: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type PageResultApiAccessLogRespVO = {
@@ -5223,6 +4081,13 @@ declare namespace APITypes {
   type PageResultGoViewProjectRespVO = {
     /** 数据 */
     list: GoViewProjectRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
+  type PageResultHourlyPricesRespVO = {
+    /** 数据 */
+    list: HourlyPricesRespVO[];
     /** 总量 */
     total: number;
   };
@@ -5388,41 +4253,6 @@ declare namespace APITypes {
     total: number;
   };
 
-  type pay4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type pay4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type pay4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type pay4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type pay404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type PermissionAssignRoleDataScopeReqVO = {
     /** 角色编号 */
     roleId: number;
@@ -5444,6 +4274,17 @@ declare namespace APITypes {
     userId: number;
     /** 角色编号列表 */
     roleIds?: number[];
+    /** 角色编号列表 */
+    projectIds?: number[];
+  };
+
+  type PlatformInfo = {
+    id?: number;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
+    mode?: 'OFFLINE' | 'GREEN' | 'ENERGY' | 'VIRTUAL' | 'CUSTOM';
   };
 
   type PointVO = {
@@ -5472,10 +4313,6 @@ declare namespace APITypes {
     password?: string;
     scope?: string;
     refresh_token?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type PostRespVO = {
@@ -5520,10 +4357,6 @@ declare namespace APITypes {
   type previewCodegenParams = {
     /** 表编号 */
     tableId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type ProjectInfoRespVO = {
@@ -5561,6 +4394,7 @@ declare namespace APITypes {
     provinceCode?: string;
     province?: string;
     road?: string;
+    platformInfo?: PlatformInfo;
   };
 
   type ProjectInfoSaveReqVO = {
@@ -5597,24 +4431,6 @@ declare namespace APITypes {
   type pushParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type receiveAliyunSmsStatusParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type receiveTencentSmsStatusParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type RedisMonitorRespVO = {
@@ -5629,45 +4445,6 @@ declare namespace APITypes {
   type refreshTokenParams = {
     /** 刷新令牌 */
     refreshToken: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type report4042Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type report4043Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type report4044Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type report4045Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type report404Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type ResponseModel = {
@@ -5700,10 +4477,6 @@ declare namespace APITypes {
   type revokeTokenParams = {
     /** 访问令牌 */
     token: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type RoleRespVO = {
@@ -5747,34 +4520,6 @@ declare namespace APITypes {
     id: number;
     /** 角色名称 */
     name: string;
-  };
-
-  type sendLoginSmsCodeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type sendMailParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type sendNotifyParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type sendSmsParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type SmsChannelRespVO = {
@@ -5824,13 +4569,6 @@ declare namespace APITypes {
     signature: string;
     /** 渠道编码，参见 SmsChannelEnum 枚举类 */
     code: string;
-  };
-
-  type smsLoginParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type SmsLogRespVO = {
@@ -5939,13 +4677,6 @@ declare namespace APITypes {
     templateParams?: Record<string, any>;
   };
 
-  type socialBindParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type SocialClientRespVO = {
     /** 编号 */
     id: number;
@@ -5991,24 +4722,6 @@ declare namespace APITypes {
     type: number;
     /** 回调路径 */
     redirectUri: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type socialQuickLoginParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type socialUnbindParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type SocialUser = {
@@ -6067,27 +4780,9 @@ declare namespace APITypes {
     params?: Record<string, any>;
   };
 
-  type switchModeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
   type syncCodegenFromDBParams = {
     /** 表编号 */
     tableId: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type syncJobParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type TenantPackageRespVO = {
@@ -6182,26 +4877,11 @@ declare namespace APITypes {
 
   type testFileConfigParams = {
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type triggerJobParams = {
     /** 编号 */
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateAllNotifyMessageReadParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type updateApiErrorLogProcessParams = {
@@ -6209,116 +4889,10 @@ declare namespace APITypes {
     id: number;
     /** 处理状态 */
     processStatus: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateCodegenParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDataSourceConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDemo01ContactParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDemo02CategoryParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDemo03CourseParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDemo03GradeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDemo03StudentParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDeptParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDeviceManagementParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDictDataParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateDictTypeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type updateFileConfigMasterParams = {
     id: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateFileConfigParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateJobParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type updateJobStatusParams = {
@@ -6326,205 +4900,21 @@ declare namespace APITypes {
     id: number;
     /** 状态 */
     status: number;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateMailAccountParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateMailTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateMenuParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateNoticeParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type updateNotifyMessageReadParams = {
     /** 编号列表 */
     ids: number[];
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateNotifyTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateOAuth2ClientParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updatePostParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateProjectInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateProjectParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateRoleParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateSmsChannelParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateSmsTemplateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateSocialClientParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateStateParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateTenantPackageParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateTenantParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserAvatar1Params = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserAvatarParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserInfoParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserPasswordParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserProfileParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserProfilePasswordParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type updateUserStatusParams = {
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
-  };
-
-  type uploadFile1Params = {
-    /** 文件附件 */
-    path?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
   };
 
   type uploadFileParams = {
     /** 文件附件 */
     path?: string;
-    /** 租户编号 */
-    'tenant-id'?: number;
-    /** 认证 Token */
-    Authorization?: string;
+  };
+
+  type uploadFileParams = {
+    /** 文件附件 */
+    path?: string;
   };
 
   type UserImportRespVO = {
