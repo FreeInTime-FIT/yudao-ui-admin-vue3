@@ -575,158 +575,158 @@ const remainingRouter: AppRouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: '/screen',
-    component: ScreenLayout,
-    name: '能量管理云监控',
-    meta: { hidden: true },
-    children: [
-      {
-        path: 'map',
-        name: 'ScreenMap',
-        meta: {
-          title: '首页',
-          noCache: true,
-          hidden: true,
-          full: true,
-          activeMenu: '/screen/map'
-        },
-        component: () => import('@/views/screen/map.vue')
-      },
-      {
-        path: 'index',
-        name: 'ScreenIndex',
-        meta: {
-          title: '首页',
-          noCache: true,
-          full: true,
-          activeMenu: '/screen/index'
-        },
-        component: () => import('@/views/screen/index.vue')
-      },
-      {
-        path: 'data/board',
-        name: 'ScreenDataBoard',
-        meta: {
-          title: '数据看板1',
-          noCache: true,
-          hidden: true,
-          activeMenu: '/screen/data/board'
-        },
-        component: () => import('@/views/screen/data/board.vue')
-      },
-      {
-        path: 'data/boardView',
-        name: 'ScreenDataBoardView',
-        meta: {
-          title: '数据看板',
-          noCache: true,
-          activeMenu: '/screen/data/boardView'
-        },
-        component: () => import('@/views/screen/data/boardView.vue')
-      },
-      {
-        path: 'data/realtime',
-        name: 'ScreenDataRealtime',
-        meta: {
-          title: '实时数据',
-          noCache: true,
-          activeMenu: '/screen/data/realtime'
-        },
-        component: () => import('@/views/screen/data/realtime.vue')
-      },
-      {
-        path: 'data/history',
-        name: 'ScreenDataHistory',
-        meta: {
-          title: '历史数据',
-          noCache: true,
-          activeMenu: '/screen/data/history'
-        },
-        component: () => import('@/views/screen/data/history.vue')
-      },
-      {
-        path: 'warning/index',
-        name: 'ScreenWarningIndex',
-        meta: {
-          title: '异常警告',
-          noCache: true,
-          activeMenu: '/screen/warning/index'
-        },
-        component: () => import('@/views/screen/warning/index.vue')
-      },
-      // {
-      //   path: 'setting/archives',
-      //   name: 'ScreenSettingArchives',
-      //   meta: {
-      //     title: '档案设置',
-      //     noCache: true,
-      //     activeMenu: '/screen/setting/archives'
-      //   },
-      //   component: () => import('@/views/screen/setting/archives.vue')
-      // },
-      {
-        path: 'setting/module',
-        name: 'ScreenSettingModule',
-        meta: {
-          title: '模式设置',
-          noCache: true,
-          activeMenu: '/screen/setting/module'
-        },
-        component: () => import('@/views/screen/setting/module.vue')
-      },
-      {
-        path: 'setting/equipment',
-        name: 'ScreenSettingEquipment',
-        meta: {
-          title: '设备设置',
-          noCache: true,
-          activeMenu: '/screen/setting/equipment'
-        },
-        component: () => import('@/views/screen/setting/equipment.vue')
-      },
-      {
-        path: 'module/custom',
-        name: 'ScreenModuleCustom',
-        meta: {
-          title: '自定义模式',
-          noCache: true,
-          activeMenu: '/screen/module/custom'
-        },
-        component: () => import('@/views/screen/module/custom.vue')
-      },
-      // {
-      //   path: 'statistic/analysis',
-      //   name: 'ScreenStatisticAnalysis',
-      //   meta: {
-      //     title: '统计分析',
-      //     noCache: true,
-      //     activeMenu: '/screen/statistic/analysis'
-      //   },
-      //   component: () => import('@/views/screen/statistic/analysis.vue')
-      // },
-      // {
-      //   path: 'info/prices',
-      //   name: 'ScreenInfoPrices',
-      //   meta: {
-      //     title: '电价信息',
-      //     noCache: true,
-      //     activeMenu: '/screen/info/prices'
-      //   },
-      //   component: () => import('@/views/screen/info/prices.vue')
-      // },
-      {
-        path: 'setting/fields',
-        name: 'ScreenSettingFields',
-        meta: {
-          title: '运维平台',
-          noCache: true,
-          activeMenu: '/screen/setting/fields'
-        },
-        component: () => import('@/views/screen/setting/fields.vue')
-      },
-    ],
-  }
+  // {
+  //   path: '/screen',
+  //   component: ScreenLayout,
+  //   name: '能量管理云监控',
+  //   meta: { hidden: true },
+  //   children: [
+  //     {
+  //       path: 'map',
+  //       name: 'ScreenMap',
+  //       meta: {
+  //         title: '首页',
+  //         noCache: true,
+  //         hidden: true,
+  //         full: true,
+  //         activeMenu: '/screen/map'
+  //       },
+  //       component: () => import('@/views/screen/map.vue')
+  //     },
+  //     // {
+  //     //   path: 'index',
+  //     //   name: 'ScreenIndex',
+  //     //   meta: {
+  //     //     title: '首页',
+  //     //     noCache: true,
+  //     //     full: true,
+  //     //     activeMenu: '/screen/index'
+  //     //   },
+  //     //   component: () => import('@/views/screen/index.vue')
+  //     // },
+  //     {
+  //       path: 'data/board',
+  //       name: 'ScreenDataBoard',
+  //       meta: {
+  //         title: '数据看板1',
+  //         noCache: true,
+  //         hidden: true,
+  //         activeMenu: '/screen/data/board'
+  //       },
+  //       component: () => import('@/views/screen/data/board.vue')
+  //     },
+  //     {
+  //       path: 'data/boardView',
+  //       name: 'ScreenDataBoardView',
+  //       meta: {
+  //         title: '数据看板',
+  //         noCache: true,
+  //         activeMenu: '/screen/data/boardView'
+  //       },
+  //       component: () => import('@/views/screen/data/boardView.vue')
+  //     },
+  //     {
+  //       path: 'data/realtime',
+  //       name: 'ScreenDataRealtime',
+  //       meta: {
+  //         title: '实时数据',
+  //         noCache: true,
+  //         activeMenu: '/screen/data/realtime'
+  //       },
+  //       component: () => import('@/views/screen/data/realtime.vue')
+  //     },
+  //     {
+  //       path: 'data/history',
+  //       name: 'ScreenDataHistory',
+  //       meta: {
+  //         title: '历史数据',
+  //         noCache: true,
+  //         activeMenu: '/screen/data/history'
+  //       },
+  //       component: () => import('@/views/screen/data/history.vue')
+  //     },
+  //     {
+  //       path: 'warning/index',
+  //       name: 'ScreenWarningIndex',
+  //       meta: {
+  //         title: '异常警告',
+  //         noCache: true,
+  //         activeMenu: '/screen/warning/index'
+  //       },
+  //       component: () => import('@/views/screen/warning/index.vue')
+  //     },
+  //     // {
+  //     //   path: 'setting/archives',
+  //     //   name: 'ScreenSettingArchives',
+  //     //   meta: {
+  //     //     title: '档案设置',
+  //     //     noCache: true,
+  //     //     activeMenu: '/screen/setting/archives'
+  //     //   },
+  //     //   component: () => import('@/views/screen/setting/archives.vue')
+  //     // },
+  //     {
+  //       path: 'setting/module',
+  //       name: 'ScreenSettingModule',
+  //       meta: {
+  //         title: '模式设置',
+  //         noCache: true,
+  //         activeMenu: '/screen/setting/module'
+  //       },
+  //       component: () => import('@/views/screen/setting/module.vue')
+  //     },
+  //     {
+  //       path: 'setting/equipment',
+  //       name: 'ScreenSettingEquipment',
+  //       meta: {
+  //         title: '设备设置',
+  //         noCache: true,
+  //         activeMenu: '/screen/setting/equipment'
+  //       },
+  //       component: () => import('@/views/screen/setting/equipment.vue')
+  //     },
+  //     {
+  //       path: 'module/custom',
+  //       name: 'ScreenModuleCustom',
+  //       meta: {
+  //         title: '自定义模式',
+  //         noCache: true,
+  //         activeMenu: '/screen/module/custom'
+  //       },
+  //       component: () => import('@/views/screen/module/custom.vue')
+  //     },
+  //     // {
+  //     //   path: 'statistic/analysis',
+  //     //   name: 'ScreenStatisticAnalysis',
+  //     //   meta: {
+  //     //     title: '统计分析',
+  //     //     noCache: true,
+  //     //     activeMenu: '/screen/statistic/analysis'
+  //     //   },
+  //     //   component: () => import('@/views/screen/statistic/analysis.vue')
+  //     // },
+  //     // {
+  //     //   path: 'info/prices',
+  //     //   name: 'ScreenInfoPrices',
+  //     //   meta: {
+  //     //     title: '电价信息',
+  //     //     noCache: true,
+  //     //     activeMenu: '/screen/info/prices'
+  //     //   },
+  //     //   component: () => import('@/views/screen/info/prices.vue')
+  //     // },
+  //     {
+  //       path: 'setting/fields',
+  //       name: 'ScreenSettingFields',
+  //       meta: {
+  //         title: '运维平台',
+  //         noCache: true,
+  //         activeMenu: '/screen/setting/fields'
+  //       },
+  //       component: () => import('@/views/screen/setting/fields.vue')
+  //     },
+  //   ],
+  // }
 ]
 
 export default remainingRouter

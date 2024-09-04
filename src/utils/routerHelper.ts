@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { isUrl } from '@/utils/is'
 import { cloneDeep, omit } from 'lodash-es'
 import qs from 'qs'
+import ScreenLayout from "@/layout/SceenLayout/index.vue";
 
 const modules = import.meta.glob('../views/**/*.{vue,tsx}')
 /**
@@ -120,7 +121,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
     } else {
       // 目录
       if (route.children) {
-        data.component = Layout
+        data.component = route.path === '/screen' ? ScreenLayout : Layout;
         data.redirect = getRedirect(route.path, route.children)
         // 外链
       } else if (isUrl(route.path)) {

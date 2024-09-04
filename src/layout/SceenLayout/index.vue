@@ -4,10 +4,16 @@ import {ref, computed } from "vue";
 import {useRouter} from "vue-router";
 import {CaretBottom} from "@element-plus/icons-vue";
 import { useProjectStore } from '@/store/modules/project'
+import {usePermissionStore} from "@/store/modules/permission";
 const now = ref(dayjs());
 const router = useRouter();
 const projectVisible = ref(false);
-const menu = router.options.routes.find(i => i.path === '/screen').children?.filter(i => !i.meta.hidden);
+
+const permissionStore = usePermissionStore();
+const routers = computed(() => {
+  console.log(permissionStore.getRouters.find(i => i.name === '/screen'));
+  return permissionStore.getRouters.find(i => i.name === '/screen')?.children;
+})
 
 const projectStore = useProjectStore();
 const date = computed(() => ({
@@ -88,11 +94,12 @@ v-for="item in projectStore.projectList"
       </div>
 
     </header>
+
     <section class="flex-1 position-relative h-0 bg-[var(--screen-content-bg)]  color-[var(--screen-content-text-color)]">
       <div class="menu-box">
         <div class="menu-list">
-          <div class="menu-item" :class="{active: item.name === $route.name}" v-for="item in menu" :key="item.path" @click="handleClick(item)">
-            <div><Icon class="icon" icon="ant-design:dashboard-filled" /></div>
+          <div class="menu-item" :class="{active: item.name === $route.name}" v-for="item in routers" :key="item.path" @click="handleClick(item)">
+            <div><Icon class="icon" :icon="item.meta.icon" /></div>
             <div>{{item.meta.title}}</div>
           </div>
         </div>
