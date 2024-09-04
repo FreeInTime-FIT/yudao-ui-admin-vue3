@@ -67,18 +67,7 @@
 </template>
 <script setup lang="ts">
 const conversationList = [
-  {
-    id: 1,
-    title: '测试标题',
-    avatar:
-      'http://test.yudao.iocoder.cn/96c787a2ce88bf6d0ce3cd8b6cf5314e80e7703cd41bf4af8cd2e2909dbd6b6d.png'
-  },
-  {
-    id: 2,
-    title: '测试对话',
-    avatar:
-      'http://test.yudao.iocoder.cn/96c787a2ce88bf6d0ce3cd8b6cf5314e80e7703cd41bf4af8cd2e2909dbd6b6d.png'
-  }
+
 ]
 const conversationId = ref(1)
 const searchName = ref('')
