@@ -5,13 +5,11 @@ import { useProjectStore } from '@/store/modules/project'
 
 import {useTable} from "@/hooks/web/useTable";
 import {switchMode} from "@/services/services/DeviceMessageController";
+import {getPanelData} from "@/services/services/IotReportController";
+import {ref} from "vue";
 
 const projectStore = useProjectStore();
-type QueryParams = {
-  startTime?: string;
-  endTime?: string;
-  module?: string;
-}
+
 type RecordItem = {
   id: number | string;
   time: string;
@@ -68,9 +66,19 @@ const {  tableObject, tableMethods } = useTable<RecordItem>({
   }, props: undefined, response: undefined,
   defaultParams: queryParams,
 });
+const keyValue = ref({});
 const { getList, setSearchParams } = tableMethods
+const getData = async () => {
+  const res = await  getPanelData({
+    key: 'module',
+    projectId: projectStore.projectInfo?.id,
+  })
+  keyValue.value = res.data || {};
+  return res;
+}
 onMounted(() => {
   getList()
+  getData()
 })
 watchEffect(() => {
   selected.value = projectStore.projectInfo?.platformInfo?.mode || 'OFFLINE'
@@ -88,13 +96,16 @@ const handleChangeVisible = () => {
   changeVisible.value = true;
   innerModule.value = unref(selected);
 }
+const message = useMessage()
 const handleConfirm = async () => {
   changeVisible.value = false;
   selected.value = unref(innerModule);
-  await switchMode({},{
+  await switchMode({
     projectId: projectStore.projectInfo?.id,
     mode: selected.value
   })
+  message.success("切换成功")
+
 }
 </script>
 
@@ -136,11 +147,11 @@ const handleConfirm = async () => {
             <header class="statistic-card-item_title">功率（kW）</header>
             <div class="statistic-card-item_list">
               <div>
-                <div class="statistic-card-item_value"> {{300}}</div>
+                <div class="statistic-card-item_value"> {{keyValue['实时功率']}}</div>
                 <div class="statistic-card-item_name">实时功率</div>
               </div>
               <div>
-                <div class="statistic-card-item_value">{{600}}</div>
+                <div class="statistic-card-item_value">{{keyValue['目标功率']}}</div>
                 <div class="statistic-card-item_name">目标功率</div>
               </div>
             </div>
