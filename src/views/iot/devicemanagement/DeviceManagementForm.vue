@@ -4,7 +4,7 @@
       ref="formRef"
       :model="formData"
       :rules="formRules"
-      label-width="100px"
+      label-width="130px"
       v-loading="formLoading"
     >
       <el-form-item label="设备编号" prop="deviceCode">
@@ -20,7 +20,7 @@
            />
           </el-select>
       </el-form-item>
-      <el-form-item label="变压器容量(kVA)" prop="transformerCapacity">
+      <el-form-item label="变压器容量(kVA)" prop="transformerCapacity" >
         <el-input v-model="formData.transformerCapacity" placeholder="请输入变压器容量(kVA)"/>
       </el-form-item>
       <el-form-item label="负荷功率(kW)" prop="loadPower">
