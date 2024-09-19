@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
 import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
 import {getLatestPrice} from "@/services/services/IotReportController";
+import {IDatePickerType} from "element-plus/es/components/date-picker/src/date-picker.type";
 
 const domRef = ref();
 const realRef = ref();
@@ -20,23 +20,31 @@ const handleQuery = ()=> {
     ...queryParams
   })
 }
-const queryParams = reactive({
+const queryParams = reactive<{
+  type: IDatePickerType,
+  time: Date | [Date, Date],
+  format: string
+}>({
   type: 'yearrange',
   time: [new Date(),new Date()],
-  format: 'YYYY-MM-DD'
+  format: 'YYYY'
 })
-const restQuery = (value) => {
+const restQuery = (value: IDatePickerType) => {
+  const now = dayjs().valueOf();
   if (value === 'yearrange'){
     queryParams.format = 'YYYY'
-    queryParams.time = [new Date(),new Date()]
+    queryParams.time = [now , now]
   } else if(value==='monthrange'){
     queryParams.format = 'YYYY-MM'
-    queryParams.time = [new Date(),new Date()]
+    queryParams.time = [now , now]
   } else if(value==='date'){
     queryParams.format = 'YYYY-MM-DD'
-    queryParams.time = new Date()
+    queryParams.time = now;
   }
 }
+watch(() => [queryParams.type], () => {
+  restQuery(queryParams.type)
+})
 onMounted(() => {
   console.log(realRef);
   const chart = echarts.init(realRef.value, 'screen');
@@ -322,19 +330,22 @@ onMounted(() => {
     :model="queryParams"
     class="form"
   >
-    <el-form-item>
-      <el-radio-group v-model="queryParams.type" @change="restQuery">
+    <el-form-item prop="type">
+      <el-radio-group v-model="queryParams.type">
         <el-radio-button label="年" value="yearrange" />
         <el-radio-button label="月" value="monthrange" />
         <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>
-    <el-form-item>
+    <el-form-item prop="time">
       <el-date-picker
         v-model="queryParams.time"
         :type="queryParams.type"
-        :value-format="queryParams.format"
+        :format="queryParams.format"
+        value-format="x"
+        :key="queryParams.type"
         :clearable="false"
+        placeholder="请选择"
         range-separator="到"
         start-placeholder="开始"
         end-placeholder="结束"
