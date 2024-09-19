@@ -4,6 +4,7 @@ import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
+import {getLatestPrice} from "@/services/services/IotReportController";
 
 const domRef = ref();
 const realRef = ref();
@@ -12,9 +13,30 @@ const projectStore = useProjectStore();
 defineOptions({
   name: 'ScreenDataHistory',
 })
+const handleQuery = ()=> {
+  getLatestPrice({
+    key: "历史记录_发电量",
+    projectId: projectStore.projectInfo?.id,
+    ...queryParams
+  })
+}
 const queryParams = reactive({
-
+  type: 'yearrange',
+  time: [new Date(),new Date()],
+  format: 'YYYY-MM-DD'
 })
+const restQuery = (value) => {
+  if (value === 'yearrange'){
+    queryParams.format = 'YYYY'
+    queryParams.time = [new Date(),new Date()]
+  } else if(value==='monthrange'){
+    queryParams.format = 'YYYY-MM'
+    queryParams.time = [new Date(),new Date()]
+  } else if(value==='date'){
+    queryParams.format = 'YYYY-MM-DD'
+    queryParams.time = new Date()
+  }
+}
 onMounted(() => {
   console.log(realRef);
   const chart = echarts.init(realRef.value, 'screen');
@@ -301,23 +323,25 @@ onMounted(() => {
     class="form"
   >
     <el-form-item>
-      <el-radio-group v-model="queryParams.type">
-        <el-radio-button label="年" value="yaer" />
-        <el-radio-button label="月" value="month" />
-        <el-radio-button label="日" value="day" />
+      <el-radio-group v-model="queryParams.type" @change="restQuery">
+        <el-radio-button label="年" value="yearrange" />
+        <el-radio-button label="月" value="monthrange" />
+        <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>
     <el-form-item>
       <el-date-picker
-        v-model="queryParams.year"
-        type="yearrange"
+        v-model="queryParams.time"
+        :type="queryParams.type"
+        :value-format="queryParams.format"
+        :clearable="false"
         range-separator="到"
         start-placeholder="开始"
         end-placeholder="结束"
       />
     </el-form-item>
     <ElFormItem>
-      <ElButton type="primary">查询</ElButton>
+      <ElButton type="primary" @click="handleQuery">查询</ElButton>
     </ElFormItem>
   </ElForm>
   <div class=" chartBox">
