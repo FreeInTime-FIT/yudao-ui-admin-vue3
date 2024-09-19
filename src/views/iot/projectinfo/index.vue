@@ -118,7 +118,7 @@
         :formatter="dateFormatter"
         width="180px"
       />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="160">
         <template #default="scope">
           <el-button
             v-if="scope.row.state === 0"

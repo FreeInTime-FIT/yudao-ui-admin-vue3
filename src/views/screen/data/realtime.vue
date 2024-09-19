@@ -311,8 +311,8 @@ const handleProjectEdit = () => {
               <div>Ia:{{keyValue['hub_IA']}}VA</div>
               <div>Ib:{{keyValue['hub_IB']}}VA</div>
               <div>Ic:{{keyValue['hub_IC']}}VA</div>
-              <div>F:50Hz</div>
-              <div>PF:95%</div>
+              <div>F:-Hz</div>
+              <div>PF:-%</div>
             </div>
             <div class="content_4">
               <div>P:100kW</div>
@@ -322,11 +322,11 @@ const handleProjectEdit = () => {
               <div>Ia:{{keyValue['hub_负载_IA']}}VA</div>
               <div>Ib:{{keyValue['hub_负载_IB']}}VA</div>
               <div>Ic:{{keyValue['hub_负载_IC']}}VA</div>
-              <div>F:50Hz</div>
-              <div>PF:95%</div>
+              <div>F:-Hz</div>
+              <div>PF:-%</div>
             </div>
             <div class="content_5">
-              <div>P:268kW U:12V I:208A</div>
+              <div>P:-kW U:-V I:-A</div>
             </div>
           </div>
         </article>
