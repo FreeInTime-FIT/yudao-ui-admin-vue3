@@ -300,10 +300,22 @@ onMounted(() => {
     :model="queryParams"
     class="form"
   >
-    <SelectDateRange
-      v-model:end="queryParams.endTime"
-      v-model:start="queryParams.startTime"
-    />
+    <el-form-item>
+      <el-radio-group v-model="queryParams.type">
+        <el-radio-button label="年" value="yaer" />
+        <el-radio-button label="月" value="month" />
+        <el-radio-button label="日" value="day" />
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item>
+      <el-date-picker
+        v-model="queryParams.year"
+        type="yearrange"
+        range-separator="到"
+        start-placeholder="开始"
+        end-placeholder="结束"
+      />
+    </el-form-item>
     <ElFormItem>
       <ElButton type="primary">查询</ElButton>
     </ElFormItem>
