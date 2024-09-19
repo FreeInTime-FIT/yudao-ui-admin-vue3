@@ -100,8 +100,9 @@ onMounted(() => {
   })
 
 });
+let chart
 onMounted(() => {
-  const chart = echarts.init(domRef.value, 'screen');
+  chart = echarts.init(domRef.value, 'screen');
   const customList = [
     {name: '发电量', value: 1, unit: 'kWh'},
     {name: '用电量', value: 2, unit: 'kWh'},
