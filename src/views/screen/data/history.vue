@@ -13,6 +13,7 @@ const projectStore = useProjectStore();
 defineOptions({
   name: 'ScreenDataHistory',
 })
+const now = dayjs();
 const handleQuery = ()=> {
   getLatestPrice({
     key: "历史记录_发电量",
@@ -26,20 +27,20 @@ const queryParams = reactive<{
   format: string
 }>({
   type: 'yearrange',
-  time: [new Date(),new Date()],
+  time: [now.format('YYYY'), now.format('YYYY')],
   format: 'YYYY'
 })
 const restQuery = (value: IDatePickerType) => {
-  const now = dayjs().valueOf();
+
   if (value === 'yearrange'){
     queryParams.format = 'YYYY'
-    queryParams.time = [now , now]
+    queryParams.time = [now.format(queryParams.format) , now.add(1, 'year').format(queryParams.format)]
   } else if(value==='monthrange'){
     queryParams.format = 'YYYY-MM'
-    queryParams.time = [now , now]
+    queryParams.time = [now.format(queryParams.format) , now.add(1, 'month').format(queryParams.format)]
   } else if(value==='date'){
     queryParams.format = 'YYYY-MM-DD'
-    queryParams.time = now;
+    queryParams.time = now.format(queryParams.format);
   }
 }
 watch(() => [queryParams.type], () => {
@@ -342,7 +343,7 @@ onMounted(() => {
         v-model="queryParams.time"
         :type="queryParams.type"
         :format="queryParams.format"
-        value-format="x"
+        :value-format="queryParams.format"
         :key="queryParams.type"
         :clearable="false"
         placeholder="请选择"
