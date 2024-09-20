@@ -13,38 +13,54 @@ const projectStore = useProjectStore();
 defineOptions({
   name: 'ScreenDataHistory',
 })
+const loading = ref(false)
 const now = dayjs();
-const handleQuery =()=> {
-  getLatestPrice({
+const handleQuery = async ()=> {
+  loading.value = true
+  const generatingCapacity = await getLatestPrice({
     key: "历史记录_发电量",
     projectId: projectStore.projectInfo?.id,
     ...queryParams
-  }).then(res => {
-    chart.setOption({
-      dataset: [
-        {
-          ...res.data
-        },
-      ]
-    })
   })
-  getLatestPrice({
+  const storedEnergy = await getLatestPrice({
     key: "历史记录_储能电量",
     projectId: projectStore.projectInfo?.id,
     ...queryParams
-  }).then(res => {
-    chart.setOption({
-      dataset: [
-        {
-
-        },
-        {
-          ...res.data
-        },
-      ]
-    })
   })
+  loading.value = false
+  chart.setOption({
+    dataset: [
+      {
+        ...generatingCapacity.data
+      },
+      {
+        ...storedEnergy.data
+      }
+    ]
+  })
+  // 将两个数据源的时间进行合并，去重
+  const times = [...new Set([
+    ...generatingCapacity.data.source.map(item => item.time),
+    ...storedEnergy.data.source.map(item => item.time)
+  ])];
 
+// 使用 map 和匿名函数合并数据
+  const mergedData = times.map(time => {
+    const genItem = generatingCapacity.data.source.find(item => item.time === time);
+    const storedItem = storedEnergy.data.source.find(item => item.time === time);
+
+    return {
+      time,
+      num: genItem ? genItem.value : null,   // 发电量
+      num1: storedItem ? storedItem.value : null // 储能电量
+    };
+  });
+  realChart.setOption({
+    dataset: {
+      dimensions: [{ type: 'time', name: 'time'}, 'num', 'num1'],
+      source: mergedData
+    }
+  })
 }
 const queryParams = reactive<{
   type: IDatePickerType,
@@ -71,29 +87,21 @@ const restQuery = (value: IDatePickerType) => {
 watch(() => [queryParams.type], () => {
   restQuery(queryParams.type)
 })
+let realChart
 onMounted(() => {
-  console.log(realRef);
-  const chart = echarts.init(realRef.value, 'screen');
+  realChart = echarts.init(realRef.value, 'screen');
   const group = [{
-    label: '实时数据',
+    label: '储能电量',
     value: 'num',
   }, {
-    label: '实时数据1',
+    label: '光伏发电量',
     value: 'num1',
-  }, {
-    label: '实时数据2',
-    value: 'num2',
   }]
   const time = dayjs('00:00', 'HH:mm');
-  chart.setOption({
+  realChart.setOption({
     dataset:  {
       dimensions: [{ type: 'time', name: 'time'}, 'num', 'num1', 'num2'],
-      source: Array(24 * 60 / 10).fill(1).map((_, i) => ({
-        time: dayjs(time).set("m", i * 10).toDate(),
-        num: Math.random(),
-        num1: Math.random() * 2,
-        num2: Math.random() * 2,
-      })),
+      source: [],
     },
     title: {
       text: '实时数据',
@@ -101,7 +109,7 @@ onMounted(() => {
       left: 30,
     },
     xAxis: {
-      type: 'time',
+      type:'category',
     },
     yAxis: {
 
@@ -129,7 +137,7 @@ let chart
 onMounted(() => {
   chart = echarts.init(domRef.value, 'screen');
   const customList = [
-    {name: '发电量', value: 1, unit: 'kWh'},
+    {name: '发电量', value: 22, unit: 'kWh'},
     {name: '用电量', value: 2, unit: 'kWh'},
     {name: '储能电量', value: 3, unit: 'kWh'},
     {name: '并网电量', value: 4, unit: 'kWh'},
@@ -379,7 +387,7 @@ watchPostEffect(()=>{
       />
     </el-form-item>
   </ElForm>
-  <div class=" chartBox">
+  <div class=" chartBox" v-loading="loading">
     <div class="real-echarts" ref="realRef"></div>
     <div class="echarts" ref="domRef"></div>
   </div>
