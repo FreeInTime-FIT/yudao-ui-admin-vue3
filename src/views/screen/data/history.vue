@@ -14,12 +14,37 @@ defineOptions({
   name: 'ScreenDataHistory',
 })
 const now = dayjs();
-const handleQuery = ()=> {
+const handleQuery =()=> {
   getLatestPrice({
     key: "历史记录_发电量",
     projectId: projectStore.projectInfo?.id,
     ...queryParams
+  }).then(res => {
+    chart.setOption({
+      dataset: [
+        {
+          ...res.data
+        },
+      ]
+    })
   })
+  getLatestPrice({
+    key: "历史记录_储能电量",
+    projectId: projectStore.projectInfo?.id,
+    ...queryParams
+  }).then(res => {
+    chart.setOption({
+      dataset: [
+        {
+
+        },
+        {
+          ...res.data
+        },
+      ]
+    })
+  })
+
 }
 const queryParams = reactive<{
   type: IDatePickerType,
@@ -163,8 +188,8 @@ onMounted(() => {
   chart.setOption({
     dataset: [
       {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        dimensions: ['month', 'total_per_month'],
+        source: [{month: "2024-08", total_per_month: 2414295}, {month: "2024-09", total_per_month: 1251178}],
       },
       {
         dimensions: ['time', 'value'],
@@ -177,10 +202,6 @@ onMounted(() => {
       {
         dimensions: ['time', 'value'],
         source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
-      },
-      {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1,  Math.random() * 1000]),
       },
     ],
     title: [
