@@ -36,6 +36,16 @@ const handleQuery = async ()=> {
       {
         ...storedEnergy.data
       }
+    ],
+    series: [
+      {},{},{},{},
+      {
+        data :[
+          {name: '发电量', value: generatingCapacity.data?.source.reduce((sum, it) => sum + it.value, 0), unit: 'kWh'},
+          {name: '用电量', value: "-", unit: 'kWh'},
+          {name: '储能电量', value: storedEnergy.data?.source.reduce((sum, it) => sum + it.value, 0), unit: 'kWh'},
+          {name: '并网电量', value: "-", unit: 'kWh'},
+        ]}
     ]
   })
   // 将两个数据源的时间进行合并，去重
@@ -44,11 +54,10 @@ const handleQuery = async ()=> {
     ...storedEnergy.data.source.map(item => item.time)
   ])];
 
-// 使用 map 和匿名函数合并数据
+  // 使用 map 和匿名函数合并数据
   const mergedData = times.map(time => {
     const genItem = generatingCapacity.data.source.find(item => item.time === time);
     const storedItem = storedEnergy.data.source.find(item => item.time === time);
-
     return {
       time,
       num: genItem ? genItem.value : null,   // 发电量
@@ -137,10 +146,10 @@ let chart
 onMounted(() => {
   chart = echarts.init(domRef.value, 'screen');
   const customList = [
-    {name: '发电量', value: 22, unit: 'kWh'},
-    {name: '用电量', value: 2, unit: 'kWh'},
-    {name: '储能电量', value: 3, unit: 'kWh'},
-    {name: '并网电量', value: 4, unit: 'kWh'},
+    {name: '发电量', value: 0, unit: 'kWh'},
+    {name: '用电量', value: "-", unit: 'kWh'},
+    {name: '储能电量', value: 0, unit: 'kWh'},
+    {name: '并网电量', value: "-", unit: 'kWh'},
   ];
   const axisProps = {
     nameTextStyle: {
@@ -302,6 +311,7 @@ onMounted(() => {
       },
       data: customList,
       renderItem: function (params, api) {
+        console.log("params---------",api.value(0))
         const item = customList[params.dataIndex]
         return  {
           type: 'group',
@@ -315,7 +325,7 @@ onMounted(() => {
               shape: {
                 x1: 0,
                 y1: 0,
-                x2: params.coordSys.width,
+                x2: params.coordSys.width+103,
                 y2: 0,
               },
               style: {
@@ -339,7 +349,7 @@ onMounted(() => {
               type: 'text',
               x: params.coordSys.width - 40,
               style: {
-                text: item.value + item.unit,
+                text: (!isNaN(api.value(0))? api.value(0).toFixed(2):'-') + item.unit,
                 fill: '#FFF',
                 fontSize: 20,
                 fontWeight: 'bold',
