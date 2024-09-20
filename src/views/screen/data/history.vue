@@ -243,11 +243,11 @@ onMounted(() => {
 
     xAxis: [...group.map((_, i) => ({
       gridIndex: i,
+      type:'category',
       ...axisProps,
     })), {
       gridIndex: 4,
       ...customProps,
-
     }],
     yAxis: [...group.map((_, i) => ({
       gridIndex: i,
@@ -344,6 +344,10 @@ onMounted(() => {
     }]
   })
 });
+watchPostEffect(()=>{
+  handleQuery()
+})
+
 </script>
 
 <template>
@@ -374,9 +378,6 @@ onMounted(() => {
         end-placeholder="结束"
       />
     </el-form-item>
-    <ElFormItem>
-      <ElButton type="primary" @click="handleQuery">查询</ElButton>
-    </ElFormItem>
   </ElForm>
   <div class=" chartBox">
     <div class="real-echarts" ref="realRef"></div>
