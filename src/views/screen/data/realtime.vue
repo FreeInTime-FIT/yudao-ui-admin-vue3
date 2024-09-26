@@ -12,7 +12,7 @@ import {useProjectStore} from "@/store/modules/project";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
-  name: 'ScreenDataHistory',
+  name: 'ScreenDataRealtime',
 })
 
 const projectStore = useProjectStore();
@@ -178,16 +178,22 @@ const getData = async () => {
   keyValue.value = res.data || {};
   return res;
 }
-onMounted(() => {
+watch(() => projectStore.projectInfo, (project) => {
+  if (!project) {
+    return;
+  }
   getData();
+}, {
+  immediate: true,
 })
 const projectInfo = computed(() => {
-  const project = projectStore.projectInfo;
+  const project = projectStore.projectInfo || {};
+
  return {
-   projectCode: project?.code,
-   projectName: project?.name,
-   address: project?.address,
-   userName: project?.ownerName,
+   projectCode: project.code,
+   projectName: project.name,
+   address: project.address,
+   userName: project.ownerName,
    code4: '8000kVA',
    code5: '8000kW',
    latlng: [project.lng, project.lat].join(','),

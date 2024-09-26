@@ -8,6 +8,8 @@ import {IDatePickerType} from "element-plus/es/components/date-picker/src/date-p
 
 const domRef = ref();
 const realRef = ref();
+let realChart;
+let chart;
 echarts.registerTheme('screen', screenConfig);
 const projectStore = useProjectStore();
 defineOptions({
@@ -96,8 +98,8 @@ const restQuery = (value: IDatePickerType) => {
 watch(() => [queryParams.type], () => {
   restQuery(queryParams.type)
 })
-let realChart
 onMounted(() => {
+  console.log(realRef);
   realChart = echarts.init(realRef.value, 'screen');
   const group = [{
     label: '储能电量',
@@ -142,7 +144,6 @@ onMounted(() => {
   })
 
 });
-let chart
 onMounted(() => {
   chart = echarts.init(domRef.value, 'screen');
   const customList = [
@@ -260,7 +261,7 @@ onMounted(() => {
 
     xAxis: [...group.map((_, i) => ({
       gridIndex: i,
-      type:'category',
+      type: 'category',
       ...axisProps,
     })), {
       gridIndex: 4,
@@ -279,6 +280,7 @@ onMounted(() => {
       xAxisIndex: i,
       datasetIndex: i,
       smooth: false,
+      name: item.name,
       encode: {
         x: 'time',
         y: 'value',
@@ -302,9 +304,10 @@ onMounted(() => {
       ...item,
     })), {
       type: 'custom',
+      name: 'total',
       // coordinateSystem: 'none',
-      yAxisIndex: 4,
-      xAxisIndex: 4,
+      yAxisIndex: 0,
+      xAxisIndex: 0,
       encode: {
         x: 'name',
         y: 'value',
