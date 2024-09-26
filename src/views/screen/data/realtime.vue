@@ -56,7 +56,7 @@ const todayDataList = [
   {
     label: '购电总量',
     key: '1',
-    valKay:'购电量',
+    valKey:'购电总量',
     unit: 'kWh',
   },
   {
@@ -66,45 +66,35 @@ const todayDataList = [
     unit: 'kWh',
   },
   {
-    label: '储电总量',
+    label: '储能总量',
     key: '3',
     unit: 'kWh',
+    valKey:  '储能总量',
   },
   {
     label: '用电总量',
     key: '4',
+    valKey:  '用电总量',
   },
   {
     label: '排碳总量',
     key: '11',
+    valKey:  '排碳总量',
   },
   {
     label: '减碳总量',
     key: '21',
+    valKey:  '减碳总量',
   },
   {
     label: '节能总量',
     key: '31',
+    valKey:  '节能总量',
   },
   {
     label: '降费金额',
     key: '41',
-  },
-  {
-    label: '调荷总览',
-    key: '12',
-  },
-  {
-    label: '补贴金额',
-    key: '22',
-  },
-  {
-    label: '交易电量',
-    key: '32',
-  },
-  {
-    label: '交易收益',
-    key: '42',
+    valKey:  '降费金额',
   },
 ]
 const todayDataShowList = todayDataList.reduce((res, item, idx) => {
@@ -171,12 +161,12 @@ const useList: UseItem[] = [{
   unit: 'kWh',
 },{
   title: '充电调用量',
-  key: '储能调电量',
+  key: '充电调用量',
   value: 1300,
   unit: 'kWh',
 },{
   title: '放电调用量',
-  key: '储能调电量',
+  key: '放电调用量',
   unit: 'kWh',
   value: 1300,
 },]
@@ -289,8 +279,8 @@ const handleProjectEdit = () => {
         </article>
       </ElCol>
       <ElCol :span="9">
-        <CardHeader title="" />
-        <article class="real-box">、
+        <CardHeader title="  " />
+        <article class="real-box">
           <img :src="bg" class="bg" alt="" />
           <div class="content">
             <div class="content_1">
@@ -304,29 +294,27 @@ const handleProjectEdit = () => {
               <div>I:{{keyValue['光伏板2_A']}}A</div>
             </div>
             <div class="content_3">
-              <div>P:50kW</div>
+              <div>P:{{keyValue['hub_P']}}kW</div>
               <div>Ua:{{keyValue['hub_UA']}}V</div>
               <div>Ub:{{keyValue['hub_UB']}}V</div>
               <div>Uc:{{keyValue['hub_UC']}}V</div>
               <div>Ia:{{keyValue['hub_IA']}}VA</div>
               <div>Ib:{{keyValue['hub_IB']}}VA</div>
               <div>Ic:{{keyValue['hub_IC']}}VA</div>
-              <div>F:-Hz</div>
-              <div>PF:-%</div>
+              <div>F:{{keyValue['hub_F']}}Hz</div>
             </div>
             <div class="content_4">
-              <div>P:100kW</div>
+              <div>P:{{keyValue['hub_负载_P']}}kW</div>
               <div>Ua:{{keyValue['hub_负载_UA']}}V</div>
               <div>Ub:{{keyValue['hub_负载_UB']}}V</div>
               <div>Uc:{{keyValue['hub_负载_UC']}}V</div>
               <div>Ia:{{keyValue['hub_负载_IA']}}VA</div>
               <div>Ib:{{keyValue['hub_负载_IB']}}VA</div>
               <div>Ic:{{keyValue['hub_负载_IC']}}VA</div>
-              <div>F:-Hz</div>
-              <div>PF:-%</div>
+              <div>F:{{keyValue['hub_负载_F']}}Hz</div>
             </div>
             <div class="content_5">
-              <div>P:-kW U:-V I:-A</div>
+              <div>P:{{keyValue['p']}}kW U:{{keyValue['u']}}V I:{{keyValue['i']}}A</div>
             </div>
           </div>
         </article>
@@ -392,7 +380,7 @@ const handleProjectEdit = () => {
         </article>
         <article class="card-box">
           <header class="card-header text-left">
-            <h3>电网调度指令</h3>
+            <h3>告警信息</h3>
           </header>
           <ElTable
             :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
@@ -400,10 +388,11 @@ const handleProjectEdit = () => {
             border
           >
             <ElTableColumn :width="60" label="序号" type="index"  />
-            <ElTableColumn label="并网功率" prop="index1"  />
-            <ElTableColumn label="所属部分" prop="index2"  />
-            <ElTableColumn label="发生时间"  prop="index3"  />
-            <ElTableColumn label="重要度" prop="index4"  />
+            <ElTableColumn label="时间" prop="index1"  />
+            <ElTableColumn label="警告级别" prop="index2"  />
+            <ElTableColumn label="所属设备"  prop="index3"  />
+            <ElTableColumn label="告警信息" prop="index4"  />
+            <ElTableColumn label="类型" prop="index5"  />
           </ElTable>
           <footer class="card-footer">
             <ElButton >更多调度指令</ElButton>

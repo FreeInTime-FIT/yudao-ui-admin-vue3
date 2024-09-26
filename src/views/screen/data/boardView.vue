@@ -4,7 +4,7 @@
     <ElRow :gutter="24">
       <ElCol :span="10">
         <CardHeader
-          title=''
+          title=" "
         />
         <div class="board-bg-box">
           <div class="board-bg">
