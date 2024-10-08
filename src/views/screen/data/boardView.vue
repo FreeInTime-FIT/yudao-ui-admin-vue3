@@ -28,127 +28,130 @@
         <CardHeader
           title='电池'
         />
-        <nav class="flex">
-          <UseInfoItem
-            title="电池电量"
-            :value="keyValue['电池电量']"
-            unit="%"
-            success-value="电池soc"
-          />
-          <UseInfoItem
-            title="充放电次数(当日)"
-            :value="keyValue['充放电次数']"
-            success-value="充放电次数"
-          />
-          <UseInfoItem
-            title="功率"
-            :value="keyValue['电池功率']"
-            unit="kw"
-            success-value="功率"
-          />
-          <UseInfoItem
-            title="温度"
-            :value="keyValue['单体温度最大值']"
-            unit="°"
-            success-value="单体温度最大值"
-          />
-          <UseInfoItem
-            title="温度"
-            :value="keyValue['单体温度最小值']"
-            unit="°"
-            success-value="单体温度最小值"
-          />
-        </nav>
-        <nav class="flex gap-[12px]">
-          <div class="flex-[1]">
-            <CardHeader title="负载" />
-            <div class="flex">
-              <UseInfoItem
-                :value="keyValue['用电功率']"
-                unit="kW"
-                success-value="用电功率"
-              />
-              <UseInfoItem
-                unit="kWh"
-                :value="keyValue['当日用电量']"
-                success-value="用电量(当日)"
-              />
-            </div>
-          </div>
-          <div class="flex-[1]">
-            <CardHeader title="电网" />
-            <div class="flex">
-              <UseInfoItem
-                :value="keyValue['电网功率']"
-                success-value="功率"
-                unit="kW"
-              />
-              <div class="flex flex-col gap-[12px] mb-[12px]">
-                <div>
-                  <ElButton type="primary">并网</ElButton>
-                </div>
-                <div>
-                  <ElButton>离网</ElButton>
-                </div>
+        <div class="h-485px">
+          <nav class="flex">
+            <UseInfoItem
+              title="电池电量"
+              :value="keyValue['电池电量']"
+              unit="%"
+              success-value="电池soc"
+            />
+            <UseInfoItem
+              title="充放电次数(当日)"
+              :value="keyValue['充放电次数']"
+              success-value="充放电次数"
+            />
+            <UseInfoItem
+              title="功率"
+              :value="keyValue['电池功率']"
+              unit="kw"
+              success-value="功率"
+            />
+            <UseInfoItem
+              title="温度"
+              :value="keyValue['单体温度最大值']"
+              unit="°"
+              success-value="单体温度最大值"
+            />
+            <UseInfoItem
+              title="温度"
+              :value="keyValue['单体温度最小值']"
+              unit="°"
+              success-value="单体温度最小值"
+            />
+          </nav>
+          <nav class="flex gap-[12px]">
+            <div class="flex-[1]">
+              <CardHeader title="负载" />
+              <div class="flex">
+                <UseInfoItem
+                  :value="keyValue['用电功率']"
+                  unit="kW"
+                  success-value="用电功率"
+                />
+                <UseInfoItem
+                  unit="kWh"
+                  :value="keyValue['当日用电量']"
+                  success-value="用电量(当日)"
+                />
               </div>
             </div>
-          </div>
-        </nav>
-        <div class="flex gap-[12px] border-total">
-          <div class="flex-[1]">
-            <div class="split-title">
-              <span>总体运行</span>
-            </div>
-            <div>
-              <div>
-                <span class="color-[var(--el-color-primary)]">微电网日用电量：</span>
-                <span class="font-size-[24px] mr-[4px]">{{getValue('当日用电量', true)}}</span>
-                <span>kWh</span>
-              </div>
-              <div>
-                <span class="color-[var(--el-color-primary)]">微电网日发电量：</span>
-                <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', true)}}</span>
-                <span>kWh</span>
-              </div>
-            </div>
-            <div class="split-title">
-              <span>天气</span>
-            </div>
-            <div>
-              <span>天气：</span>
-              <span>{{getValue(`addr_3#1212`, true)}}°</span>
-            </div>
-          </div>
-          <div class="flex-[2] ml-[12px]">
-            <div class="split-title">
-              <span>光伏</span>
-            </div>
-            <div class="flex gap-[12px]">
-              <div class="flex-[1]">
-                <div class="flex">
-                  <div class="flex-[1]" v-for="item in solarTypes" :key="item.value">
-                    <span class="color-[var(--el-color-primary)]">{{item.label}}:</span>
+            <div class="flex-[1]">
+              <CardHeader title="电网" />
+              <div class="flex">
+                <UseInfoItem
+                  :value="keyValue['电网功率']"
+                  success-value="功率"
+                  unit="kW"
+                />
+                <div class="flex flex-col gap-[12px] mb-[12px]">
+                  <div>
+                    <ElButton type="primary">并网</ElButton>
+                  </div>
+                  <div>
+                    <ElButton>离网</ElButton>
                   </div>
                 </div>
-                <div class="flex" v-for="item in solarList" :key="item.id">
-                  <div class="flex-[1] mt-[8px]" v-for="type in solarTypes" :key="type.value">
-                    <div class="color-[var(--el-color-warning)] fw-500">{{item.name}}{{type.label}}:</div>
-                    <div>
-                      <span class="font-size-[18px] fw-600">{{keyValue[`${type[item.key]}`]}}</span>
-                      <span class="font-500 ml-[3px]">{{type.unit}}</span>
+              </div>
+            </div>
+          </nav>
+          <div class="flex gap-[12px] border-total h-182px">
+            <div class="flex-[1] w-0">
+              <div class="split-title">
+                <span>总体运行</span>
+              </div>
+              <div>
+                <div>
+                  <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日用电量：</span>
+                  <span class="font-size-[24px] mr-[4px]">{{getValue('当日用电量', true)}}</span>
+                  <span>kWh</span>
+                </div>
+                <div>
+                  <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日发电量：</span>
+                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', true)}}</span>
+                  <span>kWh</span>
+                </div>
+              </div>
+              <div class="split-title">
+                <span>天气</span>
+              </div>
+              <div>
+                <span>天气：</span>
+                <span>{{getValue(`addr_3#1212`, true)}}°</span>
+              </div>
+            </div>
+            <div class="flex-[2] ml-[12px]">
+              <div class="split-title">
+                <span>光伏</span>
+              </div>
+              <div class="flex gap-[12px]">
+                <div class="flex-[1]">
+                  <div class="flex">
+                    <div class="flex-[1]" v-for="item in solarTypes" :key="item.value">
+                      <span class="color-[var(--el-color-primary)]">{{item.label}}:</span>
+                    </div>
+                  </div>
+                  <div class="flex" v-for="item in solarList" :key="item.id">
+                    <div class="flex-[1] mt-[8px]" v-for="type in solarTypes" :key="type.value">
+                      <div class="color-[var(--el-color-warning)] fw-500 whitespace-nowrap">{{item.name}}{{type.label}}:</div>
+                      <div>
+                        <span class="font-size-[18px] fw-600">{{keyValue[`${type[item.key]}`]}}</span>
+                        <span class="font-500 ml-[3px]">{{type.unit}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div>
+                  <div class="color-[var(--el-color-primary)]">总发电量:</div>
+                  <div class="color-[var(--el-color-warning)] fw-500">7天</div>
+                  <div class="font-size-[18px] fw-600">{{(keyValue[`addr_162`]*1 || 0) + (keyValue[`addr_164`]* 1 || 0)}}kWh</div>
+                </div>
               </div>
-              <div>
-                <div class="color-[var(--el-color-primary)]">总发电量:</div>
-                <div class="color-[var(--el-color-warning)] fw-500">7天</div>
-                <div class="font-size-[18px] fw-600">{{(keyValue[`addr_162`]*1 || 0) + (keyValue[`addr_164`]* 1 || 0)}}kWh</div>
-              </div>
-            </div>
 
+            </div>
           </div>
         </div>
+
         <CardHeader title="效益分析" />
         <div class="flex flex-items-stretch mt-[16px] " >
           <div class="flex-[1] mr-[8px]">

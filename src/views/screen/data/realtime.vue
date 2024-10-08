@@ -549,13 +549,13 @@ const handleProjectEdit = () => {
   .real-box{
     position: relative;
     margin-bottom: 30px;
-    height: 379px;
+    height: 354px;
     .bg{
       width: 100%;
       user-select: none;
       height: auto;
       display: block;
-      max-height: 379px;
+      max-height: 354px;
     }
 
     .content{
