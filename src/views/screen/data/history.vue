@@ -306,8 +306,8 @@ onMounted(() => {
       type: 'custom',
       name: 'total',
       // coordinateSystem: 'none',
-      yAxisIndex: 0,
-      xAxisIndex: 0,
+      yAxisIndex: 4,
+      xAxisIndex: 4,
       encode: {
         x: 'name',
         y: 'value',
