@@ -386,17 +386,17 @@ const totalList = [{
   unit: '台',
 }, {
   label: '负荷总量',
-  key: 'user3',
+  key: '负荷总量',
   value: '-',
   unit: 'kW',
 }, {
-  label: '电源总量',
-  key: 'user4',
+  label: '光伏总量',
+  key: '光伏总量',
   value: '-',
-  unit: 'kWh',
+  unit: 'kW',
 }, {
   label: '储能总量',
-  key: 'user5',
+  key: '储能总量',
   unit: 'kWh',
   value: '-',
 }]

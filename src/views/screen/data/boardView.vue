@@ -11,10 +11,9 @@
             <img :src="board" alt="" />
             <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
             <div class="board-pos board-pos2">变压器频率：55Hz</div>
-            <div class="board-pos board-pos3">储能电量：3452kWh</div>
+            <div class="board-pos board-pos3">储能电量：{{ keyValue['储能电量'] }}kWh</div>
             <div class="board-pos board-pos4">
-              <div>总用电量：3331kWh</div>
-              <div>总用电功率：4012kW</div>
+              <div>总用电量：{{ keyValue['总用电量'] }}kWh</div>
             </div>
           </div>
         </div>
