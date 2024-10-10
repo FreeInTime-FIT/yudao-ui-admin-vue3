@@ -32,6 +32,9 @@
       <el-form-item label="储能容量(kWh)" prop="energyStorageCapacity">
         <el-input v-model="formData.energyStorageCapacity" placeholder="请输入储能容量(kWh)"/>
       </el-form-item>
+      <el-form-item label="光伏总量(kWh)" prop="totalCapacity">
+        <el-input v-model="formData.totalCapacity" placeholder="请输入光伏总量(kWh)"/>
+      </el-form-item>
       <el-form-item label="额定功率(kW)" prop="ratedPower">
         <el-input v-model="formData.ratedPower" placeholder="请输入额定功率(kW)"/>
       </el-form-item>
@@ -94,6 +97,7 @@ const formData = ref({
   loadPower: undefined,
   energyStorageType: undefined,
   energyStorageCapacity: undefined,
+  totalCapacity: undefined,
   ratedPower: undefined,
   batteryType: undefined,
   batteryVoltageRange: undefined,
@@ -170,6 +174,7 @@ const resetForm = () => {
     loadPower: undefined,
     energyStorageType: undefined,
     energyStorageCapacity: undefined,
+    totalCapacity: undefined,
     ratedPower: undefined,
     batteryType: undefined,
     batteryVoltageRange: undefined,

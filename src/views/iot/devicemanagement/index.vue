@@ -59,6 +59,7 @@
       <el-table-column label="负荷功率(kW)" align="center" prop="loadPower" />
       <el-table-column label="储能类型" align="center" prop="energyStorageType" />
       <el-table-column label="储能容量(kWh)" align="center" prop="energyStorageCapacity" />
+      <el-table-column label="光伏总量(kWh)" align="center" prop="totalCapacity" />
       <el-table-column label="额定功率(kW)" align="center" prop="ratedPower" />
       <el-table-column label="电池类型" align="center" prop="batteryType" />
       <el-table-column label="电池电压范围(V)" align="center" prop="batteryVoltageRange" />
@@ -133,6 +134,7 @@ const queryParams = reactive({
   loadPower: undefined,
   energyStorageType: undefined,
   energyStorageCapacity: undefined,
+  totalCapacity: undefined,
   ratedPower: undefined,
   batteryType: undefined,
   batteryVoltageRange: undefined,

@@ -1540,6 +1540,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: number;
+    totalCapacity?: number;
     /** 额定功率(kW) */
     ratedPower?: number;
     /** 电池类型 */
@@ -1581,6 +1582,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: number;
+    totalCapacity?: number;
     /** 额定功率(kW) */
     ratedPower?: number;
     /** 电池类型 */
@@ -1805,6 +1807,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: string;
+    totalCapacity?: string;
     /** 额定功率(kW) */
     ratedPower?: string;
     /** 电池类型 */
@@ -2440,6 +2443,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: string;
+    totalCapacity?: string;
     /** 额定功率(kW) */
     ratedPower?: string;
     /** 电池类型 */

@@ -9,6 +9,7 @@ export interface DeviceManagementVO {
   loadPower: number // 负荷功率(kW)
   energyStorageType: string // 储能类型
   energyStorageCapacity: number // 储能容量(kWh)
+  totalCapacity: number // 储能容量(kWh)
   ratedPower: number // 额定功率(kW)
   batteryType: string // 电池类型
   batteryVoltageRange: string // 电池电压范围(V)
