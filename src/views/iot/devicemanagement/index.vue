@@ -83,6 +83,12 @@
           <el-button
             link
             type="primary"
+            @click="handleRealTimeDetail(scope.row)">
+            历史数据
+          </el-button>
+          <el-button
+            link
+            type="primary"
             @click="openForm('update', scope.row.id)"
           >
             编辑
@@ -190,6 +196,17 @@ const handleDelete = async (id: number) => {
     // 刷新列表
     await getList()
   } catch {}
+}
+const router = useRouter()
+const handleRealTimeDetail = (row) => {
+  router.push({
+    name: 'DeviceRealTimeData',
+    query: {
+      id: row.id,
+      productKey: row.productKey,
+      deviceName: row.deviceName
+    }
+  })
 }
 
 /** 导出按钮操作 */

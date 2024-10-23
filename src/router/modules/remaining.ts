@@ -575,6 +575,19 @@ const remainingRouter: AppRouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: '/iot',
+    component: Layout,
+    name: 'IotCenter',
+    meta: {hidden: true},
+    children: [
+      {
+        path: 'deviceRealTime',
+        name: 'DeviceRealTimeData',
+        component: () => import('@/views/iot/devicemanagement/DeviceRealTimeData.vue')
+      },
+    ]
+  }
   // {
   //   path: '/screen',
   //   component: ScreenLayout,
