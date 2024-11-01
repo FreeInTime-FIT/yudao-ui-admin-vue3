@@ -99,7 +99,6 @@ const list = ref<DeviceManagementVO[]>([]) // 列表的数据
 const columns = ref([])
 const total = ref(0) // 列表的总页数
 const checkedColumns = ref([])
-const needInit = ref(true)
 const options = [
   {
     value: 0,
@@ -126,14 +125,15 @@ const options = [
     label: '11#',
   },
 ]
+const initColumn = async () => {
+  selectAll.value = true
+  columns.value = await IOTRealTimeAPI.getTableColumns(queryParams)
+  checkedColumns.value = columns.value
+
+}
 const getData = async () => {
   loading.value = true
   try {
-    columns.value = await IOTRealTimeAPI.getTableColumns(queryParams)
-    if (needInit.value) {
-      checkedColumns.value = columns.value
-      needInit.value = false
-    }
     const data = await IOTRealTimeAPI.getTableData(queryParams)
     list.value = data.list
     total.value = data.total
@@ -150,6 +150,7 @@ const handleColumnChange = (item,value)=> {
   })
 }
 onMounted(() => {
+  initColumn()
   getData()
 })
 const handleQuery = () => {
@@ -160,6 +161,12 @@ const handleQuery = () => {
 watch(() => [
   queryParams.pageNo, queryParams.pageSize
 ], () => {
+  getData()
+})
+watch(() => [
+  queryParams.index
+], () => {
+  initColumn()
   getData()
 })
 const searchInput = ref<string>('');
