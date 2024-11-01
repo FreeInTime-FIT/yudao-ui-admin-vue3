@@ -154,7 +154,6 @@ onMounted(() => {
   getData()
 })
 const handleQuery = () => {
-  needInit.value = true
   queryParams.pageNo = 1
   getData()
 }
