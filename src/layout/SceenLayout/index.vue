@@ -47,7 +47,7 @@ defineOptions({ name: 'ScreenLayout' })
     <header class="flex pa-[12px] shadow-[var(--el-box-shadow-dark)] bg-[var(--screen-header-bg)] color-[var(--screen-header-text-color)]">
       <div class="flex-1 flex-items-center flex">
         <a type="info" href="/screen/index" class="font-size-[30px] color-[var(--screen-header-text-color)] logo">
-          <img src="/logo.png" alt="" />
+<!--          <img src="/logo.png" alt="" />-->
           <span>云监控系统</span>
         </a>
         <span>{{$route.meta.title}}</span>
