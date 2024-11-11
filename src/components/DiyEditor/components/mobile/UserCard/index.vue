@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between p-x-18px p-y-24px">
       <div class="flex flex-1 items-center gap-16px">
         <el-avatar :size="60">
-          <Icon icon="ep:avatar" :size="60" />
+<!--          <Icon icon="ep:avatar" :size="60" />-->
         </el-avatar>
         <span class="text-18px font-bold">能量管理云监控系统</span>
       </div>
