@@ -281,6 +281,7 @@ onUnmounted(() => {
   clearInterval(timer);
 })
 onMounted(() => {
+  if (projectStore.projectInfo) {
   getLastData({
     projectId: projectStore.projectInfo?.id,
   })
@@ -295,7 +296,7 @@ onMounted(() => {
     projectId: projectStore.projectInfo?.id,
   }).then(res => {
     getterTotalRef.value = res.data;
-  })
+  })}
 })
 const getValue = (key, hasEmpty) => {
   const v = unref(keyValue)[key];
