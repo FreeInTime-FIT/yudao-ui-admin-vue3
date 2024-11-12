@@ -85,10 +85,10 @@
                 />
                 <div class="flex flex-col gap-[12px] mb-[12px]">
                   <div>
-                    <ElButton type="primary">并网</ElButton>
+                    <ElButton :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
                   </div>
                   <div>
-                    <ElButton>离网</ElButton>
+                    <ElButton :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
                   </div>
                 </div>
               </div>
@@ -459,7 +459,7 @@ const solarTypes = [{
   label: '功率',
   unit: 'kW',
   gf1: 'pv1功率',
-  gf2: 'pv1功率',
+  gf2: 'pv2功率',
 },]
 const solarList = [{
   id: '1',
