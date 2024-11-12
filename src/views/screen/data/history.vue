@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
-import {getLatestPrice} from "@/services/services/IotReportController";
+import {getLatestPrice, getPanelData} from "@/services/services/IotReportController";
 import {IDatePickerType} from "element-plus/es/components/date-picker/src/date-picker.type";
 
 const domRef = ref();
@@ -28,6 +28,10 @@ const handleQuery = async ()=> {
     key: "历史记录_储能电量",
     projectId: projectStore.projectInfo?.id,
     ...queryParams
+  })
+  const boardViewData = await getPanelData({
+    key: 'boardView',
+    projectId: projectStore.projectInfo?.id,
   })
   loading.value = false
   chart.setOption({
@@ -78,9 +82,9 @@ const queryParams = reactive<{
   time: Date | [Date, Date],
   format: string
 }>({
-  type: 'yearrange',
-  time: [now.format('YYYY'), now.format('YYYY')],
-  format: 'YYYY'
+  type: 'date',
+  time: now.format('YYYY-MM-DD'),
+  format: 'YYYY-MM-DD'
 })
 const restQuery = (value: IDatePickerType) => {
 
@@ -380,8 +384,8 @@ watchPostEffect(()=>{
   >
     <el-form-item prop="type">
       <el-radio-group v-model="queryParams.type">
-        <el-radio-button label="年" value="yearrange" />
-        <el-radio-button label="月" value="monthrange" />
+<!--        <el-radio-button label="年" value="yearrange" />-->
+<!--        <el-radio-button label="月" value="monthrange" />-->
         <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>

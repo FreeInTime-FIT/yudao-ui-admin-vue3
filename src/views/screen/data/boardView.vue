@@ -10,7 +10,7 @@
           <div class="board-bg">
             <img :src="board" alt="" />
             <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
-            <div class="board-pos board-pos2">变压器频率：55Hz</div>
+            <div class="board-pos board-pos2">变压器频率：50Hz</div>
             <div class="board-pos board-pos3">储能电量：{{ keyValue['储能电量'] }}kWh</div>
             <div class="board-pos board-pos4">
               <div>总用电量：{{ keyValue['总用电量'] }}kWh</div>
@@ -102,12 +102,12 @@
               <div>
                 <div>
                   <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日用电量：</span>
-                  <span class="font-size-[24px] mr-[4px]">{{getValue('当日用电量', true)}}</span>
+                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日用电量', false)}}</span>
                   <span>kWh</span>
                 </div>
                 <div>
                   <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日发电量：</span>
-                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', true)}}</span>
+                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', false)}}</span>
                   <span>kWh</span>
                 </div>
               </div>
@@ -143,7 +143,7 @@
                 <div>
                   <div class="color-[var(--el-color-primary)]">总发电量:</div>
                   <div class="color-[var(--el-color-warning)] fw-500">7天</div>
-                  <div class="font-size-[18px] fw-600">{{(keyValue[`addr_162`]*1 || 0) + (keyValue[`addr_164`]* 1 || 0)}}kWh</div>
+                  <div class="font-size-[18px] fw-600">{{keyValue["七日用电量"]}}kWh</div>
                 </div>
               </div>
 
