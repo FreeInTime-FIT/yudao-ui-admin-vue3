@@ -61,7 +61,7 @@
   const notifyRef = ref([]);
   const { status, data, send, close, open } = useWebSocket<string>(server as any, {
     autoReconnect: true,
-    heartbeat: !import.meta.env.DEV,
+    heartbeat: true,
     autoClose: false,
     immediate: false,
   })
@@ -152,6 +152,9 @@
     if (chart) {
       chart.resize();
     }
+  })
+  watch(status, (v) => {
+    console.log(v);
   })
   const showList = computed(() => {
     if (!resData.value.profits) {
@@ -537,14 +540,16 @@
   }, {
     flush: 'post',
   })
-  onMounted(() => {
-
+  const handleReconnect = () => {
     open() ;
 
     sendData(TOPIC_LIST_KEY, {});
     if (unref(selectedTopic).topicId) {
       sendData(DEVICE_LIST_KEY, unref(selectedTopic));
     }
+  }
+  onMounted(() => {
+    handleReconnect();
   })
 
   onUnmounted(() => {
@@ -576,7 +581,17 @@
 <template>
   <header class="header">
     <h2>数据运维</h2>
-    <span>数据更新时间：{{dayjs(resData.updateTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+    <div class="flex items-center gap-8px">
+      <span>数据更新时间：{{dayjs(resData.updateTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+      <el-tag type="success" v-if="status=== 'OPEN'">连接正常</el-tag>
+      <template  v-else-if="status=== 'CLOSED'">
+        <el-tag type="danger">已断开</el-tag>
+        <el-button type="primary" link @click="handleReconnect">重连</el-button>
+      </template>
+
+      <el-tag type="primary" v-else-if="status=== 'CONNECTING'">连接中</el-tag>
+    </div>
+
   </header>
   <aside class="aside">
     <ElFormItem label="订阅主题" class="flex-items-center mb-[0px]">
