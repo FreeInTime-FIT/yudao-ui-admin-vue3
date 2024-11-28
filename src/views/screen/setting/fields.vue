@@ -423,6 +423,7 @@
     historyList.value = [];
     selectedList.value = [];
     resData.value = {}
+    console.log(v);
     sendData(DEVICE_LIST_KEY, unref(selectedTopic));
   });
 
@@ -544,7 +545,7 @@
     open() ;
 
     sendData(TOPIC_LIST_KEY, {});
-    if (unref(selectedTopic).topicId) {
+    if (unref(selectedTopic).productKey) {
       sendData(DEVICE_LIST_KEY, unref(selectedTopic));
     }
   }
