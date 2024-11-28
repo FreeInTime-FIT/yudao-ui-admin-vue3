@@ -57,7 +57,7 @@ const server = queryString.stringifyUrl({
     token: getAccessToken(),
   }});
 const { status, data, send, close, open } = useWebSocket<string>(server as any, {
-  autoReconnect: false,
+  autoReconnect: true,
   heartbeat: !import.meta.env.DEV,
   autoClose: false,
   immediate: false,
