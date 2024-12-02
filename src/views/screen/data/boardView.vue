@@ -111,13 +111,13 @@
                   <span>kWh</span>
                 </div>
               </div>
-              <div class="split-title">
-                <span>天气</span>
-              </div>
-              <div>
-                <span>天气：</span>
-                <span>{{getValue(`addr_3#1212`, true)}}°</span>
-              </div>
+<!--              <div class="split-title">-->
+<!--                <span>天气</span>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span>天气：</span>-->
+<!--                <span>{{getValue(`addr_3#1212`, true)}}°</span>-->
+<!--              </div>-->
             </div>
             <div class="flex-[2] ml-[12px]">
               <div class="split-title">

@@ -49,7 +49,7 @@ const handleQuery = async ()=> {
         data :[
           {name: '发电量', value: generatingCapacity.data?.source.reduce((sum, it) => sum + it.value, 0), unit: 'kWh'},
           {name: '用电量', value: "-", unit: 'kWh'},
-          {name: '储能电量', value: storedEnergy.data?.source.reduce((sum, it) => sum + it.value, 0), unit: 'kWh'},
+          {name: '储能电量', value: storedEnergy.data?.source.reduce((sum, it) => sum + it.value, 0) / 100, unit: 'kWh'},
           {name: '并网电量', value: "-", unit: 'kWh'},
         ]}
     ]
