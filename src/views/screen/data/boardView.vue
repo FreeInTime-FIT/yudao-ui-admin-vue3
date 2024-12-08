@@ -2,10 +2,69 @@
 <!--  <IFrame src="/go-view/#/chart/preview/1" />-->
   <div class="content-box">
     <ElRow :gutter="24">
+      <ElCol :span="7">
+        <article>
+          <CardHeader
+            title='实时电价'
+          />
+          <div class="real-price" ref="realRef"></div>
+        </article>
+
+        <div class="flex mt-20px fuzai-bg relative">
+          <img :src="fuzaiBg" class="w-full" alt="" />
+          <div class="value-content-1">
+            <div class="text-32px fw-bold text-shadow-num">{{keyValue['用电功率']}}</div>
+            <div class="fw-bold">用电功率(kw)</div>
+          </div>
+          <div class="value-content-2">
+            <div class="text-32px fw-bold text-shadow-num">{{keyValue['当日用电量']}}</div>
+            <div class="fw-bold">当日用电量(kw)</div>
+          </div>
+        </div>
+
+        <div class="flex mt-20px relative">
+          <img :src="bingwangBg" class="w-full" alt="" />
+          <div class="value-content-1">
+            <div class="text-32px fw-bold text-shadow-num">{{keyValue['电网功率']}}</div>
+            <div class="fw-bold">功率(kw)</div>
+          </div>
+          <div class="value-content-2">
+            <div>
+              <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
+            </div>
+            <div>
+              <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
+            </div>
+          </div>
+        </div>
+
+      </ElCol>
       <ElCol :span="10">
-        <CardHeader
-          title=" "
-        />
+        <card-header title="总体运行情况" />
+        <div class="flex gap-28px">
+          <div class="flex-1 flex items-center ele-bg">
+            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
+            <div class="ml-12px">
+              <div>
+                微电网日用电量
+              </div>
+              <div class="color-#FCFF00 text-26px">
+                {{getValue('微电网日用电量', false)}}kWh
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 flex items-center ele-bg">
+            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
+            <div class="ml-12px">
+              <div>
+                微电网日发电量
+              </div>
+              <div class="color-#FCFF00 text-26px">
+                {{getValue('微电网日发电量', false)}}kWh
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="board-bg-box">
           <div class="board-bg">
             <img :src="board" alt="" />
@@ -18,139 +77,56 @@
           </div>
         </div>
 
-        <CardHeader
-          title='实时电价'
-        />
-        <div class="real-price" ref="realRef"></div>
-      </ElCol>
-      <ElCol :span="14">
-        <CardHeader
-          title='电池'
-        />
-        <div class="h-485px">
-          <nav class="flex">
-            <UseInfoItem
-              title="电池电量"
-              :value="keyValue['电池电量']"
-              unit="%"
-              success-value="电池soc"
-            />
-            <UseInfoItem
-              title="充放电次数(当日)"
-              :value="keyValue['充放电次数']"
-              success-value="充放电次数"
-            />
-            <UseInfoItem
-              title="功率"
-              :value="keyValue['电池功率']"
-              unit="kw"
-              success-value="功率"
-            />
-            <UseInfoItem
-              title="温度"
-              :value="keyValue['单体温度最大值']"
-              unit="°"
-              success-value="单体温度最大值"
-            />
-            <UseInfoItem
-              title="温度"
-              :value="keyValue['单体温度最小值']"
-              unit="°"
-              success-value="单体温度最小值"
-            />
-          </nav>
-          <nav class="flex gap-[12px]">
-            <div class="flex-[1]">
-              <CardHeader title="负载" />
-              <div class="flex">
-                <UseInfoItem
-                  :value="keyValue['用电功率']"
-                  unit="kW"
-                  success-value="用电功率"
-                />
-                <UseInfoItem
-                  unit="kWh"
-                  :value="keyValue['当日用电量']"
-                  success-value="用电量(当日)"
-                />
-              </div>
-            </div>
-            <div class="flex-[1]">
-              <CardHeader title="电网" />
-              <div class="flex">
-                <UseInfoItem
-                  :value="keyValue['电网功率']"
-                  success-value="功率"
-                  unit="kW"
-                />
-                <div class="flex flex-col gap-[12px] mb-[12px]">
-                  <div>
-                    <ElButton :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
-                  </div>
-                  <div>
-                    <ElButton :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
-                  </div>
+        <card-header title="光伏" />
+        <div class="flex gap-[12px]">
+          <div class="flex-1">
+            <div class="flex mt-8px" v-for="item in solarList" :key="item.id">
+              <div
+                v-for="type in solarTypes"
+                :key="type.value"
+                class="flex-1 flex items-center"
+                :class="type.cls"
+              >
+                <div class="bg-icon"><img
+                  :src="type.icon"
+                  :class="type.iconCls"
+                  alt="" /></div>
+                <div class="ml-10px">
+                  <div class="ele-title">{{item.name}}{{type.label}}</div>
+                  <div class="ele-value">{{keyValue[`${type[item.key]}`]}}{{type.unit}}</div>
                 </div>
               </div>
             </div>
-          </nav>
-          <div class="flex gap-[12px] border-total h-182px">
-            <div class="flex-[1] w-0">
-              <div class="split-title">
-                <span>总体运行</span>
-              </div>
-              <div>
-                <div>
-                  <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日用电量：</span>
-                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日用电量', false)}}</span>
-                  <span>kWh</span>
-                </div>
-                <div>
-                  <span class="color-[var(--el-color-primary)] whitespace-nowrap">微电网日发电量：</span>
-                  <span class="font-size-[24px] mr-[4px]">{{getValue('微电网日发电量', false)}}</span>
-                  <span>kWh</span>
-                </div>
-              </div>
-<!--              <div class="split-title">-->
-<!--                <span>天气</span>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <span>天气：</span>-->
-<!--                <span>{{getValue(`addr_3#1212`, true)}}°</span>-->
-<!--              </div>-->
-            </div>
-            <div class="flex-[2] ml-[12px]">
-              <div class="split-title">
-                <span>光伏</span>
-              </div>
-              <div class="flex gap-[12px]">
-                <div class="flex-[1]">
-                  <div class="flex">
-                    <div class="flex-[1]" v-for="item in solarTypes" :key="item.value">
-                      <span class="color-[var(--el-color-primary)]">{{item.label}}:</span>
-                    </div>
-                  </div>
-                  <div class="flex" v-for="item in solarList" :key="item.id">
-                    <div class="flex-[1] mt-[8px]" v-for="type in solarTypes" :key="type.value">
-                      <div class="color-[var(--el-color-warning)] fw-500 whitespace-nowrap">{{item.name}}{{type.label}}:</div>
-                      <div>
-                        <span class="font-size-[18px] fw-600">{{keyValue[`${type[item.key]}`]}}</span>
-                        <span class="font-500 ml-[3px]">{{type.unit}}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div class="color-[var(--el-color-primary)]">总发电量:</div>
-                  <div class="color-[var(--el-color-warning)] fw-500">7天</div>
-                  <div class="font-size-[18px] fw-600">{{keyValue["七日用电量"]}}kWh</div>
-                </div>
-              </div>
-
+          </div>
+          <div class="bg-icon-success flex items-center">
+            <div class="bg-icon"><img
+              :src="icon5"
+              class="w-37px"
+              alt="" /></div>
+            <div class="ml-10px">
+              <div class="ele-title">7天总发电量</div>
+              <div class="ele-value">{{keyValue["七日用电量"]}}kWh</div>
             </div>
           </div>
         </div>
 
+      </ElCol>
+      <el-col :span="7">
+        <CardHeader title="电池" />
+        <div class="flex flex-wrap">
+          <div v-for="item in batteryInfo" class="w-50%" :key="item.id">
+            <div class=" flex items-center mb-16px mr-10px pl-10px">
+              <div class="today-bg">
+                <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
+              </div>
+              <div class="ml-8px">
+                <div class="fw-bold">{{item.label}}</div>
+                <div class="color-#3DBDFF fw-bold text-26px">{{getValue(item.key) || item.value}}</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
         <CardHeader title="效益分析" />
         <div class="flex flex-items-stretch mt-[16px] " >
           <div class="flex-[1] mr-[8px]">
@@ -199,7 +175,8 @@
             </nav>
           </div>
         </div>
-      </ElCol>
+
+      </el-col>
     </ElRow>
 
   </div>
@@ -211,7 +188,7 @@ import { useResizeObserver } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
-import board from '@/views/screen/assets/board-bg.png'
+import board from '@/views/screen/assets/data/board.png'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
 import {
@@ -219,6 +196,20 @@ import {
 } from "@/services/services/IotReportController";
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
+import cdlIcon from "@/views/screen/assets/real/icon-cdl.png";
+import gfIcon from "@/views/screen/assets/real/icon-gf.png";
+import tdIcon3 from "@/views/screen/assets/real/today-icon-3.png";
+import tdIcon2 from "@/views/screen/assets/real/today-icon-2.png";
+import tdIcon1 from "@/views/screen/assets/real/today-icon-1.png";
+import tdIcon4 from "@/views/screen/assets/real/today-icon-4.png";
+import fuzaiBg from "@/views/screen/assets/data/fuzai-bg.png";
+import bingwangBg from "@/views/screen/assets/data/bingwang-bg.png";
+import icon1 from "@/views/screen/assets/data/icon-1.png";
+import icon2 from "@/views/screen/assets/data/icon-2.png";
+import icon3 from "@/views/screen/assets/data/icon-3.png";
+import icon4 from "@/views/screen/assets/data/icon-4.png";
+import icon5 from "@/views/screen/assets/data/icon-5.png";
+import eleIcon from "@/views/screen/assets/real/center-elc-icon.png";
 defineOptions({ name: '数据中心' })
 const keyValue = ref<any>({});
 const keys = []
@@ -315,7 +306,7 @@ onMounted(() => {
     axisLine: {
       show: false,
       lineStyle: {
-        // color: 'yellow',
+        color: 'yellow',
       },
       symbol: ['none', 'arrow'],
     },
@@ -377,11 +368,6 @@ onMounted(() => {
           hour: dayjs(item.hour, 'HH:mm').toDate(),
         }))
       },
-      title: {
-        text: '实时电价',
-        top: '2%',
-        left: '2%',
-      },
       xAxis: {
         ...axisProps,
         type: 'time',
@@ -442,24 +428,36 @@ const solarTypes = [{
   unit: 'kWh',
   gf1: '光伏1发电量',
   gf2: '光伏2发电量',
+  icon: icon1,
+  iconCls: 'w-41px',
+  cls: 'bg-icon-primary'
 },{
   value: 'fdl1',
   label: '电流',
   unit: 'A',
   gf1: 'pv1电流',
   gf2: 'pv2电流',
+  icon: icon2,
+  iconCls: 'w-41px',
+  cls: 'bg-icon-primary'
 },{
   value: 'fdl12',
   label: '电压',
   unit: 'V',
   gf1: 'pv1电压',
   gf2: 'pv2电压',
+  icon: icon3,
+  iconCls: 'w-36px',
+  cls: 'bg-icon-success'
 },{
   value: 'fdl34',
   label: '功率',
   unit: 'kW',
   gf1: 'pv1功率',
   gf2: 'pv2功率',
+  icon: icon4,
+  iconCls: 'w-35px',
+  cls: 'bg-icon-success'
 },]
 const solarList = [{
   id: '1',
@@ -472,6 +470,46 @@ const solarList = [{
   type: 'pv2',
   key: 'gf2',
 },]
+const batteryInfo = [
+  {
+    label: '电池电量(电池soc)',
+    key: '1',
+    valKey:'电池电量',
+    unit: 'kWh',
+    icon: cdlIcon,
+    iconWidth: 26,
+  },
+  {
+    label: '充放电次数(当日)',
+    key: '2',
+    valKey:  '充放电次数',
+    unit: 'kWh',
+    icon: gfIcon,
+    iconWidth: 44,
+  },
+  {
+    label: '功率',
+    key: '3',
+    unit: 'kWh',
+    valKey:  '电池功率',
+    icon: tdIcon3,
+    iconWidth: 27,
+  },
+  {
+    label: '温度-单体温度最大值',
+    key: '4',
+    valKey:  '单体温度最大值',
+    icon: tdIcon2,
+    iconWidth: 25,
+  },
+  {
+    label: '温度-单体温度最小值',
+    key: '11',
+    valKey:  '单体温度最小值',
+    icon: tdIcon1,
+    iconWidth: 26,
+  },
+]
 </script>
 
 <style lang="scss">
@@ -496,20 +534,20 @@ const solarList = [{
   font-size: 16px;
 }
 .board-pos1{
-  top: 45%;
+  top: 66%;
   left: 2%;
 }
 .board-pos2{
-  top: 46%;
+  top: 66%;
   left: 78%;
 }
 .board-pos3{
-  top: 98%;
-  left: 3%;
+  top: 91%;
+  left: 27%;
 }
 .board-pos4{
-  top: 98%;
-  left: 74%;
+  top: 92%;
+  left: 60%;
 }
 .pie-chart{
   height: 260px;
@@ -544,5 +582,98 @@ const solarList = [{
   font-size: 18px;
   font-weight: bold;
   margin-top: 3px;
+}
+
+.today-bg{
+  width: 55px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url(@/views/screen/assets/real/today-bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+.bg-icon-primary{
+  background-color:rgba(30, 188, 161, 0.1);
+  border-left: 3px solid rgba(30, 188, 161, 100);
+  padding-left: 5px;
+  .bg-icon{
+    background-color: rgba(1, 206, 220, 0.2);
+  }
+  .ele-title{
+    color: rgba(30, 188, 161, 100);;
+  }
+}
+.bg-icon-success{
+  background-color: rgba(25, 164, 255, 0.1);
+  border-left: 3px solid rgba(25, 164, 255, 100);
+  padding-left: 5px;
+  .ele-title{
+    color: rgba(25, 164, 255);;
+  }
+
+  .bg-icon{
+    background-color: rgba(25, 164, 255, 0.2);
+  }
+}
+.bg-icon{
+  width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.ele-title{
+  font-weight: bold;
+}
+.ele-value{
+  font-size: 20px;
+  font-weight: bold;
+}
+.ele-bg{
+  position: relative;
+  padding: 18px 16px;
+  border-radius: 8px;
+  background: linear-gradient(to right, rgba(32, 168, 232, 0.2),  #0b122a 30%, #0b122a 50%, rgba(32, 168, 232, 0.17));
+  &:before{
+    content: '';
+    position: absolute;
+    background: url(@/views/screen/assets/real/brackets-left.png) no-repeat;
+    width: 19px;
+    top: -5px;
+    left: -5px;
+    bottom: -5px;
+    background-size: 100% 100%;
+  }
+  &:after{
+    content: '';
+    position: absolute;
+    background: url(@/views/screen/assets/real/brackets-right.png) no-repeat;
+    width: 18px;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    background-size: 100% 100%;
+  }
+}
+
+.fuzai-bg{
+  width: 100%;
+
+}
+.value-content-1{
+  position: absolute;
+  top: 48%;
+  left: 8%;
+  text-align: center;
+}
+.value-content-2{
+  position: absolute;
+  top: 48%;
+  right: 4%;
+  text-align: center;
+}
+.text-shadow-num{
+  text-shadow: -1px 2px 5px 0 #103c63a8;;
 }
 </style>

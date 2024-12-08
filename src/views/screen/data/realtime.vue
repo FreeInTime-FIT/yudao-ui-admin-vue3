@@ -2,8 +2,16 @@
 import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
-import UseInfoItem from '@/views/screen/components/UseInfoItem.vue'
-import bg from '@/views/screen/assets/real-bg.png'
+import earthBg from '@/views/screen/assets/real/elec-earth.png'
+import centerBg from '@/views/screen/assets/real/middlebg.png'
+import eleIcon from '@/views/screen/assets/real/center-elc-icon.png'
+import gfIcon from '@/views/screen/assets/real/icon-gf.png'
+import cdlIcon from '@/views/screen/assets/real/icon-cdl.png'
+import fdlIcon from '@/views/screen/assets/real/icon-fdl.png'
+import tdIcon1 from '@/views/screen/assets/real/today-icon-1.png'
+import tdIcon2 from '@/views/screen/assets/real/today-icon-2.png'
+import tdIcon3 from '@/views/screen/assets/real/today-icon-3.png'
+import tdIcon4 from '@/views/screen/assets/real/today-icon-4.png'
 
 import {
   getPanelData
@@ -19,38 +27,6 @@ const projectStore = useProjectStore();
 const detailVisible = ref(false)
 const isEdit = ref(false)
 const keyValue = ref({});
-const projectAttrs = [
-  {
-    label: '项目编号',
-    key: 'projectCode',
-    value: ''
-  },
-  {
-    label: '业主名称',
-    key: 'userName',
-    value: ''
-  },
-  {
-    label: '项目地址',
-    key: 'address',
-    value: ''
-  },
-  {
-    label: '项目经纬度',
-    key: 'latlng',
-    value: ''
-  },
-  {
-    label: '变压器容量',
-    key: 'code4',
-    value: ''
-  },
-  {
-    label: '负荷总功率',
-    key: 'code5',
-    value: ''
-  },
-]
 
 const todayDataList = [
   {
@@ -58,60 +34,62 @@ const todayDataList = [
     key: '1',
     valKey:'购电总量',
     unit: 'kWh',
+    icon: cdlIcon,
+    iconWidth: 26,
   },
   {
     label: '发电总量',
     key: '2',
     valKey:  '发电总量',
     unit: 'kWh',
+    icon: gfIcon,
+    iconWidth: 44,
   },
   {
     label: '储能总量',
     key: '3',
     unit: 'kWh',
     valKey:  '储能总量',
+    icon: tdIcon3,
+    iconWidth: 27,
   },
   {
     label: '用电总量',
     key: '4',
     valKey:  '用电总量',
+    icon: tdIcon2,
+    iconWidth: 25,
   },
   {
     label: '排碳总量',
     key: '11',
     valKey:  '排碳总量',
+    icon: tdIcon1,
+    iconWidth: 26,
   },
   {
     label: '减碳总量',
     key: '21',
     valKey:  '减碳总量',
+    icon: tdIcon1,
+    iconWidth: 26,
   },
   {
     label: '节能总量',
     key: '31',
+    icon: tdIcon1,
+    iconWidth: 26,
     valKey:  '节能总量',
   },
   {
     label: '降费金额',
     key: '41',
     valKey:  '降费金额',
+    icon: tdIcon4,
+    iconWidth: 30,
   },
 ]
-const todayDataShowList = todayDataList.reduce((res, item, idx) => {
-  if (idx % 2 === 1) {
-    res[res.length - 1] = {
-      ...res[res.length - 1],
-      next: item,
-    }
-    return res;
-  }
-  return [
-    ...res,
-    {
-      first: item,
-    }
-  ]
-}, [])
+
 const messList = [
   {id: 1, v: 'A相', voltageKey: '1_177', electricKey: '1_174', powerKey: '1_180', powerFactorKey: '1_186', otherKey: '',  type: '并网点'},
   {id: 2, v: 'B相', voltageKey: '1_178', electricKey: '1_175', powerKey: '1_181', powerFactorKey: '1_187', otherKey: '', type: '并网点'},
@@ -138,36 +116,38 @@ type UseItem = {
   value?: any;
 }
 const useList: UseItem[] = [{
-  title: '购电量',
-  key: '购电量',
-  unit: 'kWh',
-  value: 0,
-}, {
-  title: '用电量',
-  key: '用电量',
-  async: true,
-  unit: 'kWh',
-},{
   title: '光伏发电量',
   key: '光伏1发电量',
   unit: 'kWh',
   async: true,
+  icon: gfIcon,
+  iconCls: 'w-44px',
   successValue: '光伏1发电量',
+  cls: 'bg-icon-primary',
 },{
   title: '光伏发电量',
   key: '光伏2发电量',
   async: true,
+  icon: gfIcon,
+  iconCls: 'w-44px',
   successValue: '光伏2发电量',
   unit: 'kWh',
+  cls: 'bg-icon-primary',
 },{
   title: '充电调用量',
   key: '充电调用量',
   value: 1300,
   unit: 'kWh',
+  icon: cdlIcon,
+  iconCls: 'w-26px',
+  cls: 'bg-icon-success',
 },{
   title: '放电调用量',
   key: '放电调用量',
   unit: 'kWh',
+  icon: fdlIcon,
+  iconCls: 'w-25px',
+  cls: 'bg-icon-success',
   value: 1300,
 },]
 const getData = async () => {
@@ -222,72 +202,116 @@ const getValue = (key, unit = '') => {
   }
   return v;
 }
-const spanMethod = ({ rowIndex, columnIndex}) => {
-  if (columnIndex === 0) {
-    if (rowIndex % 3 === 0) {
-      return {
-        rowspan: 3,
-        colspan: 1,
-      }
-    }
-    return {
-      rowspan: 0,
-      colspan: 1,
-    }
-  }
-}
+
 const handleProject = () => {
   detailVisible.value = true;
   isEdit.value = false;
 }
-const handleProjectEdit = () => {
-  detailVisible.value = true;
-  isEdit.value = true;
-}
+
 </script>
 
 <template>
-  <section class="w-[100%] overflow-x-hidden">
-    <ElRow :gutter="24">
-      <ElCol :span="8">
-        <CardHeader title="使用数据" />
-        <section class="use-info">
-
-          <UseInfoItem v-for="item in useList"
-                       :key="item.key"
-                       :title="item.title"
-                       :success-value="item.successValue"
-                       :unit="item.unit"
-                       :value="getValue(item.key) || item.value"
-          />
-        </section>
-        <CardHeader title="项目信息" />
-        <article class="card-box">
-          <header class="card-header">
-            <h3> {{getValue('projectName')}}</h3>
-          </header>
-          <ElTable
-            :data="projectAttrs"
-            row-key="label"
-            border
-            :show-header="false"
-          >
-            <ElTableColumn :width="100" label="名称" prop="label"  />
-            <ElTableColumn label="值" prop="key"  >
-              <template #default="{row}">
-                {{getValue(row.key)}}
-              </template>
-            </ElTableColumn>
-          </ElTable>
-          <footer class="card-footer">
-            <ElButton @click="handleProject">查看详情</ElButton>
-          </footer>
+  <section class="w-full overflow-x-hidden">
+    <el-row :gutter="48">
+      <el-col :span="6">
+        <CardHeader title="项目信息" >
+          <h3 class="text-18px mb-0 mt-0">
+            项目信息:
+            <a class="color-#D8FF00" @click="handleProject">{{getValue('projectName')}}</a>
+          </h3>
+        </CardHeader>
+        <article class="flex mb-40px shadow-bg items-center">
+          <div>
+            <img :src="earthBg" class="w-95px" alt="" />
+          </div>
+          <div class="flex-1 p-12px">
+            <div class="flex p-[12px_20px_12px_12px]">
+              <div class="border-bottom-primary pb-12px">项目编号</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('projectCode')}}</div>
+            </div>
+            <div class="flex  p-[12px_20px_12px_12px]">
+              <div class="border-bottom-primary pb-12px">业主名称</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('userName')}}</div>
+            </div>
+            <div class="flex  p-[12px_20px_12px_12px]">
+              <div class="border-bottom-primary pb-12px">项目经纬度</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('latlng')}}</div>
+            </div>
+            <div class="flex p-12px border-bottom-blue justify-between">
+              <div>变压器容量</div>
+              <div>{{getValue('code4')}}</div>
+            </div>
+            <div class="flex p-12px  border-bottom-blue justify-between">
+              <div>负荷总功率</div>
+              <div>{{getValue('code5')}}</div>
+            </div>
+          </div>
         </article>
-      </ElCol>
-      <ElCol :span="9">
-        <CardHeader title="  " />
-        <article class="real-box">
-          <img :src="bg" class="bg" alt="" />
+        <article class="">
+          <CardHeader title="电网信息" />
+          <article class="card-box">
+            <ElTable
+              :data="messNewList"
+              row-key="label"
+              border
+            >
+              <ElTableColumn label="电网" width="140" prop="name"  >
+                <template #default="{row}">
+                  <span class="font-bold">{{row.name}}</span>
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="A" prop="voltageKey"  >
+                <template #default="{row}">
+                  {{getValue(row.aValue)}}
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="B" prop="electricKey"  >
+                <template #default="{row}">
+                  {{getValue(row.bValue)}}
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="C" width="100" prop="powerKey"  >
+                <template #default="{row}">
+                  {{getValue(row.cValue)}}
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="总" prop="powerFactorKey"  >
+                <template #default="{row}">
+                  {{getValue(row.total, '')}}
+                </template>
+              </ElTableColumn>
+            </ElTable>
+          </article>
+        </article>
+      </el-col>
+      <el-col :span="12">
+        <CardHeader title="使用数据" />
+        <div class="flex gap-28px">
+          <div class="flex-1 flex items-center ele-bg">
+            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
+            <div class="ml-12px">
+              <div>
+                购电量
+              </div>
+              <div class="color-#FCFF00 text-26px">
+                {{getValue('购电量')}}kWh
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 flex items-center ele-bg">
+            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
+            <div class="ml-12px">
+              <div>
+                用电量
+              </div>
+              <div class="color-#FCFF00 text-26px">
+                {{getValue('用电量')}}kWh
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="real-box">
+          <img :src="centerBg" class="w-full" alt="" />
           <div class="content">
             <div class="content_1">
               <div>P:{{keyValue['光伏板1_P']}}kw</div>
@@ -323,71 +347,47 @@ const handleProjectEdit = () => {
               <div>P:{{keyValue['p']}}kW U:{{keyValue['u']}}V I:{{keyValue['i']}}A</div>
             </div>
           </div>
-        </article>
-        <CardHeader title="电网信息" />
+
+        </div>
+        <div class="flex gap-8px mb-20px">
+          <div
+            v-for="item in useList"
+            class="flex-1 flex items-center"
+            :key="item.key"
+            :class="item.cls"
+          >
+            <div class="bg-icon"><img
+              :src="item.icon"
+              :class="item.iconCls"
+              alt="" /></div>
+            <div class="ml-10px">
+              <div class="ele-title">{{item.title}}</div>
+              <div class="ele-value">{{getValue(item.key) || item.value}}{{item.unit}}</div>
+            </div>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="6">
+
         <article class="card-box">
-          <ElTable
-            :data="messNewList"
-            row-key="label"
-            border
-          >
-            <ElTableColumn label="电网" width="140" prop="name"  >
-              <template #default="{row}">
-                <span class="font-bold">{{row.name}}</span>
-              </template>
-            </ElTableColumn>
-            <ElTableColumn label="A" prop="voltageKey"  >
-              <template #default="{row}">
-                {{getValue(row.aValue)}}
-              </template>
-            </ElTableColumn>
-            <ElTableColumn label="B" prop="electricKey"  >
-              <template #default="{row}">
-                {{getValue(row.bValue)}}
-              </template>
-            </ElTableColumn>
-            <ElTableColumn label="C" width="100" prop="powerKey"  >
-              <template #default="{row}">
-                {{getValue(row.cValue)}}
-              </template>
-            </ElTableColumn>
-            <ElTableColumn label="总" prop="powerFactorKey"  >
-              <template #default="{row}">
-                {{getValue(row.total, '')}}
-              </template>
-            </ElTableColumn>
-          </ElTable>
-        </article>
-      </ElCol>
-      <ElCol :span="7">
-        <CardHeader title="当日数据" />
-        <article class="card-box ">
-          <ElTable
-            :data="todayDataShowList"
-            row-key="label"
-            border
-            :show-header="false"
-          >
-            <ElTableColumn :width="90" label="名称" prop="first.label"  />
-            <ElTableColumn label="值" prop="first.key"  >
-              <template #default="{row}">
-                {{getValue(row.first.valKey || row.first.key)}}
-                {{getValue(row.first.valKey || row.first.key) ? row.first.unit : ''}}
-              </template>
-            </ElTableColumn>
-            <ElTableColumn :width="90" label="名称" prop="next.label"  />
-            <ElTableColumn label="值" prop="next.key"  >
-              <template #default="{row}">
-                {{getValue(row.next.valKey ||row.next.key)}}
-                {{getValue(row.next.valKey ||row.next.key) ? row.next.unit : ''}}
-              </template>
-            </ElTableColumn>
-          </ElTable>
+          <CardHeader title="当日数据" />
+          <div class="flex flex-wrap">
+            <div v-for="item in todayDataList" class="w-50%" :key="item.id">
+              <div class=" flex items-center mb-16px mr-20px pl-30px">
+                <div class="today-bg">
+                  <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
+                </div>
+                <div class="ml-8px">
+                  <div class="fw-bold">{{item.label}}</div>
+                  <div class="color-#3DBDFF fw-bold text-26px">{{getValue(item.key) || item.value}}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </article>
         <article class="card-box">
-          <header class="card-header text-left">
-            <h3>告警信息</h3>
-          </header>
+          <card-header title="告警信息" />
           <ElTable
             :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
             row-key="id"
@@ -397,37 +397,11 @@ const handleProjectEdit = () => {
             <ElTableColumn label="时间" prop="index1"  />
             <ElTableColumn label="警告级别" prop="index2"  />
             <ElTableColumn label="所属设备"  prop="index3"  />
-            <ElTableColumn label="告警信息" prop="index4"  />
-            <ElTableColumn label="类型" prop="index5"  />
+            <ElTableColumn label="警告信息" prop="index4"  />
           </ElTable>
-          <footer class="card-footer">
-            <ElButton >更多调度指令</ElButton>
-            <ElButton >告警数据更新</ElButton>
-          </footer>
         </article>
-<!--        <article class="card-box">-->
-<!--          <header class="card-header text-left">-->
-<!--            <h3>运行参数</h3>-->
-<!--          </header>-->
-<!--          <ElTable-->
-<!--            :data="[{id: 1}, {id: 2}]"-->
-<!--            row-key="id"-->
-<!--            border-->
-<!--            :show-header="false"-->
-<!--          >-->
-<!--            <ElTableColumn label="序号" prop="index"  />-->
-<!--            <ElTableColumn label="并网功率" prop="index1"  />-->
-<!--            <ElTableColumn label="所属部分" prop="index2"  />-->
-<!--            <ElTableColumn label="重要度" prop="index4"  />-->
-<!--          </ElTable>-->
-<!--          <footer class="card-footer">-->
-<!--            <ElButton>更多运行参数</ElButton>-->
-<!--            <ElButton>修改参数</ElButton>-->
-<!--            <ElButton>本地参数上传</ElButton>-->
-<!--          </footer>-->
-<!--        </article>-->
-      </ElCol>
-    </ElRow>
+      </el-col>
+    </el-row>
   </section>
 
   <ElDialog
@@ -503,93 +477,157 @@ const handleProjectEdit = () => {
 </template>
 
 <style scoped lang="scss">
-  .use-info{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
-    justify-content: center;
-    padding: 30px 0;
+
+  .border-bottom-primary{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #1EBCA1;
+    }
+  }
+  .border-bottom-primary-1{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, rgba(30, 188, 161, 0.1), rgba(30, 188, 161, 0.8));
+    }
+  }
+  .border-bottom-blue{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, rgba(36, 143, 218, 0.1), #248FDA);
+    }
   }
 
-  .card-box{
-    margin: 16px 0 16px;
-    padding: 12px 16px;
-    background: var(--el-bg-color);
-    border-radius: 3px;
-    box-shadow: var(--el-box-shadow);
-    .el-table{
-      --el-table-border-color: #333;
-    }
-    .el-button{
-      --el-fill-color-blank: #000;
-    }
+  .shadow-bg{
+    padding: 12px;
+    box-shadow: inset 0 0 20px 0px #024A8A;
   }
-  .card-header{
-    text-align: center;
-    padding: 8px 12px;
-    &.text-left{
-      text-align: left;
+  .ele-bg{
+    position: relative;
+    padding: 18px 16px;
+    border-radius: 8px;
+    background: linear-gradient(to right, rgba(32, 168, 232, 0.2),  #0b122a 30%, #0b122a 50%, rgba(32, 168, 232, 0.17));
+    &:before{
+      content: '';
+      position: absolute;
+      background: url(@/views/screen/assets/real/brackets-left.png) no-repeat;
+      width: 19px;
+      top: -5px;
+      left: -5px;
+      bottom: -5px;
+      background-size: 100% 100%;
     }
-    h3{
-      margin: 0;
+    &:after{
+      content: '';
+      position: absolute;
+      background: url(@/views/screen/assets/real/brackets-right.png) no-repeat;
+      width: 18px;
+      top: -5px;
+      right: -5px;
+      bottom: -5px;
+      background-size: 100% 100%;
     }
-  }
-  .card-list{
-  }
-  .card-footer{
-    margin-top: 12px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-  }
-  .el-table{
-
   }
   .real-box{
+    margin: 16px 130px 36px;
     position: relative;
-    margin-bottom: 30px;
-    height: 354px;
-    .bg{
-      width: 100%;
-      user-select: none;
-      height: auto;
-      display: block;
-      max-height: 354px;
-    }
-
+    font-weight: bold;
     .content{
       position: absolute;
       top: 0;
-      left: 0;
-      bottom: 0;
+      left:0 ;
       right: 0;
+      bottom: 0;
     }
     .content_1{
       position: absolute;
-      top: 5%;
-      left: 26%;
+      top: 16%;
+      left: 0;
     }
     .content_2{
       position: absolute;
-      top: 5%;
-      left: 64%;
+      top: 16%;
+      right: 0px;
     }
     .content_3{
       position: absolute;
-      top: 45%;
-      left: 7%;
+      top: 60%;
+      left: -100px;
     }
     .content_4{
       position: absolute;
-      top: 45%;
-      left: 80%;
+      top: 60%;
+      right: -110px;
     }
     .content_5{
       position: absolute;
-      top: 90%;
-      left: 36%;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
     }
+  }
+  .bg-icon-primary{
+    background-color:rgba(30, 188, 161, 0.1);
+    border-left: 3px solid rgba(30, 188, 161, 100);
+    padding-left: 5px;
+    .bg-icon{
+      background-color: rgba(1, 206, 220, 0.2);
+    }
+    .ele-title{
+      color: rgba(30, 188, 161, 100);;
+    }
+  }
+  .bg-icon-success{
+    background-color: rgba(25, 164, 255, 0.1);
+    border-left: 3px solid rgba(25, 164, 255, 100);
+    padding-left: 5px;
+    .ele-title{
+      color: rgba(25, 164, 255);;
+    }
+
+    .bg-icon{
+      background-color: rgba(25, 164, 255, 0.2);
+    }
+  }
+  .bg-icon{
+    width: 52px;
+    display: flex;
+    align-items: center;
+    height: 61px;
+    justify-content: center;
+  }
+  .ele-title{
+    font-weight: bold;
+  }
+  .ele-value{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .today-bg{
+    width: 55px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(@/views/screen/assets/real/today-bg.png) no-repeat;
+    background-size: 100% 100%;
   }
   :deep(.dialog){
     --el-dialog-margin-top: 50px;
