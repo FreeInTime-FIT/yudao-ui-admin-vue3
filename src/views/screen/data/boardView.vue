@@ -7,7 +7,7 @@
           <CardHeader
             title='实时电价'
           />
-          <div class="real-price" ref="realRef"></div>
+          <div class="real-price shadow-bg" ref="realRef"></div>
         </article>
 
         <div class="flex mt-20px fuzai-bg relative">
@@ -128,9 +128,30 @@
           </div>
         </div>
         <CardHeader title="效益分析" />
-        <div class="flex flex-items-stretch mt-[16px] " >
-          <div class="flex-[1] mr-[8px]">
-            <header class="title-name">用电统计</header>
+        <div class="flex flex-items-stretch mt-[16px] shadow-bg" >
+          <nav class="flex flex-col mt-[16px] gap-[16px] flex-items-start">
+            <div>
+              <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
+              <span class="font-size-[24px] font-600">{{getValue(`节电量`, true)}}</span>
+              <span class="font-600 ml-[4px]">kWh</span>
+            </div>
+            <div>
+              <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
+              <span>
+              <span class="font-size-[24px] font-600">{{getValue(`减碳量`, true)}}</span>
+              <span class="font-600 ml-[4px]">kg</span>
+            </span>
+            </div>
+            <div>
+              <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
+              <span>
+              <span class="font-size-[24px] font-600">{{getValue(`节省金额`, true)}}</span>
+              <span class="font-600 ml-[4px]">元</span>
+            </span>
+            </div>
+          </nav>
+
+          <div class="flex-1">
             <PieBattery
               :data="useTotalRef"
               class="pie-chart"
@@ -138,9 +159,6 @@
               unit="kWh"
               :options="useTotalOptions"
             />
-          </div>
-          <div class="flex-[1]">
-            <header class="title-name">发电统计</header>
             <PieBattery
               class="pie-chart"
               title=""
@@ -148,31 +166,6 @@
               :options="useTotalOptions"
               :data="getterTotalRef"
             />
-
-          </div>
-          <div class="flex-[1] flex flex-col">
-            <header class="title-name">效益分析</header>
-            <nav class="flex flex-[1] flex-col mt-[16px] gap-[16px] flex-items-start">
-              <div>
-                <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
-                <span class="font-size-[24px] font-600">{{getValue(`节电量`, true)}}</span>
-                <span class="font-600 ml-[4px]">kWh</span>
-              </div>
-              <div>
-                <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
-                <span>
-              <span class="font-size-[24px] font-600">{{getValue(`减碳量`, true)}}</span>
-              <span class="font-600 ml-[4px]">kg</span>
-            </span>
-              </div>
-              <div>
-                <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
-                <span>
-              <span class="font-size-[24px] font-600">{{getValue(`节省金额`, true)}}</span>
-              <span class="font-600 ml-[4px]">元</span>
-            </span>
-              </div>
-            </nav>
           </div>
         </div>
 
@@ -186,7 +179,6 @@
 <script lang="ts" setup>
 import { useResizeObserver } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
-import UseInfoItem from "@/views/screen/components/UseInfoItem.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
 import board from '@/views/screen/assets/data/board.png'
 import * as echarts from "echarts";
@@ -201,7 +193,6 @@ import gfIcon from "@/views/screen/assets/real/icon-gf.png";
 import tdIcon3 from "@/views/screen/assets/real/today-icon-3.png";
 import tdIcon2 from "@/views/screen/assets/real/today-icon-2.png";
 import tdIcon1 from "@/views/screen/assets/real/today-icon-1.png";
-import tdIcon4 from "@/views/screen/assets/real/today-icon-4.png";
 import fuzaiBg from "@/views/screen/assets/data/fuzai-bg.png";
 import bingwangBg from "@/views/screen/assets/data/bingwang-bg.png";
 import icon1 from "@/views/screen/assets/data/icon-1.png";
@@ -210,6 +201,7 @@ import icon3 from "@/views/screen/assets/data/icon-3.png";
 import icon4 from "@/views/screen/assets/data/icon-4.png";
 import icon5 from "@/views/screen/assets/data/icon-5.png";
 import eleIcon from "@/views/screen/assets/real/center-elc-icon.png";
+import dot from '@/views/screen/assets/data/dot.png'
 defineOptions({ name: '数据中心' })
 const keyValue = ref<any>({});
 const keys = []
@@ -227,6 +219,7 @@ const realChartRef = ref();
 const useTotalRef = ref();
 const getterTotalRef = ref();
 const useTotalOptions = {
+  title: '用电统计',
   legend: {
     top: 0,
     right: 0,
@@ -322,46 +315,41 @@ onMounted(() => {
     },
   }
   const valueTypes = [{
-    value: 'today_avg',
+    value: 'price',
     label: '今天',
-    color: '#3b76e8',
+    color: '#FFAE3A',
   }]
   getLatestPrice({
     key: '实时电价'
   }).then(res => {
     chart.setOption({
+      backgroundColor: 'transparent',
       dataset:  {
         ...res.data,
         source: (res.data.source?.length ? res.data.source : [
           {
             hour: '00:00',
-            yesterday_avg: 0.3,
-            today_avg: 0.3
+            price: 0.3,
           },
           {
             hour: '08:00',
-            yesterday_avg: 0.6,
-            today_avg: 0.6
+            price: 0.6
           },
           {
             hour: '12:00',
-            yesterday_avg: 0.9,
-            today_avg: 0.91
+            price: 0.91
           },
           {
             hour: '18:00',
-            yesterday_avg: 0.6,
-            today_avg: 0.6
+            price: 0.6
           },
           {
             hour: '21:00',
-            yesterday_avg: 0.3,
-            today_avg: 0.3
+            price: 0.3
           },
           {
             hour: '24:00',
-            yesterday_avg: 0.3,
-            today_avg: 0.3
+            price: 0.3
           },
         ]).map(item => ({
           ...item,
@@ -371,16 +359,44 @@ onMounted(() => {
       xAxis: {
         ...axisProps,
         type: 'time',
+        min: dayjs('00:00', 'HH:mm').toDate(),
+        max: dayjs('00:00', 'HH:mm').add(1, 'day').toDate(),
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: '#024a8a'
+          },
+        },
         interval: 1000 * 60 * 60 * 2,
+        axisLabel: {
+          formatter: function (value, index) {
+            return dayjs(value).format('HH:mm');
+          }
+        },
       },
       yAxis: {
         ...axisProps,
+        name: '单位: 元/kWh',
+        nameLocation: 'end',
+        nameGap: 20,
+        splitLine: {
+          show: false,
+        },
+        axisLabel: {
+          margin: 20,
+        },
+      },
+      grid: {
+        backgroundColor: 'transparent',
       },
       legend: {
-        icon: 'circle',
+        icon: 'rect',
         right: 20,
         top: 20,
-        show: false,
+        itemWidth: 12,
+        itemHeight: 12,
+        show: true,
+        backgroundColor: 'transparent',
         data: valueTypes.map((type) => ({
           name: type.label,
           itemStyle: {
@@ -396,26 +412,23 @@ onMounted(() => {
           x: 'hour',
           y: type.value,
         },
-        step: 'start',
+        step: 'end',
         itemStyle: {
           color: type.color,
+        },
+
+        lineStyle: {
+          width: 1,
         },
         labelLine: {
           show: 0,
         },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
-            {
-              offset: 0,
-              color: screenConfig.color[idx],
-            },
-            {
-              offset: 1,
-              color: 'transparent'
-            }
-          ])
+        markPoint: {
+          symbol: 'rect',
         },
-        showSymbol: false,
+        symbol: `image://${dot}`,
+        symbolSize: [6, 8],
+        showSymbol: true,
       }))
     })
 
@@ -675,5 +688,9 @@ const batteryInfo = [
 }
 .text-shadow-num{
   text-shadow: -1px 2px 5px 0 #103c63a8;;
+}
+.shadow-bg{
+  padding: 12px;
+  box-shadow: inset 0 0 20px 0px #024A8A;
 }
 </style>
