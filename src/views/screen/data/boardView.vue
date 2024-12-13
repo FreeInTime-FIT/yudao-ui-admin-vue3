@@ -120,7 +120,7 @@
             </div>
             <div class="ml-8px w-0 flex-1 ">
               <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-              <div class="color-#3DBDFF  fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
+              <div class="color-#3DBDFF fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
             </div>
           </div>
 
