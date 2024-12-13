@@ -212,8 +212,8 @@ const handleProject = () => {
 
 <template>
   <section class="w-full overflow-x-hidden">
-    <el-row :gutter="48">
-      <el-col :span="6">
+    <div class="flex gap-48px">
+      <div class=" w-25%">
         <CardHeader title="项目信息" >
           <h3 class="text-18px mb-0 mt-0">
             项目信息:
@@ -249,10 +249,12 @@ const handleProject = () => {
         </article>
         <article class="">
           <CardHeader title="电网信息" />
-          <article class="card-box">
+          <article class="shadow-bg">
             <ElTable
               :data="messNewList"
               row-key="label"
+              class="data-table"
+              stripe
               border
             >
               <ElTableColumn label="电网" width="140" prop="name"  >
@@ -283,8 +285,8 @@ const handleProject = () => {
             </ElTable>
           </article>
         </article>
-      </el-col>
-      <el-col :span="12">
+      </div>
+      <div class="flex-1">
         <CardHeader title="使用数据" />
         <div class="flex gap-28px">
           <div class="flex-1 flex items-center ele-bg">
@@ -366,12 +368,12 @@ const handleProject = () => {
             </div>
           </div>
         </div>
-      </el-col>
-      <el-col :span="6">
+      </div>
+      <div class="w-24%">
 
         <article class="card-box">
           <CardHeader title="当日数据" />
-          <div class="flex flex-wrap">
+          <div class="flex flex-wrap ">
             <div v-for="item in todayDataList" class="w-50%" :key="item.id">
               <div class=" flex items-center mb-16px mr-20px pl-30px">
                 <div class="today-bg">
@@ -387,21 +389,26 @@ const handleProject = () => {
           </div>
         </article>
         <article class="card-box">
-          <card-header title="告警信息" />
-          <ElTable
-            :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
-            row-key="id"
-            border
-          >
-            <ElTableColumn :width="60" label="序号" type="index"  />
-            <ElTableColumn label="时间" prop="index1"  />
-            <ElTableColumn label="警告级别" prop="index2"  />
-            <ElTableColumn label="所属设备"  prop="index3"  />
-            <ElTableColumn label="警告信息" prop="index4"  />
-          </ElTable>
+          <card-header title="警告信息" />
+          <div class="shadow-bg">
+            <ElTable
+              :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
+              row-key="id"
+              class="data-table"
+              border
+              stripe
+            >
+              <ElTableColumn :width="60" label="序号" type="index"  />
+              <ElTableColumn label="时间" prop="index1"  />
+              <ElTableColumn label="警告级别" prop="index2"  />
+              <ElTableColumn label="所属设备"  prop="index3"  />
+              <ElTableColumn label="警告信息" prop="index4"  />
+            </ElTable>
+          </div>
+
         </article>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </section>
 
   <ElDialog
@@ -631,5 +638,18 @@ const handleProject = () => {
   }
   :deep(.dialog){
     --el-dialog-margin-top: 50px;
+  }
+  .data-table{
+    //--el-fill-color-lighter: rgb(23,34,70);
+    --el-table-header-bg-color: #172246;
+    :deep( .el-table__cell){
+      padding: 12px 0;
+    }
+    &.el-table--border :deep(th.el-table__cell){
+      border-bottom: 1px dashed #fff;
+    }
+    :deep(td.el-table__cell) {
+      border-right:1px dashed #fff; ;
+    }
   }
 </style>

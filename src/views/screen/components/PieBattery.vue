@@ -85,8 +85,12 @@
       },
       title: {
         text: data.title,
-        top: 20,
-        left: 30,
+        top: 'middle',
+        left: 'center',
+        textStyle: {
+          color: '#fff',
+        },
+        ...(data.options?.title || {})
       },
       series: [{
         type: 'pie',

@@ -136,8 +136,8 @@ v-for="item in projectStore.projectList"
   }
   :deep(.el-table){
     --el-table-header-text-color: #fff;
-    --el-table-tr-bg-color: #101b43;
-    --el-fill-color-lighter: var(--el-fill-color-blank);
+    --el-table-tr-bg-color: #101c3c;
+    --el-fill-color-lighter: rgb(23,34,70);
     --el-table-border-color: var(--el-fill-color-blank);
 
   }

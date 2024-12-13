@@ -1,8 +1,8 @@
 <template>
 <!--  <IFrame src="/go-view/#/chart/preview/1" />-->
   <div class="content-box">
-    <ElRow :gutter="24">
-      <ElCol :span="7">
+    <div class="flex gap-24px">
+      <div class="w-24%">
         <article>
           <CardHeader
             title='实时电价'
@@ -38,8 +38,8 @@
           </div>
         </div>
 
-      </ElCol>
-      <ElCol :span="10">
+      </div>
+      <div class="flex-1">
         <card-header title="总体运行情况" />
         <div class="flex gap-28px">
           <div class="flex-1 flex items-center ele-bg">
@@ -78,9 +78,9 @@
         </div>
 
         <card-header title="光伏" />
-        <div class="flex gap-[12px]">
-          <div class="flex-1">
-            <div class="flex mt-8px" v-for="item in solarList" :key="item.id">
+        <div class="flex gap-8px pt-4px">
+          <div class="flex-1 gap-8px">
+            <div class="flex" v-for="item in solarList" :key="item.id">
               <div
                 v-for="type in solarTypes"
                 :key="type.value"
@@ -110,10 +110,10 @@
           </div>
         </div>
 
-      </ElCol>
-      <el-col :span="7">
+      </div>
+      <div class="w-25%">
         <CardHeader title="电池" />
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap shadow-bg">
           <div v-for="item in batteryInfo" class="w-50%" :key="item.id">
             <div class=" flex items-center mb-16px mr-10px pl-10px">
               <div class="today-bg">
@@ -127,41 +127,51 @@
 
           </div>
         </div>
-        <CardHeader title="效益分析" />
-        <div class="flex flex-items-stretch mt-[16px] shadow-bg" >
-          <nav class="flex flex-col mt-[16px] gap-[16px] flex-items-start">
-            <div>
-              <span class="color-[var(--el-color-primary)] font-size-[18px]">节电量：</span>
-              <span class="font-size-[24px] font-600">{{getValue(`节电量`, true)}}</span>
-              <span class="font-600 ml-[4px]">kWh</span>
+        <CardHeader class="mt-30px" title="效益分析" />
+        <div class="flex flex-items-stretch mt-[16px] relative shadow-bg" >
+          <nav class="absolute top-12px bottom-12px flex flex-col justify-center  left-36px flex-col mt-[16px] gap-[16px] flex-items-start">
+            <div class="flex items-center gap-8px">
+              <div>
+                <img :src="icon8" class="w-44px" alt="" />
+              </div>
+              <div>
+                <div class="color-#fff font-size-[15px]">节电量：</div>
+                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节电量`, true)}}kWh</div>
+              </div>
             </div>
-            <div>
-              <span class="color-[var(--el-color-primary)] font-size-[18px]">减碳量：</span>
-              <span>
-              <span class="font-size-[24px] font-600">{{getValue(`减碳量`, true)}}</span>
-              <span class="font-600 ml-[4px]">kg</span>
-            </span>
+            <div class="flex items-center gap-8px">
+              <div>
+                <img :src="icon6" class="w-47px" alt="" />
+              </div>
+              <div>
+                <div class="color-#fff font-size-[15px]">减碳量：</div>
+                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`减碳量`, true)}}kg</div>
+
+              </div>
             </div>
-            <div>
-              <span class="color-[var(--el-color-primary)] font-size-[18px]">节省金额：</span>
-              <span>
-              <span class="font-size-[24px] font-600">{{getValue(`节省金额`, true)}}</span>
-              <span class="font-600 ml-[4px]">元</span>
-            </span>
+            <div class="flex items-center gap-8px">
+              <div>
+                <img :src="icon7" class="w-47px" alt="" />
+              </div>
+              <div>
+                <div class="color-#fff font-size-[15px]">节省金额：</div>
+                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节省金额`, true)}}元</div>
+
+              </div>
             </div>
           </nav>
 
-          <div class="flex-1">
+          <div class="flex-1 pl-30px">
             <PieBattery
               :data="useTotalRef"
-              class="pie-chart"
-              title=""
+              class="h-13vw"
+              title="用电统计"
               unit="kWh"
-              :options="useTotalOptions"
+              :options="useCurrentOptions"
             />
             <PieBattery
-              class="pie-chart"
-              title=""
+              class="h-13vw"
+              title="发电统计"
               unit="kWh"
               :options="useTotalOptions"
               :data="getterTotalRef"
@@ -169,8 +179,8 @@
           </div>
         </div>
 
-      </el-col>
-    </ElRow>
+      </div>
+    </div>
 
   </div>
 
@@ -200,6 +210,9 @@ import icon2 from "@/views/screen/assets/data/icon-2.png";
 import icon3 from "@/views/screen/assets/data/icon-3.png";
 import icon4 from "@/views/screen/assets/data/icon-4.png";
 import icon5 from "@/views/screen/assets/data/icon-5.png";
+import icon6 from "@/views/screen/assets/data/xiaoyi-icon-1.png";
+import icon7 from "@/views/screen/assets/data/xiaoyi-icon-2.png";
+import icon8 from "@/views/screen/assets/real/center-elc-icon.png";
 import eleIcon from "@/views/screen/assets/real/center-elc-icon.png";
 import dot from '@/views/screen/assets/data/dot.png'
 defineOptions({ name: '数据中心' })
@@ -219,19 +232,35 @@ const realChartRef = ref();
 const useTotalRef = ref();
 const getterTotalRef = ref();
 const useTotalOptions = {
-  title: '用电统计',
   legend: {
-    top: 0,
+    bottom: 4,
     right: 0,
-    left: 0,
+    left: undefined,
+    top: undefined,
     width: '100%',
     orient: 'horizontal',
   },
+  title: {
+    left: '54%',
+  },
   series: {
-    top: 20,
+    top: 0,
+    bottom: 20,
+    left: '30%',
   },
 }
+const useCurrentOptions = {
+  legend: {
+    show: false,
+  },
+  series: {
+    left: '30%',
 
+  },
+  title: {
+    left: '54%',
+  },
+}
 watchEffect(() => {
   if (projectStore.projectInfo) {
     getLastData({
@@ -530,7 +559,7 @@ const batteryInfo = [
   padding: 12px;
 }
 .board-bg-box{
-  height: 485px;
+  height: 30vw;
 }
 .board-bg{
   position: relative;
@@ -563,11 +592,12 @@ const batteryInfo = [
   left: 60%;
 }
 .pie-chart{
-  height: 260px;
+  height: 13vw;
   min-height: 200px;
 }
 .real-price{
-  height: 300px;
+  box-sizing: border-box;
+  height: 15vw;
 }
 .border-total{
   background: url("@/views/screen/assets/lineBg.png") no-repeat top center;
