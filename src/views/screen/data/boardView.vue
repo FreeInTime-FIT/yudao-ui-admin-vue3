@@ -1,188 +1,186 @@
 <template>
 <!--  <IFrame src="/go-view/#/chart/preview/1" />-->
-  <div class="content-box">
-    <div class="flex gap-24px">
-      <div class="w-24%">
-        <article>
-          <CardHeader
-            title='实时电价'
-          />
-          <div class="real-price shadow-bg" ref="realRef"></div>
-        </article>
+  <div class="flex gap-24px">
+    <div class="w-24%">
+      <article>
+        <CardHeader
+          title='实时电价'
+        />
+        <div class="real-price shadow-bg" ref="realRef"></div>
+      </article>
 
-        <div class="flex mt-20px fuzai-bg relative">
-          <img :src="fuzaiBg" class="w-full" alt="" />
-          <div class="value-content-1">
-            <div class="text-32px fw-bold text-shadow-num">{{keyValue['用电功率']}}</div>
-            <div class="fw-bold">用电功率(kw)</div>
-          </div>
-          <div class="value-content-2">
-            <div class="text-32px fw-bold text-shadow-num">{{keyValue['当日用电量']}}</div>
-            <div class="fw-bold">当日用电量(kw)</div>
-          </div>
+      <div class="flex mt-12px fuzai-bg relative">
+        <img :src="fuzaiBg" class="w-103% -translate-x-3% pointer-events-none" alt="" />
+        <div class="value-content-1">
+          <div class="text-32px fw-bold text-shadow-num">{{keyValue['用电功率']}}</div>
+          <div class="fw-bold">用电功率(kw)</div>
         </div>
-
-        <div class="flex mt-20px relative">
-          <img :src="bingwangBg" class="w-full" alt="" />
-          <div class="value-content-1">
-            <div class="text-32px fw-bold text-shadow-num">{{keyValue['电网功率']}}</div>
-            <div class="fw-bold">功率(kw)</div>
-          </div>
-          <div class="value-content-2">
-            <div>
-              <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
-            </div>
-            <div>
-              <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
-            </div>
-          </div>
+        <div class="value-content-2">
+          <div class="text-32px fw-bold text-shadow-num">{{keyValue['当日用电量']}}</div>
+          <div class="fw-bold">当日用电量(kw)</div>
         </div>
-
       </div>
-      <div class="flex-1">
-        <card-header title="总体运行情况" />
-        <div class="flex gap-28px">
-          <div class="flex-1 flex items-center ele-bg">
-            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
-            <div class="ml-12px">
-              <div>
-                微电网日用电量
-              </div>
-              <div class="color-#FCFF00 text-26px">
-                {{getValue('微电网日用电量', false)}}kWh
-              </div>
-            </div>
-          </div>
-          <div class="flex-1 flex items-center ele-bg">
-            <div><img :src="eleIcon" class="w-44px" alt="" /></div>
-            <div class="ml-12px">
-              <div>
-                微电网日发电量
-              </div>
-              <div class="color-#FCFF00 text-26px">
-                {{getValue('微电网日发电量', false)}}kWh
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="board-bg-box">
-          <div class="board-bg">
-            <img :src="board" alt="" />
-            <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
-            <div class="board-pos board-pos2">变压器频率：50Hz</div>
-            <div class="board-pos board-pos3">储能电量：{{ keyValue['储能电量'] }}kWh</div>
-            <div class="board-pos board-pos4">
-              <div>总用电量：{{ keyValue['总用电量'] }}kWh</div>
-            </div>
-          </div>
-        </div>
 
-        <card-header title="光伏" />
-        <div class="flex gap-8px pt-4px">
-          <div class="flex-1 gap-8px">
-            <div class="flex" v-for="item in solarList" :key="item.id">
-              <div
-                v-for="type in solarTypes"
-                :key="type.value"
-                class="flex-1 flex items-center"
-                :class="type.cls"
-              >
-                <div class="bg-icon"><img
-                  :src="type.icon"
-                  :class="type.iconCls"
-                  alt="" /></div>
-                <div class="ml-10px">
-                  <div class="ele-title">{{item.name}}{{type.label}}</div>
-                  <div class="ele-value">{{keyValue[`${type[item.key]}`]}}{{type.unit}}</div>
-                </div>
-              </div>
-            </div>
+      <div class="flex relative">
+        <img :src="bingwangBg" class="w-103% -translate-x-3% pointer-events-none" alt="" />
+        <div class="value-content-1">
+          <div class="text-32px fw-bold text-shadow-num">{{keyValue['电网功率']}}</div>
+          <div class="fw-bold">功率(kw)</div>
+        </div>
+        <div class="value-content-2">
+          <div>
+            <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
           </div>
-          <div class="bg-icon-success flex items-center">
-            <div class="bg-icon"><img
-              :src="icon5"
-              class="w-37px"
-              alt="" /></div>
-            <div class="ml-10px">
-              <div class="ele-title">7天总发电量</div>
-              <div class="ele-value">{{keyValue["七日用电量"]}}kWh</div>
-            </div>
+          <div>
+            <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
           </div>
         </div>
-
       </div>
-      <div class="w-25%">
-        <CardHeader title="电池" />
-        <div class="flex flex-wrap shadow-bg">
-          <div v-for="item in batteryInfo" class="w-50%" :key="item.id">
-            <div class=" flex items-center mb-16px mr-10px pl-10px">
-              <div class="today-bg">
-                <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
-              </div>
-              <div class="ml-8px">
-                <div class="fw-bold">{{item.label}}</div>
-                <div class="color-#3DBDFF fw-bold text-26px">{{getValue(item.key) || item.value}}</div>
-              </div>
-            </div>
 
-          </div>
-        </div>
-        <CardHeader class="mt-30px" title="效益分析" />
-        <div class="flex flex-items-stretch mt-[16px] relative shadow-bg" >
-          <nav class="absolute top-12px bottom-12px flex flex-col justify-center  left-36px flex-col mt-[16px] gap-[16px] flex-items-start">
-            <div class="flex items-center gap-8px">
-              <div>
-                <img :src="icon8" class="w-44px" alt="" />
-              </div>
-              <div>
-                <div class="color-#fff font-size-[15px]">节电量：</div>
-                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节电量`, true)}}kWh</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-8px">
-              <div>
-                <img :src="icon6" class="w-47px" alt="" />
-              </div>
-              <div>
-                <div class="color-#fff font-size-[15px]">减碳量：</div>
-                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`减碳量`, true)}}kg</div>
-
-              </div>
-            </div>
-            <div class="flex items-center gap-8px">
-              <div>
-                <img :src="icon7" class="w-47px" alt="" />
-              </div>
-              <div>
-                <div class="color-#fff font-size-[15px]">节省金额：</div>
-                <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节省金额`, true)}}元</div>
-
-              </div>
-            </div>
-          </nav>
-
-          <div class="flex-1 pl-30px">
-            <PieBattery
-              :data="useTotalRef"
-              class="h-13vw"
-              title="用电统计"
-              unit="kWh"
-              :options="useCurrentOptions"
-            />
-            <PieBattery
-              class="h-13vw"
-              title="发电统计"
-              unit="kWh"
-              :options="useTotalOptions"
-              :data="getterTotalRef"
-            />
-          </div>
-        </div>
-
-      </div>
     </div>
+    <div class="flex-1">
+      <card-header title="总体运行情况" />
+      <div class="flex gap-28px">
+        <div class="flex-1 flex items-center ele-bg">
+          <div><img :src="eleIcon" class="w-44px pointer-events-none" alt="" /></div>
+          <div class="ml-12px">
+            <div>
+              微电网日用电量
+            </div>
+            <div class="color-#FCFF00 text-26px">
+              {{getValue('微电网日用电量', false)}}kWh
+            </div>
+          </div>
+        </div>
+        <div class="flex-1 flex items-center ele-bg">
+          <div><img :src="eleIcon" class="w-44px pointer-events-none" alt="" /></div>
+          <div class="ml-12px">
+            <div>
+              微电网日发电量
+            </div>
+            <div class="color-#FCFF00 text-26px">
+              {{getValue('微电网日发电量', false)}}kWh
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="board-bg-box">
+        <div class="board-bg">
+          <img :src="board" class="pointer-events-none" alt="" />
+          <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
+          <div class="board-pos board-pos2">变压器频率：50Hz</div>
+          <div class="board-pos board-pos3">储能电量：{{ keyValue['储能电量'] }}kWh</div>
+          <div class="board-pos board-pos4">
+            <div>总用电量：{{ keyValue['总用电量'] }}kWh</div>
+          </div>
+        </div>
+      </div>
 
+      <card-header title="光伏" />
+      <div class="flex gap-8px pt-4px">
+        <div class="flex-1">
+          <div class="flex gap-8px mb-8px" v-for="item in solarList" :key="item.id">
+            <div
+              v-for="type in solarTypes"
+              :key="type.value"
+              class="flex-1 flex items-center "
+              :class="type.cls"
+            >
+              <div class="bg-icon"><img
+                :src="type.icon"
+                :class="type.iconCls"
+                alt="" /></div>
+              <div class="ml-10px">
+                <div class="ele-title">{{item.name}}{{type.label}}</div>
+                <div class="ele-value">{{keyValue[`${type[item.key]}`]}}{{type.unit}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-icon-success flex items-center">
+          <div class="bg-icon"><img
+            :src="icon5"
+            class="w-37px"
+            alt="" /></div>
+          <div class="ml-10px">
+            <div class="ele-title">7天总发电量</div>
+            <div class="ele-value">{{keyValue["七日用电量"]}}kWh</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="w-23.5% pr-20px">
+      <CardHeader title="电池" />
+      <div class="flex flex-wrap shadow-bg !pt-30px ">
+        <div v-for="item in batteryInfo" class="w-50%" :key="item.id">
+          <div class=" flex items-center mb-16px pl-10px">
+            <div class="today-bg">
+              <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
+            </div>
+            <div class="ml-8px w-0 flex-1 ">
+              <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
+              <div class="color-#3DBDFF  fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <CardHeader class="mt-30px" title="效益分析" />
+      <div class="flex flex-items-stretch mt-[16px] relative shadow-bg" >
+        <nav class="absolute top-12px bottom-12px flex flex-col justify-center  left-36px flex-col mt-[16px] gap-[16px] flex-items-start">
+          <div class="flex items-center gap-8px">
+            <div>
+              <img :src="icon8" class="w-44px" alt="" />
+            </div>
+            <div>
+              <div class="color-#fff font-size-[15px]">节电量：</div>
+              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节电量`, true)}}kWh</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-8px">
+            <div>
+              <img :src="icon6" class="w-47px" alt="" />
+            </div>
+            <div>
+              <div class="color-#fff font-size-[15px]">减碳量：</div>
+              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`减碳量`, true)}}kg</div>
+
+            </div>
+          </div>
+          <div class="flex items-center gap-8px">
+            <div>
+              <img :src="icon7" class="w-47px" alt="" />
+            </div>
+            <div>
+              <div class="color-#fff font-size-[15px]">节省金额：</div>
+              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节省金额`, true)}}元</div>
+
+            </div>
+          </div>
+        </nav>
+
+        <div class="flex-1 pl-30px">
+          <PieBattery
+            :data="useTotalRef"
+            class="h-11vw"
+            title="用电统计"
+            unit="kWh"
+            :options="useCurrentOptions"
+          />
+          <PieBattery
+            class="h-11vw"
+            title="发电统计"
+            unit="kWh"
+            :options="useTotalOptions"
+            :data="getterTotalRef"
+          />
+        </div>
+      </div>
+
+    </div>
   </div>
+
 
 
 </template>
@@ -233,7 +231,7 @@ const useTotalRef = ref();
 const getterTotalRef = ref();
 const useTotalOptions = {
   legend: {
-    bottom: 4,
+    bottom: 0,
     right: 0,
     left: undefined,
     top: undefined,
@@ -245,7 +243,7 @@ const useTotalOptions = {
   },
   series: {
     top: 0,
-    bottom: 20,
+    bottom: 10,
     left: '30%',
   },
 }
@@ -255,7 +253,7 @@ const useCurrentOptions = {
   },
   series: {
     left: '30%',
-
+    bottom: 10,
   },
   title: {
     left: '54%',
@@ -555,19 +553,14 @@ const batteryInfo = [
 </script>
 
 <style lang="scss">
-.content-box{
-  padding: 12px;
-}
 .board-bg-box{
-  height: 30vw;
+  padding: 16px 6vw 20px;
 }
 .board-bg{
   position: relative;
-  width: 100%;
   margin-bottom: 12px;
   img{
     width: 100%;
-    max-height: 485px;
   }
 }
 .board-pos{
@@ -597,7 +590,7 @@ const batteryInfo = [
 }
 .real-price{
   box-sizing: border-box;
-  height: 15vw;
+  height: 12vw;
 }
 .border-total{
   background: url("@/views/screen/assets/lineBg.png") no-repeat top center;
