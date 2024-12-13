@@ -212,7 +212,7 @@ const handleProject = () => {
 
 <template>
   <section class="w-full overflow-x-hidden">
-    <div class="flex gap-48px">
+    <div class="flex gap-24px">
       <div class=" w-25%">
         <CardHeader title="项目信息" >
           <h3 class="text-18px mb-0 mt-0">
@@ -369,7 +369,7 @@ const handleProject = () => {
           </div>
         </div>
       </div>
-      <div class="w-24%">
+      <div class="w-24% pr-20px">
 
         <article class="card-box">
           <CardHeader title="当日数据" />
@@ -553,7 +553,7 @@ const handleProject = () => {
     }
   }
   .real-box{
-    margin: 16px 130px 36px;
+    margin: 16px 7.5vw 40px;
     position: relative;
     font-weight: bold;
     .content{
