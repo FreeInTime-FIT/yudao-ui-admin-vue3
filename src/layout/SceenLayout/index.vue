@@ -7,6 +7,7 @@ import { useProjectStore } from '@/store/modules/project'
 import {usePermissionStore} from "@/store/modules/permission";
 const now = ref(dayjs());
 const router = useRouter();
+
 const projectVisible = ref(false);
 
 const permissionStore = usePermissionStore();
@@ -119,7 +120,17 @@ v-for="item in projectStore.projectList"
   </section>
 </template>
 
+<style>
+@font-face {
+  font-family: "YouSheBiaoTiHei";
+  src: url('/YouSheBiaoTiHei.ttf') format("truetype");
+}
+.font-you-she-biao-ti-hei {
+  font-family: 'YouSheBiaoTiHei';
+}
+</style>
 <style scoped lang="scss">
+
   .dark{
     --el-text-color-regular: #fff;
     --el-input-text-color: #fff;

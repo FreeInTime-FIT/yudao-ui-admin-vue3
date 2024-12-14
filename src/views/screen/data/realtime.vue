@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import earthBg from '@/views/screen/assets/real/elec-earth.png'
-import centerBg from '@/views/screen/assets/real/middlebg.png'
+import centerBg from '@/views/screen/assets/real/middleBg.png'
 import eleIcon from '@/views/screen/assets/real/center-elc-icon.png'
 import gfIcon from '@/views/screen/assets/real/icon-gf.png'
 import cdlIcon from '@/views/screen/assets/real/icon-cdl.png'
@@ -257,27 +257,27 @@ const handleProject = () => {
               stripe
               border
             >
-              <ElTableColumn label="电网" width="140" prop="name"  >
+              <ElTableColumn label="电网" min-width="60" prop="name"  >
                 <template #default="{row}">
                   <span class="font-bold">{{row.name}}</span>
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="A" prop="voltageKey"  >
+              <ElTableColumn label="A" min-width="40" prop="voltageKey"  >
                 <template #default="{row}">
                   {{getValue(row.aValue)}}
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="B" prop="electricKey"  >
+              <ElTableColumn label="B" min-width="40" prop="electricKey"  >
                 <template #default="{row}">
                   {{getValue(row.bValue)}}
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="C" width="100" prop="powerKey"  >
+              <ElTableColumn label="C" min-width="40" prop="powerKey"  >
                 <template #default="{row}">
                   {{getValue(row.cValue)}}
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="总" prop="powerFactorKey"  >
+              <ElTableColumn label="总" min-width="40" prop="powerFactorKey"  >
                 <template #default="{row}">
                   {{getValue(row.total, '')}}
                 </template>
@@ -380,8 +380,8 @@ const handleProject = () => {
                   <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                 </div>
                 <div class="ml-8px">
-                  <div class="fw-bold">{{item.label}}</div>
-                  <div class="color-#3DBDFF fw-bold text-26px">{{getValue(item.key) || item.value}}</div>
+                  <div class="fw-bold line-height-20px">{{item.label}}</div>
+                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.key) || item.value || '-'}}</div>
                 </div>
               </div>
 
@@ -566,12 +566,12 @@ const handleProject = () => {
     .content_1{
       position: absolute;
       top: 16%;
-      left: 0;
+      left: -50px;
     }
     .content_2{
       position: absolute;
       top: 16%;
-      right: 0px;
+      right: -50px;
     }
     .content_3{
       position: absolute;

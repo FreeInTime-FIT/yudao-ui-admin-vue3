@@ -29,10 +29,10 @@
         </div>
         <div class="value-content-2">
           <div>
-            <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
           </div>
           <div>
-            <ElButton class="w-120px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@
             </div>
             <div class="ml-8px w-0 flex-1 ">
               <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-              <div class="color-#3DBDFF fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
+              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
             </div>
           </div>
 
@@ -554,7 +554,7 @@ const batteryInfo = [
 
 <style lang="scss">
 .board-bg-box{
-  padding: 16px 6vw 20px;
+  padding: 32px 6vw 20px;
 }
 .board-bg{
   position: relative;
@@ -569,19 +569,19 @@ const batteryInfo = [
   font-size: 16px;
 }
 .board-pos1{
-  top: 66%;
+  top: 62%;
   left: 2%;
 }
 .board-pos2{
-  top: 66%;
+  top: 62%;
   left: 78%;
 }
 .board-pos3{
-  top: 91%;
+  top: 90%;
   left: 27%;
 }
 .board-pos4{
-  top: 92%;
+  top: 90%;
   left: 60%;
 }
 .pie-chart{
@@ -699,14 +699,15 @@ const batteryInfo = [
 }
 .value-content-1{
   position: absolute;
-  top: 48%;
+  top: 45%;
   left: 8%;
   text-align: center;
 }
 .value-content-2{
   position: absolute;
-  top: 48%;
+  top: 45%;
   right: 4%;
+  left: 63%;
   text-align: center;
 }
 .text-shadow-num{
