@@ -128,7 +128,7 @@
       </div>
       <CardHeader class="mt-30px" title="效益分析" />
       <div class="flex flex-items-stretch mt-[16px] relative shadow-bg" >
-        <nav class="absolute top-12px bottom-12px flex flex-col justify-center  left-36px flex-col mt-[16px] gap-[16px] flex-items-start">
+        <nav class="absolute top-18% bottom-22% flex flex-col justify-evenly  left-36px flex-col mt-[16px] gap-20px flex-items-start">
           <div class="flex items-center gap-8px">
             <div>
               <img :src="icon8" class="w-44px" alt="" />
@@ -700,14 +700,15 @@ const batteryInfo = [
 .value-content-1{
   position: absolute;
   top: 45%;
-  left: 8%;
+  left: 4%;
+  right: 70%;
   text-align: center;
 }
 .value-content-2{
   position: absolute;
   top: 45%;
   right: 4%;
-  left: 63%;
+  left: 70%;
   text-align: center;
 }
 .text-shadow-num{
