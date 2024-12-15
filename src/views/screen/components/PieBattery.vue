@@ -2,7 +2,7 @@
   import * as echarts from "echarts";
   import {useResizeObserver} from "@vueuse/core";
   const batteryRef = ref();
-  const chartRef = ref();
+  let chartRef;
   defineOptions({
     name: 'PieBattery',
   })
@@ -21,27 +21,19 @@
     return data.data.source.reduce((t, item) => t + (item.value || 0), 0);
   })
 
-  watch(data.data, (v) => {
+  watch(() => data.data, (v) => {
     console.log(v);
-    if (chartRef.value) {
-      chartRef.value.setOption({
+    if (chartRef) {
+      chartRef.setOption({
         dataset: data.data,
       })
     }
   })
   useResizeObserver(batteryRef, () => {
-    if (chartRef.value) {
-      chartRef.value.resize();
+    if (chartRef) {
+      chartRef.resize();
     }
   });
-  watch(total, v => {
-    console.log(v);
-    if (chartRef.value) {
-      chartRef.value.setOption({
-        dataset: data.data,
-      })
-    }
-  })
 
   onMounted(() => {
     const chart = echarts.init(batteryRef.value, 'screen');
@@ -79,12 +71,11 @@
           color: '#fff',
         },
         formatter(name) {
-          console.log(name);
           const item = data.data?.source.find(i => i.label === name);
           if (!item) {
             return name;
           }
-          return name + ` ${item.value} ${data.unit || ''}`;
+          return (name || '') + ` ${item.value || '-'} ${data.unit || ''}`;
         },
         ...(data.options?.legend || {})
       },
@@ -195,7 +186,7 @@
         ...(data.options?.series || {})
       }]
     })
-    chartRef.value = chart;
+    chartRef = chart;
   });
 </script>
 

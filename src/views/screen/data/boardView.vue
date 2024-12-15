@@ -255,7 +255,12 @@ const useTotalOptions = {
 }
 const useCurrentOptions = {
   legend: {
-    show: false,
+    bottom: 0,
+    right: 0,
+    left: undefined,
+    top: undefined,
+    width: '100%',
+    orient: 'horizontal',
   },
   series: {
     left: '30%',
