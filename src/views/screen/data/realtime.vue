@@ -375,7 +375,7 @@ const handleProject = () => {
           <CardHeader title="当日数据" />
           <div class="flex flex-wrap ">
             <div v-for="item in todayDataList" class="w-50%" :key="item.id">
-              <div class=" flex items-center mb-16px mr-20px pl-30px">
+              <div class=" flex items-center mb-20px mr-20px pl-30px">
                 <div class="today-bg">
                   <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                 </div>
@@ -388,7 +388,7 @@ const handleProject = () => {
             </div>
           </div>
         </article>
-        <article class="card-box mt-20px">
+        <article class="card-box mt-30px">
           <card-header title="警告信息" />
           <div class="shadow-bg">
             <ElTable
