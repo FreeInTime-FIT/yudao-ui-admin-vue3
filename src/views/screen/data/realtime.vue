@@ -116,7 +116,7 @@ type UseItem = {
   value?: any;
 }
 const useList: UseItem[] = [{
-  title: '光伏发电量',
+  title: '光伏1发电量',
   key: '光伏1发电量',
   unit: 'kWh',
   async: true,
@@ -125,7 +125,7 @@ const useList: UseItem[] = [{
   successValue: '光伏1发电量',
   cls: 'bg-icon-primary',
 },{
-  title: '光伏发电量',
+  title: '光伏2发电量',
   key: '光伏2发电量',
   async: true,
   icon: gfIcon,
