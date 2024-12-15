@@ -171,7 +171,7 @@
             :data="useTotalRef"
             class="h-11vw"
             title="用电统计"
-            unit="kWh"
+            unit="%"
             :options="useCurrentOptions"
           />
           <PieBattery
@@ -233,8 +233,7 @@ const getLastData = async () => {
 }
 const realRef = ref();
 const realChartRef = ref();
-const useTotalRef = ref();
-const getterTotalRef = ref();
+// const getterTotalRef = ref();
 const useTotalOptions = {
   legend: {
     bottom: 0,
@@ -270,23 +269,51 @@ const useCurrentOptions = {
     left: '54%',
   },
 }
+const useTotalRef = computed(() => {
+  return {
+    dimensions: ['label', 'value'],
+    source: [
+      {
+        label: '电池剩余电量',
+        value: getValue('电池电量', false) || 0,
+      }, {
+        label: '电池已放电量',
+        value: 100 - (getValue('电池电量', false) || 0),
+      }
+    ],
+  }
+})
+const getterTotalRef = computed(() => {
+  return {
+    dimensions: ['label', 'value'],
+    source: [
+      {
+        label: '光伏1',
+        value: getValue('光伏1发电量', false) || 0,
+      }, {
+        label: '光伏2',
+        value: getValue('光伏2发电量', false) || 0,
+      }
+    ],
+  }
+})
 watchEffect(() => {
   if (projectStore.projectInfo) {
     getLastData({
       projectId: projectStore.projectInfo?.id,
     });
-    getLatestPrice({
-      key: '用电统计',
-      projectId: projectStore.projectInfo?.id,
-    }).then(res => {
-      useTotalRef.value = res.data;
-    })
-    getLatestPrice({
-      key: '发电统计',
-      projectId: projectStore.projectInfo?.id,
-    }).then(res => {
-      getterTotalRef.value = res.data;
-    })
+    // getLatestPrice({
+    //   key: '用电统计',
+    //   projectId: projectStore.projectInfo?.id,
+    // }).then(res => {
+    //   useTotalRef.value = res.data;
+    // })
+    // getLatestPrice({
+    //   key: '发电统计',
+    //   projectId: projectStore.projectInfo?.id,
+    // }).then(res => {
+    //   getterTotalRef.value = res.data;
+    // })
   }
 })
 let timer = setInterval(() => {
