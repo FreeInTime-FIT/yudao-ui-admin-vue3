@@ -379,16 +379,16 @@ const handleProject = () => {
                 <div class="today-bg">
                   <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                 </div>
-                <div class="ml-8px">
+                <div class="ml-8px w-0 flex-1">
                   <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.key) || item.value || '-'}}</div>
+                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
                 </div>
               </div>
 
             </div>
           </div>
         </article>
-        <article class="card-box">
+        <article class="card-box mt-20px">
           <card-header title="警告信息" />
           <div class="shadow-bg">
             <ElTable
