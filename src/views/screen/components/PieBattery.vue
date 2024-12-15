@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import * as echarts from "echarts";
+  import {useResizeObserver} from "@vueuse/core";
   const batteryRef = ref();
   const chartRef = ref();
   defineOptions({
@@ -28,7 +29,11 @@
       })
     }
   })
-
+  useResizeObserver(batteryRef, () => {
+    if (chartRef.value) {
+      chartRef.value.resize();
+    }
+  });
   watch(total, v => {
     console.log(v);
     if (chartRef.value) {

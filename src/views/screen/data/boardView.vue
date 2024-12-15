@@ -6,11 +6,14 @@
         <CardHeader
           title='实时电价'
         />
-        <div class="real-price shadow-bg" ref="realRef"></div>
+        <div class="real-price shadow-bg !p-0" ref="realRef"></div>
       </article>
 
       <div class="flex mt-12px fuzai-bg relative">
         <img :src="fuzaiBg" class="w-103% -translate-x-3% pointer-events-none" alt="" />
+        <div class='absolute text-18px top-7% left-7% fw-bold'>
+          <div>负载</div>
+        </div>
         <div class="value-content-1">
           <div class="text-32px fw-bold text-shadow-num">{{keyValue['用电功率']}}</div>
           <div class="fw-bold">用电功率(kw)</div>
@@ -23,6 +26,9 @@
 
       <div class="flex relative">
         <img :src="bingwangBg" class="w-103% -translate-x-3% pointer-events-none" alt="" />
+        <div class='absolute text-18px top-7% left-7% fw-bold'>
+          <div>电网</div>
+        </div>
         <div class="value-content-1">
           <div class="text-32px fw-bold text-shadow-num">{{keyValue['电网功率']}}</div>
           <div class="fw-bold">功率(kw)</div>
@@ -120,7 +126,7 @@
             </div>
             <div class="ml-8px w-0 flex-1 ">
               <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{getValue(item.key) || item.value || '-'}}</div>
+              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
             </div>
           </div>
 
@@ -351,6 +357,8 @@ onMounted(() => {
   }).then(res => {
     chart.setOption({
       backgroundColor: 'transparent',
+      top:0,
+      bottom: 0,
       dataset:  {
         ...res.data,
         source: (res.data.source?.length ? res.data.source : [
@@ -515,7 +523,7 @@ const batteryInfo = [
     label: '电池电量(电池soc)',
     key: '1',
     valKey:'电池电量',
-    unit: 'kWh',
+    unit: '%',
     icon: cdlIcon,
     iconWidth: 26,
   },
@@ -523,14 +531,14 @@ const batteryInfo = [
     label: '充放电次数(当日)',
     key: '2',
     valKey:  '充放电次数',
-    unit: 'kWh',
+    unit: '',
     icon: gfIcon,
     iconWidth: 44,
   },
   {
     label: '功率',
     key: '3',
-    unit: 'kWh',
+    unit: 'kW',
     valKey:  '电池功率',
     icon: tdIcon3,
     iconWidth: 27,
@@ -540,12 +548,14 @@ const batteryInfo = [
     key: '4',
     valKey:  '单体温度最大值',
     icon: tdIcon2,
+    unit: '°',
     iconWidth: 25,
   },
   {
     label: '温度-单体温度最小值',
     key: '11',
     valKey:  '单体温度最小值',
+    unit: '°',
     icon: tdIcon1,
     iconWidth: 26,
   },
