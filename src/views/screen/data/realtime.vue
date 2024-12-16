@@ -171,6 +171,12 @@ const getData = async () => {
   })
   return res;
 }
+let timer = setInterval(() => {
+  getData();
+}, 5000)
+onUnmounted(() => {
+  clearInterval(timer);
+})
 watch(() => projectStore.projectInfo, (project) => {
   if (!project) {
     return;
