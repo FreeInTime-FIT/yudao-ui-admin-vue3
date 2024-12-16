@@ -57,6 +57,7 @@ const todayDataList = [
     label: '用电总量',
     key: '4',
     valKey:  '用电总量',
+    unit: 'kWh',
     icon: tdIcon2,
     iconWidth: 25,
   },
@@ -64,12 +65,14 @@ const todayDataList = [
     label: '排碳总量',
     key: '11',
     valKey:  '排碳总量',
+    unit: 'kg',
     icon: tdIcon1,
     iconWidth: 26,
   },
   {
     label: '减碳总量',
     key: '21',
+    unit: 'kg',
     valKey:  '减碳总量',
     icon: tdIcon1,
     iconWidth: 26,
@@ -77,6 +80,7 @@ const todayDataList = [
   {
     label: '节能总量',
     key: '31',
+    unit: 'kg',
     icon: tdIcon1,
     iconWidth: 26,
     valKey:  '节能总量',
@@ -84,6 +88,7 @@ const todayDataList = [
   {
     label: '降费金额',
     key: '41',
+    unit: '元',
     valKey:  '降费金额',
     icon: tdIcon4,
     iconWidth: 30,
