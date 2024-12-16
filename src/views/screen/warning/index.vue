@@ -1,12 +1,9 @@
 <script setup lang="tsx">
-import SelectEquipment from "@/views/screen/components/SelectEquipment.vue";
-import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
-import InputWarp from "@/views/screen/components/InputWarp.vue";
-
 import {useTable} from "@/hooks/web/useTable";
 import {page} from "@/services/services/DeviceWarningRecordController";
 import {dateFormatter} from "@/utils/formatTime";
 import {useProjectStore} from "@/store/modules/project";
+
 type QueryParams = {
   startTime?: string;
   endTime?: string;
@@ -28,7 +25,7 @@ const queryParams = reactive<{
 })
 const projectStore = useProjectStore();
 const {  tableObject, tableMethods } = useTable<RecordItem>({
-  getListApi: page
+  getListApi: page,
 });
 const { getList, setSearchParams } = tableMethods
 onMounted(() => {
