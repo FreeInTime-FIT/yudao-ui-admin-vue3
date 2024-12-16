@@ -32,7 +32,7 @@ const keyValue = ref({});
 
 const todayDataList = [
   {
-    label: '购电总量',
+    label: '购电量',
     key: '1',
     valKey:'购电总量',
     unit: 'kWh',
@@ -40,7 +40,7 @@ const todayDataList = [
     iconWidth: 26,
   },
   {
-    label: '发电总量',
+    label: '发电量',
     key: '2',
     valKey:  '发电总量',
     unit: 'kWh',
@@ -48,7 +48,7 @@ const todayDataList = [
     iconWidth: 44,
   },
   {
-    label: '储能总量',
+    label: '储能量',
     key: '3',
     unit: 'kWh',
     valKey:  '储能总量',
@@ -56,7 +56,7 @@ const todayDataList = [
     iconWidth: 27,
   },
   {
-    label: '用电总量',
+    label: '用电量',
     key: '4',
     valKey:  '用电总量',
     unit: 'kWh',
@@ -64,7 +64,7 @@ const todayDataList = [
     iconWidth: 25,
   },
   {
-    label: '排碳总量',
+    label: '排碳量',
     key: '11',
     valKey:  '排碳总量',
     unit: 'kg',
@@ -72,7 +72,7 @@ const todayDataList = [
     iconWidth: 26,
   },
   {
-    label: '减碳总量',
+    label: '减碳量',
     key: '21',
     unit: 'kg',
     valKey:  '减碳总量',
@@ -80,7 +80,7 @@ const todayDataList = [
     iconWidth: 26,
   },
   {
-    label: '节能总量',
+    label: '节能量',
     key: '31',
     unit: 'kg',
     icon: tdIcon1,
@@ -312,7 +312,7 @@ const handleProject = () => {
             <div><img :src="eleIcon" class="w-44px" alt="" /></div>
             <div class="ml-12px">
               <div>
-                购电量
+                购电总量
               </div>
               <div class="color-#FCFF00 text-26px">
                 {{getValue('购电量')}}kWh
@@ -323,7 +323,7 @@ const handleProject = () => {
             <div><img :src="eleIcon" class="w-44px" alt="" /></div>
             <div class="ml-12px">
               <div>
-                用电量
+                用电总量
               </div>
               <div class="color-#FCFF00 text-26px">
                 {{getValue('用电量')}}kWh
