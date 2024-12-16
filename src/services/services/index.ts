@@ -43,16 +43,19 @@ import * as OAuth2OpenController from './OAuth2OpenController';
 import * as CaptchaController from './CaptchaController';
 import * as AuthController from './AuthController';
 import * as IotReportController from './IotReportController';
+import * as IotDeviceRealTimeController from './IotDeviceRealTimeController';
 import * as DeviceMessageController from './DeviceMessageController';
 import * as FileController from './FileController';
 import * as AppDictDataController from './AppDictDataController';
 import * as AppAreaController from './AppAreaController';
+import * as TestController from './TestController';
 import * as SmsLogController from './SmsLogController';
 import * as OperateLogController from './OperateLogController';
 import * as OAuth2TokenController from './OAuth2TokenController';
 import * as MailLogController from './MailLogController';
 import * as LoginLogController from './LoginLogController';
 import * as AreaController from './AreaController';
+import * as DeviceWarningRecordController from './DeviceWarningRecordController';
 import * as RedisController from './RedisController';
 import * as JobLogController from './JobLogController';
 import * as ApiAccessLogController from './ApiAccessLogController';
@@ -100,16 +103,19 @@ export default {
   CaptchaController,
   AuthController,
   IotReportController,
+  IotDeviceRealTimeController,
   DeviceMessageController,
   FileController,
   AppDictDataController,
   AppAreaController,
+  TestController,
   SmsLogController,
   OperateLogController,
   OAuth2TokenController,
   MailLogController,
   LoginLogController,
   AreaController,
+  DeviceWarningRecordController,
   RedisController,
   JobLogController,
   ApiAccessLogController,

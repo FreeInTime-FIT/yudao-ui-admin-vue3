@@ -17,6 +17,8 @@ import {
   getPanelData
 } from "@/services/services/IotReportController";
 import {useProjectStore} from "@/store/modules/project";
+import {page} from "@/services/services/DeviceWarningRecordController";
+import {dateFormatter} from "@/utils/formatTime";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
@@ -155,12 +157,18 @@ const useList: UseItem[] = [{
   cls: 'bg-icon-success',
   value: 1300,
 },]
+const warningData = ref<APITypes.CommonResultPageResultDeviceWarningRecordVO>({});
 const getData = async () => {
   const res = await  getPanelData({
     key: 'realtime',
     projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
+  warningData.value = await page({
+    projectId: projectStore.projectInfo?.id,
+    pageNo: '1',
+    pageSize: '10'
+  })
   return res;
 }
 watch(() => projectStore.projectInfo, (project) => {
@@ -397,17 +405,16 @@ const handleProject = () => {
           <card-header title="警告信息" />
           <div class="shadow-bg">
             <ElTable
-              :data="[{id: 1}, {id: 2}, {id: 3}, {id: 4},{id: 5}, {id: 6},{id: 7}, {id: 8}]"
+              :data="warningData.data?.list"
               row-key="id"
               class="data-table"
               border
               stripe
             >
               <ElTableColumn :width="60" label="序号" type="index"  />
-              <ElTableColumn label="时间" prop="index1"  />
-              <ElTableColumn label="警告级别" prop="index2"  />
-              <ElTableColumn label="所属设备"  prop="index3"  />
-              <ElTableColumn label="警告信息" prop="index4"  />
+              <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
+              <ElTableColumn label="警告级别" prop="level"  />
+              <ElTableColumn label="警告信息" prop="info"  />
             </ElTable>
           </div>
 

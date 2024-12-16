@@ -74,7 +74,7 @@ export async function listUserProjects(
   params: APITypes.listUserProjectsParams,
   options?: { [key: string]: any },
 ) {
-  return request<APITypes.CommonResultSetLong>({
+  return request<APITypes.CommonResultSetString>({
     url: `/admin-api/system/permission/list-user-projects`,
     method: 'GET',
     params: {

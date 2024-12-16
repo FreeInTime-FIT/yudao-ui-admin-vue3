@@ -667,6 +667,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultListMapStringObject = {
+    code?: number;
+    data?: Record<string, any>[];
+    msg?: string;
+  };
+
   type CommonResultListMenuRespVO = {
     code?: number;
     data?: MenuRespVO[];
@@ -853,6 +859,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultPageResultDeviceWarningRecordVO = {
+    code?: number;
+    data?: PageResultDeviceWarningRecordVO;
+    msg?: string;
+  };
+
   type CommonResultPageResultDictDataRespVO = {
     code?: number;
     data?: PageResultDictDataRespVO;
@@ -922,6 +934,12 @@ declare namespace APITypes {
   type CommonResultPageResultMailTemplateRespVO = {
     code?: number;
     data?: PageResultMailTemplateRespVO;
+    msg?: string;
+  };
+
+  type CommonResultPageResultMapStringObject = {
+    code?: number;
+    data?: PageResultMapStringObject;
     msg?: string;
   };
 
@@ -1054,6 +1072,12 @@ declare namespace APITypes {
   type CommonResultSetLong = {
     code?: number;
     data?: number[];
+    msg?: string;
+  };
+
+  type CommonResultSetString = {
+    code?: number;
+    data?: string[];
     msg?: string;
   };
 
@@ -1603,6 +1627,13 @@ declare namespace APITypes {
     remark?: string;
   };
 
+  type DeviceWarningRecordVO = {
+    id?: number;
+    level?: string;
+    info?: string;
+    createTime?: string;
+  };
+
   type DictDataRespVO = {
     /** 字典数据编号 */
     id: number;
@@ -1807,7 +1838,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: string;
-    totalCapacity?: string;
+    totalCapacity?: number;
     /** 额定功率(kW) */
     ratedPower?: string;
     /** 电池类型 */
@@ -2443,7 +2474,7 @@ declare namespace APITypes {
     energyStorageType?: string;
     /** 储能容量(kWh) */
     energyStorageCapacity?: string;
-    totalCapacity?: string;
+    totalCapacity?: number;
     /** 额定功率(kW) */
     ratedPower?: string;
     /** 电池类型 */
@@ -3991,6 +4022,14 @@ declare namespace APITypes {
     pageSize: string;
   };
 
+  type pageParams = {
+    projectId?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+  };
+
   type PageResultApiAccessLogRespVO = {
     /** 数据 */
     list: ApiAccessLogRespVO[];
@@ -4050,6 +4089,13 @@ declare namespace APITypes {
   type PageResultDeviceManagementRespVO = {
     /** 数据 */
     list: DeviceManagementRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
+  type PageResultDeviceWarningRecordVO = {
+    /** 数据 */
+    list: DeviceWarningRecordVO[];
     /** 总量 */
     total: number;
   };
@@ -4134,6 +4180,13 @@ declare namespace APITypes {
   type PageResultMailTemplateRespVO = {
     /** 数据 */
     list: MailTemplateRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
+  type PageResultMapStringObject = {
+    /** 数据 */
+    list: Record<string, any>[];
     /** 总量 */
     total: number;
   };
@@ -4279,7 +4332,7 @@ declare namespace APITypes {
     /** 角色编号列表 */
     roleIds?: number[];
     /** 角色编号列表 */
-    projectIds?: number[];
+    projectIds?: string[];
   };
 
   type PlatformInfo = {
@@ -4435,6 +4488,20 @@ declare namespace APITypes {
   type pushParams = {
     /** 编号 */
     id: number;
+  };
+
+  type RealTimeQueryParam = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
+    /** 传感器编号 */
+    index?: number;
+    ts?: string[];
   };
 
   type RedisMonitorRespVO = {
