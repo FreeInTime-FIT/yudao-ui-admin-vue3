@@ -29,10 +29,6 @@ const handleQuery = async ()=> {
     projectId: projectStore.projectInfo?.id,
     ...queryParams
   })
-  const boardViewData = await getPanelData({
-    key: 'boardView',
-    projectId: projectStore.projectInfo?.id,
-  })
   loading.value = false
   chart.setOption({
     dataset: [
@@ -88,12 +84,12 @@ const queryParams = reactive<{
 })
 const restQuery = (value: IDatePickerType) => {
 
-  if (value === 'yearrange'){
+  if (value === 'year'){
     queryParams.format = 'YYYY'
-    queryParams.time = [now.format(queryParams.format) , now.add(1, 'year').format(queryParams.format)]
-  } else if(value==='monthrange'){
+    queryParams.time = now.format(queryParams.format)
+  } else if(value==='month'){
     queryParams.format = 'YYYY-MM'
-    queryParams.time = [now.format(queryParams.format) , now.add(1, 'month').format(queryParams.format)]
+    queryParams.time = now.format(queryParams.format)
   } else if(value==='date'){
     queryParams.format = 'YYYY-MM-DD'
     queryParams.time = now.format(queryParams.format);
@@ -384,8 +380,8 @@ watchPostEffect(()=>{
   >
     <el-form-item prop="type">
       <el-radio-group v-model="queryParams.type">
-<!--        <el-radio-button label="年" value="yearrange" />-->
-<!--        <el-radio-button label="月" value="monthrange" />-->
+<!--        <el-radio-button label="年" value="year" />-->
+<!--        <el-radio-button label="月" value="month" />-->
         <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>
