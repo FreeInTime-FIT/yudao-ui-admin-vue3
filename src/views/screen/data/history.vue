@@ -103,10 +103,10 @@ onMounted(() => {
   realChart = echarts.init(realRef.value, 'screen');
   const group = [{
     label: '储能电量',
-    value: 'num',
+    value: 'num1',
   }, {
     label: '光伏发电量',
-    value: 'num1',
+    value: 'num',
   }]
   const time = dayjs('00:00', 'HH:mm');
   realChart.setOption({
@@ -211,15 +211,15 @@ onMounted(() => {
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
     ],
     title: [

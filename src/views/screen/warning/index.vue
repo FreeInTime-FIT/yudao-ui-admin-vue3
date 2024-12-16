@@ -6,6 +6,7 @@ import InputWarp from "@/views/screen/components/InputWarp.vue";
 import {useTable} from "@/hooks/web/useTable";
 import {page} from "@/services/services/DeviceWarningRecordController";
 import {dateFormatter} from "@/utils/formatTime";
+import {useProjectStore} from "@/store/modules/project";
 type QueryParams = {
   startTime?: string;
   endTime?: string;
@@ -25,12 +26,27 @@ const queryParams = reactive<{
   startTime: undefined,
   endTime: undefined,
 })
+const projectStore = useProjectStore();
 const {  tableObject, tableMethods } = useTable<RecordItem>({
   getListApi: page
 });
 const { getList, setSearchParams } = tableMethods
 onMounted(() => {
+  setSearchParams({
+    projectId: projectStore.projectInfo?.id
+  })
   getList()
+})
+watch(() => projectStore.projectInfo, (project) => {
+  if (!project) {
+    return;
+  }
+  setSearchParams({
+    projectId: projectStore.projectInfo?.id
+  })
+  getList();
+}, {
+  immediate: true,
 })
 const handleIgnore = (row) => {
   ElMessageBox.confirm('确认忽略当前警告么？', '提示',{
