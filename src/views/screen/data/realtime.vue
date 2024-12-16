@@ -164,7 +164,7 @@ const getData = async () => {
     projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
-  warningData.value = await c({
+  warningData.value = await page({
     projectId: projectStore.projectInfo?.id,
     pageNo: '1',
     pageSize: '10'
