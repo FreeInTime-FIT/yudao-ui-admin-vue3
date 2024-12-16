@@ -35,10 +35,10 @@
         </div>
         <div class="value-content-2">
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : ''">并网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : 'info'">并网</ElButton>
           </div>
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : ''">离网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : 'info'">离网</ElButton>
           </div>
         </div>
       </div>
@@ -331,21 +331,10 @@ onUnmounted(() => {
 })
 onMounted(() => {
   if (projectStore.projectInfo) {
-  getLastData({
-    projectId: projectStore.projectInfo?.id,
-  })
-  getLatestPrice({
-    key: '用电统计',
-    projectId: projectStore.projectInfo?.id,
-  }).then(res => {
-    useTotalRef.value = res.data;
-  })
-  getLatestPrice({
-    key: '发电统计',
-    projectId: projectStore.projectInfo?.id,
-  }).then(res => {
-    getterTotalRef.value = res.data;
-  })}
+    getLastData({
+      projectId: projectStore.projectInfo?.id,
+    })
+  }
 })
 const getValue = (key, hasEmpty) => {
   const v = unref(keyValue)[key];
