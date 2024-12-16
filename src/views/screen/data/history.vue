@@ -29,10 +29,6 @@ const handleQuery = async ()=> {
     projectId: projectStore.projectInfo?.id,
     ...queryParams
   })
-  const boardViewData = await getPanelData({
-    key: 'boardView',
-    projectId: projectStore.projectInfo?.id,
-  })
   loading.value = false
   chart.setOption({
     dataset: [
@@ -88,12 +84,12 @@ const queryParams = reactive<{
 })
 const restQuery = (value: IDatePickerType) => {
 
-  if (value === 'yearrange'){
+  if (value === 'year'){
     queryParams.format = 'YYYY'
-    queryParams.time = [now.format(queryParams.format) , now.add(1, 'year').format(queryParams.format)]
-  } else if(value==='monthrange'){
+    queryParams.time = now.format(queryParams.format)
+  } else if(value==='month'){
     queryParams.format = 'YYYY-MM'
-    queryParams.time = [now.format(queryParams.format) , now.add(1, 'month').format(queryParams.format)]
+    queryParams.time = now.format(queryParams.format)
   } else if(value==='date'){
     queryParams.format = 'YYYY-MM-DD'
     queryParams.time = now.format(queryParams.format);
@@ -107,10 +103,10 @@ onMounted(() => {
   realChart = echarts.init(realRef.value, 'screen');
   const group = [{
     label: '储能电量',
-    value: 'num',
+    value: 'num1',
   }, {
     label: '光伏发电量',
-    value: 'num1',
+    value: 'num',
   }]
   const time = dayjs('00:00', 'HH:mm');
   realChart.setOption({
@@ -215,15 +211,15 @@ onMounted(() => {
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
       {
         dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, Math.random() * 1000]),
+        source: Array(24).fill(1).map((_, i) => [i + 1, 0]),
       },
     ],
     title: [
@@ -384,8 +380,8 @@ watchPostEffect(()=>{
   >
     <el-form-item prop="type">
       <el-radio-group v-model="queryParams.type">
-<!--        <el-radio-button label="年" value="yearrange" />-->
-<!--        <el-radio-button label="月" value="monthrange" />-->
+<!--        <el-radio-button label="年" value="year" />-->
+<!--        <el-radio-button label="月" value="month" />-->
         <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>

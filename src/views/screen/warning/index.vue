@@ -4,6 +4,9 @@ import SelectDateRange from "@/views/screen/components/SelectDateRange.vue";
 import InputWarp from "@/views/screen/components/InputWarp.vue";
 
 import {useTable} from "@/hooks/web/useTable";
+import {page} from "@/services/services/DeviceWarningRecordController";
+import {dateFormatter} from "@/utils/formatTime";
+import {useProjectStore} from "@/store/modules/project";
 type QueryParams = {
   startTime?: string;
   endTime?: string;
@@ -23,24 +26,27 @@ const queryParams = reactive<{
   startTime: undefined,
   endTime: undefined,
 })
+const projectStore = useProjectStore();
 const {  tableObject, tableMethods } = useTable<RecordItem>({
-  async getListApi(option: any) {
-    console.log(option);
-    return {
-      list: [
-        {id: 1, time: '2024-05-05 09:09:09', level : 1, status: 3, user: '张工', product: '垂直轴风机', message: '系统故障汇总', type: '故障码4'},
-        { id: 2, time: '2024-05-05 09:09:09', level : 1, status: 2,user: '张工', product: '光伏逆变器 ', message: 'COM板汇总故障', type: '故障码4'},
-        { id: 3, time: '2024-05-05 09:09:09', level : 2, product: '垂直轴风机', user: '张工', message: '正在过载告警', type: '警告'},
-        { id: 2, time: '2024-05-05 09:09:09', level : 3, product: '光伏逆变器 ',user: '张工', message: ' 烟雾报警器', type: '消防   '},
-      ] as RecordItem[],
-      total: 4,
-    };
-  }, props: undefined, response: undefined,
-  defaultParams: queryParams,
+  getListApi: page
 });
 const { getList, setSearchParams } = tableMethods
 onMounted(() => {
+  setSearchParams({
+    projectId: projectStore.projectInfo?.id
+  })
   getList()
+})
+watch(() => projectStore.projectInfo, (project) => {
+  if (!project) {
+    return;
+  }
+  setSearchParams({
+    projectId: projectStore.projectInfo?.id
+  })
+  getList();
+}, {
+  immediate: true,
 })
 const handleIgnore = (row) => {
   ElMessageBox.confirm('确认忽略当前警告么？', '提示',{
@@ -82,69 +88,72 @@ const levelFormatter = (row, cellValue, index) => {
 </script>
 
 <template>
-  <ElForm
-    ref="queryFormRef"
-    :inline="true"
-    :model="queryParams"
-    class="-mb-15px form"
-  >
-    <ElFormItem prop="d" >
-      <InputWarp>
-        <SelectEquipment v-model="queryParams.equipment" />
-      </InputWarp>
-    </ElFormItem>
-    <ElFormItem prop="12" >
-      <InputWarp>
-        <ElSelect >
-          <ElOption value="a">所有设备</ElOption>
-        </ElSelect>
-      </InputWarp>
+<!--  <ElForm-->
+<!--    ref="queryFormRef"-->
+<!--    :inline="true"-->
+<!--    :model="queryParams"-->
+<!--    class="-mb-15px form"-->
+<!--  >-->
+<!--    <ElFormItem prop="d" >-->
+<!--      <InputWarp>-->
+<!--        <SelectEquipment v-model="queryParams.equipment" />-->
+<!--      </InputWarp>-->
+<!--    </ElFormItem>-->
+<!--    <ElFormItem prop="12" >-->
+<!--      <InputWarp>-->
+<!--        <ElSelect >-->
+<!--          <ElOption value="a">所有设备</ElOption>-->
+<!--        </ElSelect>-->
+<!--      </InputWarp>-->
 
-    </ElFormItem>
-    <ElFormItem>
-      <ElButton type="primary">查询</ElButton>
-    </ElFormItem>
-    <ElFormItem>
-      <ElInput placeholder="请输入关键字" />
-    </ElFormItem>
-  </ElForm>
+<!--    </ElFormItem>-->
+<!--    <ElFormItem>-->
+<!--      <ElButton type="primary">查询</ElButton>-->
+<!--    </ElFormItem>-->
+<!--    <ElFormItem>-->
+<!--      <ElInput placeholder="请输入关键字" />-->
+<!--    </ElFormItem>-->
+<!--  </ElForm>-->
   <ContentWrap
     title="告警列表"
   >
     <ElTable
-
       v-loading="tableObject.loading"
       :data="tableObject.tableList"
       stripe
     >
-      <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1" />
-      <ElTableColumn prop="time" label="告警时间" />
-      <ElTableColumn prop="level" label="警告级别" :formatter="levelFormatter" />
-      <ElTableColumn prop="product" label="所属设备" />
-      <ElTableColumn prop="message" label="告警信息" />
-      <ElTableColumn prop="type" label="告警类型" />
-      <ElTableColumn prop="user" label="处理人" />
+<!--      <ElTableColumn width="80" label="序号" type="index" :index="index => index + 1" />-->
+<!--      <ElTableColumn prop="time" label="告警时间" />-->
+<!--      <ElTableColumn prop="level" label="警告级别" :formatter="levelFormatter" />-->
+<!--      <ElTableColumn prop="product" label="所属设备" />-->
+<!--      <ElTableColumn prop="message" label="告警信息" />-->
+<!--      <ElTableColumn prop="type" label="告警类型" />-->
+<!--      <ElTableColumn prop="user" label="处理人" />-->
 
-      <ElTableColumn prop="status" label="状态" >
+<!--      <ElTableColumn prop="status" label="状态" >-->
 
-        <template #default="scope">
-          <ElSpace>
-            <ElTag type="success" v-if="scope.row.status=== 3">已处理</ElTag>
-            <ElTag type="danger" v-else-if="scope.row.status=== 2">未处理</ElTag>
-            <ElTag type="info" v-else>已忽略</ElTag>
-          </ElSpace>
+<!--        <template #default="scope">-->
+<!--          <ElSpace>-->
+<!--            <ElTag type="success" v-if="scope.row.status=== 3">已处理</ElTag>-->
+<!--            <ElTag type="danger" v-else-if="scope.row.status=== 2">未处理</ElTag>-->
+<!--            <ElTag type="info" v-else>已忽略</ElTag>-->
+<!--          </ElSpace>-->
 
-        </template>
-      </ElTableColumn>
-      <ElTableColumn prop="oper" label="操作" fixed="right" width="100">
-        <template #default="scope">
-          <ElSpace>
-<!--            <a @click="handleIgnore(scope.row)">忽略</a>-->
-            <ElButton  @click="handleEdit(scope.row)">处理</ElButton>
-          </ElSpace>
+<!--        </template>-->
+<!--      </ElTableColumn>-->
+<!--      <ElTableColumn prop="oper" label="操作" fixed="right" width="100">-->
+<!--        <template #default="scope">-->
+<!--          <ElSpace>-->
+<!--&lt;!&ndash;            <a @click="handleIgnore(scope.row)">忽略</a>&ndash;&gt;-->
+<!--            <ElButton  @click="handleEdit(scope.row)">处理</ElButton>-->
+<!--          </ElSpace>-->
 
-        </template>
-      </ElTableColumn>
+<!--        </template>-->
+<!--      </ElTableColumn>-->
+      <ElTableColumn :width="60" label="序号" type="index"  />
+      <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
+      <ElTableColumn label="警告级别" prop="level"  />
+      <ElTableColumn label="警告信息" prop="info"  />
     </ElTable>
     <ElPagination
       :total="tableObject.total"
