@@ -167,7 +167,7 @@ const getData = async () => {
   warningData.value = await page({
     projectId: projectStore.projectInfo?.id,
     pageNo: '1',
-    pageSize: '10'
+    pageSize: '5'
   })
   return res;
 }
