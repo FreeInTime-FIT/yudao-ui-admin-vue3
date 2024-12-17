@@ -420,7 +420,7 @@ const handleProject = () => {
               <ElTableColumn :width="60" label="序号" type="index"  />
               <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
               <ElTableColumn label="警告级别" prop="level"  />
-              <ElTableColumn label="警告信息" prop="info"  />
+              <ElTableColumn show-overflow-tooltip label="警告信息" prop="info"  />
             </ElTable>
           </div>
 
