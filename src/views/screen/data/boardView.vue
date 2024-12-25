@@ -35,10 +35,10 @@
         </div>
         <div class="value-content-2">
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : 'info'">并网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : 'info'">并网</ElButton>
           </div>
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : 'info'">离网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : 'info'">离网</ElButton>
           </div>
         </div>
       </div>
