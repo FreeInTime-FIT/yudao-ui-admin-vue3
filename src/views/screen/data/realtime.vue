@@ -258,11 +258,11 @@ const handleProject = () => {
             </div>
             <div class="flex p-12px border-bottom-blue justify-between">
               <div>变压器容量</div>
-              <div>{{getValue('code4')}}</div>
+              <div>{{projectInfo?.platformInfo?.transformerCapacity}}kVA</div>
             </div>
             <div class="flex p-12px  border-bottom-blue justify-between">
               <div>负荷总功率</div>
-              <div>{{getValue('code5')}}</div>
+              <div>{{projectInfo?.platformInfo?.loadPower}}kW</div>
             </div>
           </div>
         </article>
