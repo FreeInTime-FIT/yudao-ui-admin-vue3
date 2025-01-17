@@ -380,8 +380,8 @@ watchPostEffect(()=>{
   >
     <el-form-item prop="type">
       <el-radio-group v-model="queryParams.type">
-<!--        <el-radio-button label="年" value="year" />-->
-<!--        <el-radio-button label="月" value="month" />-->
+        <el-radio-button label="年" value="year" />
+        <el-radio-button label="月" value="month" />
         <el-radio-button label="日" value="date" />
       </el-radio-group>
     </el-form-item>
