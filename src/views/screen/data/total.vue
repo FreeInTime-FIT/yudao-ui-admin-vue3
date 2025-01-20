@@ -255,15 +255,15 @@ onMounted( () => {
   voltageChart = echarts.init(voltageRef.value, 'screen');
   ypxingChart = echarts.init(ypxingRef.value, 'screen');
   const valList = [{
-    valueKey: 'a',
+    valueKey: 'a相',
     name: 'A相',
     color: '#FF9E17',
   }, {
-    valueKey: 'b',
+    valueKey: 'b相',
     name: 'B相',
     color: '#4FF9FA',
   }, {
-    valueKey: 'c',
+    valueKey: 'c相',
     name: 'C相',
     color: '#FF0800',
   }]
@@ -297,9 +297,6 @@ onMounted( () => {
     splitLine: {
       show: false,
     },
-    min: function (value) {
-      return value.min - 20;
-    },
     axisLabel: {
       color: '#00AAFF',
       fontWeight: '600',
@@ -324,24 +321,6 @@ onMounted( () => {
       })),
     }],
     dataset: [
-      {
-        dimensions: ['a', 'b', 'c', { name: 'time', type: 'time'}],
-        source: Array(24).fill(1).map((_, i) => ({
-          a: Math.round(Math.random() * 60) + 90,
-          b: Math.round(Math.random() * 60) + 100,
-          c: Math.round(Math.random() * 60) + 100,
-          time: dayjs(today).hour(i).minute(0).second(0).toDate(),
-        })),
-      },
-      {
-        dimensions: ['a', 'b', 'c', { name: 'time', type: 'time'}],
-        source: Array(24).fill(1).map((_, i) => ({
-          a: Math.round(Math.random() * 20) + 100,
-          b: Math.round(Math.random() * 20) + 100,
-          c: Math.round(Math.random() * 20) + 100,
-          time: dayjs(today).hour(i).minute(0).second(0).toDate(),
-        })),
-      },
     ],
     grid: [
       {
@@ -419,14 +398,20 @@ onMounted( () => {
   ypxingChart.setOption({
     color: '#fff',
     backgroundColor: 'transparent',
-    dataset: {
-      dimensions: ['power', 'voltage', { name: 'time', type: 'time'}],
-      source: Array(24).fill(1).map((_, i) => ({
-        power: Math.round(Math.random() * 60) + 100,
-        voltage: Math.round(Math.random() * 60) + 100,
-        time: dayjs(today).hour(i).minute(0).second(0).toDate(),
-      })),
-    },
+    // dataset: {
+    //   dimensions: ['power', 'voltage', { name: 'time', type: 'time'}],
+    //   source: Array(24).fill(1).map((_, i) => ({
+    //     power: Math.round(Math.random() * 60) + 100,
+    //     voltage: Math.round(Math.random() * 60) + 100,
+    //     time: dayjs(today).hour(i).minute(0).second(0).toDate(),
+    //   })),
+    // },
+    grid: [
+      {
+        left: '15%',
+        right: '10%',
+      }
+    ],
     xAxis: {
       type: 'time',
       splitLine: {
@@ -470,7 +455,7 @@ onMounted( () => {
         type: 'line',
         encode: {
           x: 'time',
-          y: 'power',
+          y: '功率',
         },
         name: '功率',
         smooth: true,
@@ -498,7 +483,7 @@ onMounted( () => {
         name: '电压',
         encode: {
           x: 'time',
-          y: 'voltage',
+          y: '电压',
         },
         yAxisIndex: 1,
         lineStyle: {
@@ -526,19 +511,55 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 })
 const handleQuery = async ()=> {
-  const voltageData1 = await getLatestPrice({
-    key: "total_今日_电压曲线",
-    projectId: projectStore.projectInfo?.id,
-  })
-
-  const voltageData2 = await getLatestPrice({
-    key: "total_今日_功率曲线",
-    projectId: projectStore.projectInfo?.id,
-  })
-  const ypxingData2 = await getLatestPrice({
-    key: "total_今日_电压功率汇总",
-    projectId: projectStore.projectInfo?.id,
-  })
+  const dataList = await Promise.all([
+    getLatestPrice({
+      key: "total_今日_电压曲线",
+      projectId: projectStore.projectInfo?.id,
+    }),
+    getLatestPrice({
+      key: "total_今日_功率曲线",
+      projectId: projectStore.projectInfo?.id,
+    }),
+    getLatestPrice({
+      key: "total_今日_电压功率汇总",
+      projectId: projectStore.projectInfo?.id,
+    }),
+  ]);
+  console.log(dataList)
+   if(voltageChart) {
+     voltageChart.setOption({
+       dataset: [
+         !dataList[1].code ?
+         {
+           ...dataList[1].data,
+           source: dataList[1].data.source.map(item => ({
+             ...item,
+             time: dayjs().hour(item.time).minute(0).second(0).toDate(),
+           }))
+         } : {},
+         !dataList[0].code ? {
+           ...dataList[0].data,
+           source: dataList[0].data.source.map(item => ({
+             ...item,
+             time: dayjs().hour(item.time).minute(0).second(0).toDate(),
+           }))
+           } : {},
+       ],
+     });
+   }
+   if (ypxingChart && !dataList[2].code) {
+     console.log(dataList[2])
+     ypxingChart.setOption({
+       dataset: {
+         ...dataList[2].data,
+         source: dataList[2].data.source.map(item => ({
+           ...item,
+           time: dayjs().hour(item.time).minute(0).second(0).toDate(),
+         }))
+       },
+     });
+   }
+  console.log(dataList);
 }
 watchPostEffect(()=> {
   if (!projectStore.projectInfo) return

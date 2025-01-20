@@ -22,7 +22,6 @@
   })
 
   watch(() => data.data, (v) => {
-    console.log(v);
     if (chartRef) {
       chartRef.setOption({
         dataset: data.data,
@@ -37,7 +36,6 @@
 
   onMounted(() => {
     const chart = echarts.init(batteryRef.value, 'screen');
-    console.log(data.data);
     chart.setOption({
       ...(data.options || {}),
       dataset:  data.data || {

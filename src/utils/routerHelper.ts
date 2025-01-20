@@ -140,7 +140,6 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
         const index = route?.component
           ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
           : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
-        console.log(modules, modulesRoutesKeys, index, modulesRoutesKeys[index], route.component, route.path)
         data.component = modules[modulesRoutesKeys[index]]
       }
       if (route.children) {
