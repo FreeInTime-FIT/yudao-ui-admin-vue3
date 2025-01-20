@@ -64,6 +64,7 @@ export const getRawRoute = (route: RouteLocationNormalized): RouteLocationNormal
 // 后端控制路由生成
 export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecordRaw[] => {
   const res: AppRouteRecordRaw[] = []
+  console.log(modules)
   const modulesRoutesKeys = Object.keys(modules)
   for (const route of routes) {
     // 1. 生成 meta 菜单元数据
@@ -139,6 +140,7 @@ export const generateRoute = (routes: AppCustomRouteRecordRaw[]): AppRouteRecord
         const index = route?.component
           ? modulesRoutesKeys.findIndex((ev) => ev.includes(route.component))
           : modulesRoutesKeys.findIndex((ev) => ev.includes(route.path))
+        console.log(modules, modulesRoutesKeys, index, modulesRoutesKeys[index], route.component, route.path)
         data.component = modules[modulesRoutesKeys[index]]
       }
       if (route.children) {

@@ -1,0 +1,844 @@
+<script setup lang="ts">
+import * as echarts from 'echarts'
+import screenConfig from '@/views/screen/config/echart.json'
+import CardHeader from '@/views/screen/components/CardHeader.vue'
+import earthBg from '@/views/screen/assets/real/elec-earth.png'
+import centerBg from '@/views/screen/assets/data/total-center.png'
+import eleIcon from '@/views/screen/assets/real/center-elc-icon.png'
+import gfIcon from '@/views/screen/assets/data/icon-6.png'
+import cdlIcon from '@/views/screen/assets/real/icon-cdl.png'
+import fdlIcon from '@/views/screen/assets/real/icon-fdl.png'
+import tdIcon2 from '@/views/screen/assets/real/today-icon-2.png'
+import tdIcon3 from '@/views/screen/assets/data/icon-3.png'
+import tdIcon4 from '@/views/screen/assets/data/battery-icon-3.png'
+
+import {
+  getPanelData
+} from "@/services/services/IotReportController";
+import {useProjectStore} from "@/store/modules/project";
+import {page} from "@/services/services/DeviceWarningRecordController";
+import {dateFormatter} from "@/utils/formatTime";
+import PieBattery from "@/views/screen/components/PieBattery.vue";
+import dayjs from "dayjs";
+echarts.registerTheme('screen', screenConfig);
+
+defineOptions({
+  name: 'ScreenDataTotal',
+})
+
+const voltageRef = ref();
+const ypxingRef = ref();
+const projectStore = useProjectStore();
+const keyValue = ref({});
+
+const chunengList = [
+  {
+    label: 'SOC值',
+    key: '1',
+    valKey:'SOC值',
+    unit: '%',
+    icon: cdlIcon,
+    iconWidth: 26,
+  },
+  {
+    label: '当前充/放电功率',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'kW',
+    icon: fdlIcon,
+    iconWidth: 26,
+  },
+  {
+    label: '累计充/放电量',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'kWh',
+    icon: tdIcon2,
+    iconWidth: 26,
+  },
+  {
+    label: '当日充/放电量',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'kWh',
+    icon: gfIcon,
+    iconWidth: 26,
+  },
+]
+
+
+const messNewList = [
+  {id: 1, name: '电压（V）', aValue: '1_177', bValue: '1_178', cValue: '1_179', total: ''},
+  {id: 2,  name: '电流（A）', aValue: '1_174', bValue: '1_175', cValue: '1_176', total: ''},
+  {id: 3,  name: '功率因数', aValue: '', bValue: '', cValue: '', total: ''},
+]
+
+const bianyaqiList = [
+  {
+    label: '有功功率',
+    key: '1',
+    valKey:'SOC值',
+    unit: '%',
+    icon: tdIcon4,
+    iconWidth: 36,
+  },
+  {
+    label: '功率因数',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'kW',
+    icon: tdIcon4,
+    iconWidth: 36,
+  },
+  {
+    label: '电压等级',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'kWh',
+    icon: tdIcon3,
+    iconWidth: 36,
+  },
+  {
+    label: '容量',
+    key: '1',
+    valKey:'SOC值',
+    unit: 'KVA',
+    icon: tdIcon3,
+    iconWidth: 36,
+  },
+  {
+    label: '电压电流',
+    key: '1',
+    full: true,
+    valKey:'SOC值',
+    unit: 'kWh',
+    icon: gfIcon,
+    iconWidth: 32,
+  },
+]
+const warningData = ref<APITypes.CommonResultPageResultDeviceWarningRecordVO>({});
+const getData = async () => {
+  const res = await  getPanelData({
+    key: 'realtime',
+    projectId: projectStore.projectInfo?.id,
+  })
+  keyValue.value = res.data || {};
+  warningData.value = await page({
+    projectId: projectStore.projectInfo?.id,
+    pageNo: '1',
+    pageSize: '5'
+  })
+  return res;
+}
+let timer = setInterval(() => {
+  getData();
+}, 5000)
+onUnmounted(() => {
+  clearInterval(timer);
+})
+watch(() => projectStore.projectInfo, (project) => {
+  if (!project) {
+    return;
+  }
+  getData();
+}, {
+  immediate: true,
+})
+const projectInfo = computed(() => {
+  const project = projectStore.projectInfo || {};
+
+ return {
+   projectCode: project.code,
+   projectName: project.name,
+   address: project.address,
+   userName: project.ownerName,
+   code4: '8000kVA',
+   code5: '8000kW',
+   latlng: [project.lng, project.lat].join(','),
+   ...project,
+   r1: '6000kVA',
+   fh: '6000kW',
+   cn: '电池储能',
+   cnrl: '8000kWh',
+   edgl: '8000kW',
+   dclx: '铅酸电池',
+   dcdy: '48V',
+   fdsd: '90%',
+   xhsm: '1000次循环',
+   cfdsl: '2C',
+   yqsm: '10年',
+   wdfw: '-20℃至60℃',
+ }
+})
+const getValue = (key, unit = '') => {
+  const v =  {
+    ...(unref(projectInfo)),
+    ...(unref(keyValue)),
+  }[key] || '';
+  if (v) {
+    return v + (unit || '');
+  }
+  return v;
+}
+const useTotalOptions = {
+  legend: {
+    bottom: 0,
+    right: 0,
+    left: undefined,
+    top: undefined,
+    width: '100%',
+    orient: 'horizontal',
+  },
+  title: {
+    top: '0%',
+  },
+  series: {
+    top: '10%',
+    bottom: '10%',
+    left: '10%',
+  },
+}
+const useCurrentOptions = {
+  legend: {
+    bottom: 0,
+    left: 0,
+    right: undefined,
+    top: undefined,
+    width: '100%',
+    orient: 'horizontal',
+  },
+  series: {
+    left: '10%',
+    top: '10%',
+    bottom: '10%',
+  },
+  title: {
+    top: '0%',
+  },
+}
+const useTotalRef = computed(() => {
+  return {
+    dimensions: ['label', 'value'],
+    source: [
+      {
+        label: '电池剩余电量',
+        value: getValue('电池电量', false) || 0,
+      }, {
+        label: '电池已用电量',
+        value: 100 - (getValue('电池电量', false) || 0),
+      }
+    ],
+  }
+})
+const getterTotalRef = computed(() => {
+  return {
+    dimensions: ['label', 'value'],
+    source: [
+      {
+        label: '电池剩余电量',
+        value: getValue('光伏1发电量', false) || 0,
+      }, {
+        label: '电池已用电量',
+        value: getValue('光伏2发电量', false) || 0,
+      }
+    ],
+  }
+})
+let ypxingChart =  null;
+let voltageChart = null;
+const handleResize = () => {
+  voltageChart?.resize();
+  ypxingChart?.resize();
+}
+onMounted( () => {
+  voltageChart = echarts.init(voltageRef.value, 'screen');
+  ypxingChart = echarts.init(ypxingRef.value, 'screen');
+  const valList = [{
+    valueKey: 'a',
+    name: 'A相',
+    color: '#FF9E17',
+  }, {
+    valueKey: 'b',
+    name: 'B相',
+    color: '#4FF9FA',
+  }, {
+    valueKey: 'c',
+    name: 'C相',
+    color: '#FF0800',
+  }]
+  const today = dayjs();
+  const xAxis = {
+    type: 'time',
+    splitLine: {
+      show: false,
+    },
+    axisLine: {
+      show: true,
+      lineStyle: {
+        width: 0.5,
+        color: 'rgba(0,170,255,0.47)',
+      }
+    },
+    axisTick: {
+      show: true,
+      lineStyle: {
+        color: '#00AAFF',
+      }
+    },
+    axisLabel: {
+      color: '#00AAFF',
+      fontWeight: '600',
+    },
+  }
+  const yAxis = {
+    name: '(Kw)',
+    type: 'value',
+    splitLine: {
+      show: false,
+    },
+    min: function (value) {
+      return value.min - 20;
+    },
+    axisLabel: {
+      color: '#00AAFF',
+      fontWeight: '600',
+    },
+  }
+  voltageChart.setOption({
+    color: '#fff',
+    backgroundColor: 'transparent',
+    tooltip: {
+      show: true,
+    },
+    legend: [{
+      show: true,
+      data: valList.map(item => ({
+        name: item.name,
+        icon: 'circle',
+        itemStyle: {
+          color: "#fff",
+          borderWidth: 4,
+          borderColor: item.color,
+        },
+      })),
+    }],
+    dataset: [
+      {
+        dimensions: ['a', 'b', 'c', { name: 'time', type: 'time'}],
+        source: Array(24).fill(1).map((_, i) => ({
+          a: Math.round(Math.random() * 60) + 90,
+          b: Math.round(Math.random() * 60) + 100,
+          c: Math.round(Math.random() * 60) + 100,
+          time: dayjs(today).hour(i).minute(0).second(0).toDate(),
+        })),
+      },
+      {
+        dimensions: ['a', 'b', 'c', { name: 'time', type: 'time'}],
+        source: Array(24).fill(1).map((_, i) => ({
+          a: Math.round(Math.random() * 20) + 100,
+          b: Math.round(Math.random() * 20) + 100,
+          c: Math.round(Math.random() * 20) + 100,
+          time: dayjs(today).hour(i).minute(0).second(0).toDate(),
+        })),
+      },
+    ],
+    grid: [
+      {
+        top: '20%',
+        right: '55%',
+        left: '5%',
+        bottom: '10%',
+      },
+      {
+        top: '20%',
+        left: '55%',
+        right: '5%',
+        bottom: '10%',
+      },
+    ],
+    xAxis: [
+      {
+        gridIndex: 0,
+        ...xAxis,
+      },
+      {
+        gridIndex: 1,
+        ...xAxis,
+      },
+    ],
+    yAxis: [
+      {
+        gridIndex: 0,
+        ...yAxis,
+      },
+      {
+        gridIndex: 1,
+        ...yAxis,
+      },
+    ],
+    series: [0, 1].reduce((res, i) => {
+      return [
+        ...res,
+        ...valList.map(item => {
+          return {
+            type: 'line',
+            xAxisIndex: i,
+            yAxisIndex: i,
+            datasetIndex: i,
+            encode: {
+              x: 'time',
+              y: item.valueKey,
+            },
+            name: item.name,
+            smooth: true,
+            labelLine: {
+              show: false,
+            },
+            lineStyle: {
+              color: item.color,
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: item.color,
+                },
+                {
+                  offset: 1,
+                  color: 'transparent'
+                }
+              ])
+            },
+            showSymbol: false,
+          }
+        })
+      ]
+    }, []),
+  })
+  ypxingChart.setOption({
+    color: '#fff',
+    backgroundColor: 'transparent',
+    dataset: {
+      dimensions: ['power', 'voltage', { name: 'time', type: 'time'}],
+      source: Array(24).fill(1).map((_, i) => ({
+        power: Math.round(Math.random() * 60) + 100,
+        voltage: Math.round(Math.random() * 60) + 100,
+        time: dayjs(today).hour(i).minute(0).second(0).toDate(),
+      })),
+    },
+    xAxis: {
+      type: 'time',
+      splitLine: {
+        show: false,
+      },
+    },
+    yAxis: [{
+      name: '功率(kw)',
+      nameTextStyle: {
+        color: '#fff',
+      },
+      splitLine: {
+        show: true,
+      },
+    }, {
+      name: '电压(V)',
+      nameTextStyle: {
+        color: '#fff',
+      },
+      splitLine: {
+        show: true,
+      },
+    }],
+    legend: {
+      show: true,
+
+      data: [{
+        name: '功率',
+        itemStyle: {
+          color: '#ff0800',
+        }
+      }, {
+        name: '电压',
+        itemStyle: {
+          color: '#E23AF5',
+        }
+      }],
+    },
+    series: [
+      {
+        type: 'line',
+        encode: {
+          x: 'time',
+          y: 'power',
+        },
+        name: '功率',
+        smooth: true,
+        yAxisIndex: 0,
+        lineStyle: {
+          color: '#FF0800',
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgba(255,255,255,0.4)',
+            },
+            {
+              offset: 1,
+              color: 'transparent'
+            }
+          ])
+        },
+        showSymbol: false,
+      },
+      {
+        type: 'line',
+        smooth: true,
+        name: '电压',
+        encode: {
+          x: 'time',
+          y: 'voltage',
+        },
+        yAxisIndex: 1,
+        lineStyle: {
+          color: '#E23AF5',
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgba(255,255,255,0.4)',
+            },
+            {
+              offset: 1,
+              color: 'transparent'
+            }
+          ])
+        },
+        showSymbol: false,
+      },
+    ],
+  })
+  window.addEventListener('resize', handleResize);
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+})
+</script>
+
+<template>
+  <section class="w-full overflow-x-hidden">
+    <div class="flex gap-24px">
+      <div class=" w-25%">
+        <CardHeader title="台区整体情况" >
+          <h3 class="text-18px mb-0 mt-0">
+            台区整体情况
+          </h3>
+        </CardHeader>
+        <article class="flex mb-40px shadow-bg items-center">
+          <div>
+            <img :src="earthBg" class="w-95px" alt="" />
+          </div>
+          <div class="flex-1 p-12px">
+            <div class="flex p-[12px_20px_12px_12px]">
+              <div class="border-bottom-primary pb-12px">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('projectCode')}}</div>
+            </div>
+            <div class="flex  p-[12px_20px_12px_12px]">
+              <div class="border-bottom-primary pb-12px">台区位置</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('userName')}}</div>
+            </div>
+            <div class="flex p-12px border-bottom-blue justify-between">
+              <div>储能容量</div>
+              <div>{{getValue('code4')}}</div>
+            </div>
+            <div class="flex p-12px  border-bottom-blue justify-between">
+              <div>变压器容量</div>
+              <div>{{getValue('code5')}}</div>
+            </div>
+          </div>
+        </article>
+        <article class="card-box">
+          <CardHeader title="储能信息" />
+          <div class="flex flex-wrap shadow-bg">
+            <div v-for="item in chunengList" class="w-50%" :key="item.id">
+              <div class=" flex items-center mb-20px mr-20px">
+                <div class="today-bg">
+                  <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
+                </div>
+                <div class="ml-8px w-0 flex-1">
+                  <div class="fw-bold line-height-20px">{{item.label}}</div>
+                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+        <article class="">
+          <CardHeader title="充放电功率" />
+          <article class="shadow-bg">
+            <ElTable
+              :data="messNewList"
+              row-key="label"
+              class="data-table"
+              stripe
+              border
+            >
+              <ElTableColumn label="充放电状态" min-width="60" prop="name"  >
+                <template #default="{row}">
+                  <span class="font-bold">{{row.name}}</span>
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="功率" min-width="40" prop="voltageKey"  >
+                <template #default="{row}">
+                  {{getValue(row.aValue)}}
+                </template>
+              </ElTableColumn>
+              <ElTableColumn label="上传时间" min-width="40" prop="powerKey"  >
+                <template #default="{row}">
+                  {{getValue(row.cValue)}}
+                </template>
+              </ElTableColumn>
+            </ElTable>
+          </article>
+        </article>
+      </div>
+      <div class="flex-1">
+        <div class="total-box">
+          <img :src="centerBg" class="w-full" alt="" />
+          <div class="content">
+            <div class="content_title">变压器负载率120%</div>
+            <div class="content_list">
+              <div v-for="item in bianyaqiList" :class="item.full ? 'w-full' : 'w-50%'" :key="item.id">
+                <div class=" flex items-center mb-12px mr-12px">
+                  <div class="today-bg">
+                    <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
+                  </div>
+                  <div class="ml-8px w-0 flex-1">
+                    <div class="fw-bold line-height-20px">{{item.label}}</div>
+                    <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <article>
+          <CardHeader title="今日数据" />
+          <div class="shadow-bg">
+            <div ref="voltageRef" class="h-216px"></div>
+          </div>
+        </article>
+      </div>
+      <div class="w-24% pr-20px">
+
+        <article class="card-box">
+          <CardHeader title="24小时运行数据" />
+          <div class="shadow-bg ">
+            <div ref="ypxingRef" class="h-275px"></div>
+          </div>
+        </article>
+        <article class="card-box mt-30px">
+          <CardHeader title="治理前台区数据" />
+          <div class="shadow-bg">
+            <ElTable
+              :data="warningData.data?.list"
+              row-key="id"
+              class="data-table"
+              border
+              stripe
+            >
+              <ElTableColumn :width="60" label="序号" type="index"  />
+              <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
+              <ElTableColumn label="警告级别" prop="level"  />
+              <ElTableColumn show-overflow-tooltip label="警告信息" prop="info"  />
+            </ElTable>
+          </div>
+
+        </article>
+        <article class="card-box mt-30px">
+          <CardHeader title="台区电压分析" />
+          <div class="shadow-bg flex flex-wrap">
+
+            <PieBattery
+              :data="useTotalRef"
+              class="h-10vw w-50%"
+              title="当月电压情况分析"
+              unit="V"
+              :options="useCurrentOptions"
+            />
+            <PieBattery
+              class="h-10vw w-50%"
+              title="全年电压情况分析"
+              unit="V"
+              :options="useTotalOptions"
+              :data="getterTotalRef"
+            />
+          </div>
+
+        </article>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped lang="scss">
+
+  .border-bottom-primary{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #1EBCA1;
+    }
+  }
+  .border-bottom-primary-1{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, rgba(30, 188, 161, 0.1), rgba(30, 188, 161, 0.8));
+    }
+  }
+  .border-bottom-blue{
+    position: relative;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, rgba(36, 143, 218, 0.1), #248FDA);
+    }
+  }
+
+  .shadow-bg{
+    padding: 12px;
+    box-shadow: inset 0 0 20px 0px #024A8A;
+  }
+  .ele-bg{
+    position: relative;
+    padding: 18px 16px;
+    border-radius: 8px;
+    background: linear-gradient(to right, rgba(32, 168, 232, 0.2),  #0b122a 30%, #0b122a 50%, rgba(32, 168, 232, 0.17));
+    &:before{
+      content: '';
+      position: absolute;
+      background: url(@/views/screen/assets/real/brackets-left.png) no-repeat;
+      width: 19px;
+      top: -5px;
+      left: -5px;
+      bottom: -5px;
+      background-size: 100% 100%;
+    }
+    &:after{
+      content: '';
+      position: absolute;
+      background: url(@/views/screen/assets/real/brackets-right.png) no-repeat;
+      width: 18px;
+      top: -5px;
+      right: -5px;
+      bottom: -5px;
+      background-size: 100% 100%;
+    }
+  }
+  .total-box{
+    margin: 16px 48px 16px;
+    position: relative;
+    font-weight: bold;
+    .content{
+      position: absolute;
+      top: 0;
+      left: 0 ;
+      box-sizing: border-box;
+      padding: 12px;
+      width: 57%;
+      height: 48%;
+      &_title{
+        font-size: 26px;
+        font-style: italic;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+      }
+      &_list{
+        padding: 12px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+  .bg-icon-primary{
+    background-color:rgba(30, 188, 161, 0.1);
+    border-left: 3px solid rgba(30, 188, 161, 100);
+    padding-left: 5px;
+    .bg-icon{
+      background-color: rgba(1, 206, 220, 0.2);
+    }
+    .ele-title{
+      color: rgba(30, 188, 161, 100);;
+    }
+  }
+  .bg-icon-success{
+    background-color: rgba(25, 164, 255, 0.1);
+    border-left: 3px solid rgba(25, 164, 255, 100);
+    padding-left: 5px;
+    .ele-title{
+      color: rgba(25, 164, 255);;
+    }
+
+    .bg-icon{
+      background-color: rgba(25, 164, 255, 0.2);
+    }
+  }
+  .bg-icon{
+    width: 52px;
+    display: flex;
+    align-items: center;
+    height: 61px;
+    justify-content: center;
+  }
+  .ele-title{
+    font-weight: bold;
+  }
+  .ele-value{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .today-bg{
+    width: 55px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(@/views/screen/assets/real/today-bg.png) no-repeat;
+    background-size: 100% 100%;
+  }
+  :deep(.dialog){
+    --el-dialog-margin-top: 50px;
+  }
+  .data-table{
+    //--el-fill-color-lighter: rgb(23,34,70);
+    --el-table-header-bg-color: #172246;
+    :deep( .el-table__cell){
+      padding: 12px 0;
+    }
+    &.el-table--border :deep(th.el-table__cell){
+      border-bottom: 1px dashed #fff;
+    }
+    :deep(td.el-table__cell) {
+      border-right:1px dashed #fff; ;
+    }
+  }
+</style>
