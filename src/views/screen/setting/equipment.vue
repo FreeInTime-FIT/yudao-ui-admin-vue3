@@ -39,12 +39,14 @@ const DEVICE_LIST_DATA = 'device-last-data';
 const projectStore = useProjectStore();
 
 const getLastData = async () => {
-  const res = await getPanelData({
-    key: 'equipment',
-    projectId: projectStore.projectInfo?.id,
-  })
-  keyValue.value = res.data || {};
-  return res;
+  if (projectStore.projectInfo) {
+    const res = await getPanelData({
+      key: 'equipment',
+      projectId: projectStore.projectInfo?.id,
+    })
+    keyValue.value = res.data || {};
+    return res;
+  }
 }
 
 
