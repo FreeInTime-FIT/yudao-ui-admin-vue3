@@ -3,7 +3,7 @@ import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
 import dayjs from "dayjs";
 import {useProjectStore} from "@/store/modules/project";
-import {getLatestPrice, getPanelData} from "@/services/services/IotReportController";
+import {getLatestPrice} from "@/services/services/IotReportController";
 import {IDatePickerType} from "element-plus/es/components/date-picker/src/date-picker.type";
 
 const domRef = ref();

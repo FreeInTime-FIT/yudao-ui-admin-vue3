@@ -13,6 +13,7 @@ import tdIcon3 from '@/views/screen/assets/data/icon-3.png'
 import tdIcon4 from '@/views/screen/assets/data/battery-icon-3.png'
 
 import {
+  getLatestPrice,
   getPanelData
 } from "@/services/services/IotReportController";
 import {useProjectStore} from "@/store/modules/project";
@@ -523,6 +524,25 @@ onMounted( () => {
 })
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
+})
+const handleQuery = async ()=> {
+  const voltageData1 = await getLatestPrice({
+    key: "total_今日_电压曲线",
+    projectId: projectStore.projectInfo?.id,
+  })
+
+  const voltageData2 = await getLatestPrice({
+    key: "total_今日_功率曲线",
+    projectId: projectStore.projectInfo?.id,
+  })
+  const ypxingData2 = await getLatestPrice({
+    key: "total_今日_电压功率汇总",
+    projectId: projectStore.projectInfo?.id,
+  })
+}
+watchPostEffect(()=> {
+  if (!projectStore.projectInfo) return
+  handleQuery()
 })
 </script>
 
