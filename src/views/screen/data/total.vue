@@ -4,7 +4,6 @@ import screenConfig from '@/views/screen/config/echart.json'
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 import earthBg from '@/views/screen/assets/real/elec-earth.png'
 import centerBg from '@/views/screen/assets/data/total-center.png'
-import eleIcon from '@/views/screen/assets/real/center-elc-icon.png'
 import gfIcon from '@/views/screen/assets/data/icon-6.png'
 import cdlIcon from '@/views/screen/assets/real/icon-cdl.png'
 import fdlIcon from '@/views/screen/assets/real/icon-fdl.png'
@@ -111,23 +110,20 @@ const getData = async () => {
     projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
-  warningData.value = await page({
-    projectId: projectStore.projectInfo?.id,
-    pageNo: '1',
-    pageSize: '5'
-  })
   return res;
 }
 let timer = setInterval(() => {
-  getData();
-}, 5000)
+  // getData();
+}, 10000)
 onUnmounted(() => {
   clearInterval(timer);
 })
 watch(() => projectStore.projectInfo, (project) => {
   if (!project) {
+    projectStore.getProjectList();
     return;
   }
+  handleQuery();
   getData();
 }, {
   immediate: true,
@@ -168,73 +164,10 @@ const getValue = (key, unit = '') => {
   }
   return v || '';
 }
-const useTotalOptions = {
-  legend: {
-    bottom: 0,
-    right: 0,
-    left: undefined,
-    top: undefined,
-    width: '100%',
-    orient: 'horizontal',
-  },
-  title: {
-    top: '0%',
-  },
-  series: {
-    top: '10%',
-    bottom: '10%',
-    left: '10%',
-  },
-}
-const useCurrentOptions = {
-  legend: {
-    bottom: 0,
-    left: 0,
-    right: undefined,
-    top: undefined,
-    width: '100%',
-    orient: 'horizontal',
-  },
-  series: {
-    left: '10%',
-    top: '10%',
-    bottom: '10%',
-  },
-  title: {
-    top: '0%',
-  },
-}
-const useTotalRef = computed(() => {
-  return {
-    dimensions: ['label', 'value'],
-    source: [
-      {
-        label: '电池剩余电量',
-        value: getValue('电池电量', false) || 0,
-      }, {
-        label: '电池已用电量',
-        value: 100 - (getValue('电池电量', false) || 0),
-      }
-    ],
-  }
-})
-const getterTotalRef = computed(() => {
-  return {
-    dimensions: ['label', 'value'],
-    source: [
-      {
-        label: '电池剩余电量',
-        value: getValue('光伏1发电量', false) || 0,
-      }, {
-        label: '电池已用电量',
-        value: getValue('光伏2发电量', false) || 0,
-      }
-    ],
-  }
-})
 let ypxingChart =  null;
 let voltageChart = null;
 const handleResize = () => {
+  console.log(window.innerWidth, window.innerHeight);
   voltageChart?.resize();
   ypxingChart?.resize();
 }
@@ -497,6 +430,9 @@ onMounted( () => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 })
+const voltageData = ref({
+
+});
 const handleQuery = async ()=> {
   const dataList = await Promise.all([
     getLatestPrice({
@@ -511,15 +447,16 @@ const handleQuery = async ()=> {
       key: "total_今日_电压功率汇总",
       projectId: projectStore.projectInfo?.id,
     }),
+    getLatestPrice({
+      key:'全年电压',
+      projectId: projectStore.projectInfo?.id,
+    }),
+    getLatestPrice({
+      key:'当月电压',
+      projectId: projectStore.projectInfo?.id,
+    })
   ]);
-  getLatestPrice({
-    key:'全年电压',
-    projectId: projectStore.projectInfo?.id,
-  })
-  getLatestPrice({
-    key:'当月电压',
-    projectId: projectStore.projectInfo?.id,
-  })
+
   console.log(dataList)
    if(voltageChart) {
      voltageChart.setOption({
@@ -554,12 +491,12 @@ const handleQuery = async ()=> {
        },
      });
    }
+  voltageData.value = {
+    month: dataList[4].data,
+    year: dataList[3].data,
+  }
   console.log(dataList);
 }
-watchPostEffect(()=> {
-  if (!projectStore.projectInfo) return
-  handleQuery()
-})
 const powerList = computed(() => {
   const list = keyValue.value['充放电功率表'] || [];
   if (list&&list.length >= 6) {
@@ -646,7 +583,7 @@ const powerList = computed(() => {
               </ElTableColumn>
               <ElTableColumn label="功率" min-width="80" prop="sum_value"  >
                 <template #default="{row}">
-                  {{Math.abs(row.sum_value)}}
+                  {{row.sum_value && Math.abs(row.sum_value)}}
                 </template>
               </ElTableColumn>
               <ElTableColumn label="上传时间" min-width="120" prop="start_ts"  >
@@ -753,21 +690,7 @@ const powerList = computed(() => {
         <article class="card-box mt-30px">
           <CardHeader title="台区电压分析" />
           <div class="shadow-bg flex flex-wrap">
-
-            <PieBattery
-              :data="useTotalRef"
-              class="h-10vw w-50%"
-              title="当月电压情况分析"
-              unit="V"
-              :options="useCurrentOptions"
-            />
-            <PieBattery
-              class="h-10vw w-50%"
-              title="全年电压情况分析"
-              unit="V"
-              :options="useTotalOptions"
-              :data="getterTotalRef"
-            />
+            <PieVoltage :data="voltageData" />
           </div>
 
         </article>
