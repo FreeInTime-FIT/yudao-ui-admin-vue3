@@ -36,7 +36,7 @@ const chunengList = [
   {
     label: 'SOC值',
     key: '1',
-    valKey:'SOC值',
+    valKey:'电池电量',
     unit: '%',
     icon: cdlIcon,
     iconWidth: 26,
@@ -44,7 +44,8 @@ const chunengList = [
   {
     label: '当前充/放电功率',
     key: '1',
-    valKey:'SOC值',
+    valKey:'当前充电',
+    valKey2: '当前放电',
     unit: 'kW',
     icon: fdlIcon,
     iconWidth: 26,
@@ -52,7 +53,8 @@ const chunengList = [
   {
     label: '累计充/放电量',
     key: '1',
-    valKey:'SOC值',
+    valKey:'累计充电',
+    valKey2: '累计放电',
     unit: 'kWh',
     icon: tdIcon2,
     iconWidth: 26,
@@ -72,7 +74,7 @@ const bianyaqiList = [
   {
     label: '有功功率',
     key: '1',
-    valKey:'SOC值',
+    valKey:'transformerLoadRatio',
     unit: '%',
     icon: tdIcon4,
     iconWidth: 36,
@@ -80,7 +82,7 @@ const bianyaqiList = [
   {
     label: '功率因数',
     key: '1',
-    valKey:'SOC值',
+    valKey:'powerFactor',
     unit: 'kW',
     icon: tdIcon4,
     iconWidth: 36,
@@ -88,7 +90,7 @@ const bianyaqiList = [
   {
     label: '电压等级',
     key: '1',
-    valKey:'SOC值',
+    valKey:'voltageLevel',
     unit: 'kWh',
     icon: tdIcon3,
     iconWidth: 36,
@@ -96,7 +98,7 @@ const bianyaqiList = [
   {
     label: '容量',
     key: '1',
-    valKey:'SOC值',
+    valKey:'transformerCapacity',
     unit: 'KVA',
     icon: tdIcon3,
     iconWidth: 36,
@@ -652,7 +654,7 @@ const powerList = computed(() => {
         <div class="total-box">
           <img :src="centerBg" class="w-full" alt="" />
           <div class="content">
-            <div class="content_title">变压器负载率120%</div>
+            <div class="content_title">变压器负载率{{getValue('transformerLoadRatio')}}%</div>
             <div class="content_list">
               <div v-for="item in bianyaqiList" class="content_item" :class="item.full ? 'w-full' : 'w-50%'" :key="item.id">
                 <div class="pr-12px flex items-center">
