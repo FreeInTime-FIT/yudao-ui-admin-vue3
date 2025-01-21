@@ -55,6 +55,7 @@
     <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
       <el-table-column label="设备编号" align="center" prop="deviceCode" />
       <el-table-column label="项目编号" align="center" prop="projectCode" />
+      <el-table-column label="治前时间" align="center" prop="treatmentTime" :formatter="dateFormatter2"/>
       <el-table-column label="变压器容量(kVA)" align="center" prop="transformerCapacity" />
       <el-table-column label="负荷功率(kW)" align="center" prop="loadPower" />
       <el-table-column label="储能类型" align="center" prop="energyStorageType" />
@@ -121,7 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import { dateFormatter } from '@/utils/formatTime'
+import {dateFormatter, dateFormatter2} from '@/utils/formatTime'
 import download from '@/utils/download'
 import { DeviceManagementApi, DeviceManagementVO } from '@/api/iot/devicemanagement'
 import DeviceManagementForm from './DeviceManagementForm.vue'
