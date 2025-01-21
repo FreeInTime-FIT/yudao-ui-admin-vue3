@@ -68,6 +68,18 @@
       <el-form-item label="平台设备名称" prop="deviceName">
         <el-input v-model="formData.deviceName" placeholder="请输入平台设备名称"/>
       </el-form-item>
+      <el-form-item label="变压器负载率" prop="transformerLoadRatio">
+        <el-input v-model="formData.transformerLoadRatio" placeholder="请输入变压器负载率"/>
+      </el-form-item>
+      <el-form-item label="有功功率" prop="activePower">
+        <el-input v-model="formData.activePower" placeholder="请输入有功功率"/>
+      </el-form-item>
+      <el-form-item label="功率因数" prop="powerFactor">
+        <el-input v-model="formData.powerFactor" placeholder="请输入功率因数"/>
+      </el-form-item>
+      <el-form-item label="电压等级" prop="voltageLevel">
+        <el-input v-model="formData.voltageLevel" placeholder="请输入电压等级"/>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="submitForm" type="primary" :disabled="formLoading">确 定</el-button>

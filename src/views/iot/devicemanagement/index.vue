@@ -68,6 +68,10 @@
       <el-table-column label="充放电速率(C)" align="center" prop="chargeDischargeRate" />
       <el-table-column label="预期寿命(年)" align="center" prop="expectedLifespan" />
       <el-table-column label="温度范围(°C)" align="center" prop="temperatureRange" />
+      <el-table-column label="变压器负载率" align="center" prop="transformerLoadRatio" />
+      <el-table-column label="有功功率" align="center" prop="activePower" />
+      <el-table-column label="功率因数" align="center" prop="powerFactor" />
+      <el-table-column label="电压等级" align="center" prop="voltageLevel" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="平台项目Key" align="center" prop="productKey" />
       <el-table-column label="平台设备名称" align="center" prop="deviceName" />
