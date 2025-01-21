@@ -651,8 +651,8 @@ watchPostEffect(()=> {
           <div class="content">
             <div class="content_title">变压器负载率120%</div>
             <div class="content_list">
-              <div v-for="item in bianyaqiList" :class="item.full ? 'w-full' : 'w-50%'" :key="item.id">
-                <div class=" flex items-center mb-12px mr-12px">
+              <div v-for="item in bianyaqiList" class="content_item" :class="item.full ? 'w-full' : 'w-50%'" :key="item.id">
+                <div class="pr-12px flex items-center">
                   <div class="today-bg">
                     <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                   </div>
@@ -805,7 +805,9 @@ watchPostEffect(()=> {
       box-sizing: border-box;
       padding: 12px;
       width: 57%;
-      height: 48%;
+      height: 50%;
+      display: flex;
+      flex-direction: column;
       &_title{
         font-size: 26px;
         font-style: italic;
@@ -817,6 +819,15 @@ watchPostEffect(()=> {
         padding: 12px;
         display: flex;
         flex-wrap: wrap;
+        flex: 1;
+        justify-content: space-between;
+        align-items: stretch;
+        //gap: 12px;
+      }
+      &_item{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
       }
     }
   }
