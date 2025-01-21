@@ -60,7 +60,8 @@ const chunengList = [
   {
     label: '当日充/放电量',
     key: '1',
-    valKey:'SOC值',
+    valKey:'今日充电',
+    valKey2: '今日放电',
     unit: 'kWh',
     icon: gfIcon,
     iconWidth: 26,
@@ -600,14 +601,15 @@ watchPostEffect(()=> {
                 </div>
                 <div class="ml-8px w-0 flex-1">
                   <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">
-                    {{getValue(item.valKey) || item.value || '-'}}
+                  <div class="color-#3DBDFF whitespace-nowrap font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">
+                    <span class="whitespace-nowrap">
+                      {{getValue(item.valKey) || item.value || '-'}}
+                    </span>
                     <span class="text-12px fw-normal">{{item.unit}}</span>
                     <template v-if="item.valKey2">
-                      <span class="ml-3px">{{getValue(item.valKey2) || item.value2 || '-'}}</span>
+                      <span class="ml-3px whitespace-nowrap">{{getValue(item.valKey2) || item.value2 || '-'}}</span>
                       <span class="text-12px fw-normal">{{item.unit}}</span>
                     </template>
-
                   </div>
                 </div>
               </div>
