@@ -511,6 +511,10 @@ const handleQuery = async ()=> {
       key: "total_今日_电压功率汇总",
       projectId: projectStore.projectInfo?.id,
     }),
+    getLatestPrice({
+      key: "total_治理前_电压曲线",
+      projectId: projectStore.projectInfo?.id,
+    }),
   ]);
   getLatestPrice({
     key:'全年电压',
