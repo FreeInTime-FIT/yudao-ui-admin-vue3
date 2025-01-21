@@ -11,7 +11,7 @@ import fdlIcon from '@/views/screen/assets/real/icon-fdl.png'
 import tdIcon2 from '@/views/screen/assets/real/today-icon-2.png'
 import tdIcon3 from '@/views/screen/assets/data/icon-3.png'
 import tdIcon4 from '@/views/screen/assets/data/battery-icon-3.png'
-
+import get from "lodash-es/get";
 import {
   getLatestPrice,
   getPanelData
@@ -157,14 +157,14 @@ const projectInfo = computed(() => {
  }
 })
 const getValue = (key, unit = '') => {
-  const v =  {
+  let v =  get({
     ...(unref(projectInfo)),
     ...(unref(keyValue)),
-  }[key] || '';
-  if (v) {
-    return v + (unit || '');
+  }, key);
+  if (v || v === 0)  {
+    return v +  + (unit || '')
   }
-  return v;
+  return v || '';
 }
 const useTotalOptions = {
   legend: {
