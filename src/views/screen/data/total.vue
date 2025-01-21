@@ -68,13 +68,6 @@ const chunengList = [
   },
 ]
 
-
-const messNewList = [
-  {id: 1, name: '电压（V）', aValue: 'hub_UA', bValue: 'hub_UB', cValue: 'hub_UC', total: ''},
-  {id: 2,  name: '电流（A）', aValue: 'hub_IA', bValue: 'hub_IB', cValue: 'hub_IC', total: ''},
-  {id: 3,  name: '功率因数', aValue: '', bValue: '', cValue: '', total: ''},
-]
-
 const bianyaqiList = [
   {
     label: '有功功率',
@@ -604,13 +597,13 @@ const powerList = computed(() => {
           <CardHeader title="储能信息" />
           <div class="flex flex-wrap shadow-bg">
             <div v-for="item in chunengList" class="w-50%" :key="item.id">
-              <div class=" flex items-center mb-20px mr-20px">
+              <div class=" flex items-center mb-20px mr-12px">
                 <div class="today-bg">
                   <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                 </div>
                 <div class="ml-8px w-0 flex-1">
                   <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF whitespace-nowrap font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">
+                  <div class="color-#3DBDFF whitespace-nowrap font-you-she-biao-ti-hei fw-bold text-22px line-height-30px">
                     <span class="whitespace-nowrap">
                       {{getValue(item.valKey) || item.value || '-'}}
                     </span>
