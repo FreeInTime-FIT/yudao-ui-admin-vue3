@@ -675,29 +675,29 @@ const powerList = computed(() => {
                     <div class="flex items-center justify-between">
                       <div>
                         <span>Ua:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_UA')}}V</span>
                       </div>
                       <div>
                         <span>Ub:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_UB')}}V</span>
                       </div>
                       <div>
                         <span>Uc:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_UC')}}V</span>
                       </div>
                     </div>
                     <div class="flex items-center justify-between">
                       <div>
                         <span>La:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_IA')}}A</span>
                       </div>
                       <div>
                         <span>Lb:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_IB')}}A</span>
                       </div>
                       <div>
                         <span>Lc:</span>
-                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">{{getValue('hub_IC')}}A</span>
                       </div>
                     </div>
                   </div>
