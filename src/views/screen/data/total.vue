@@ -69,8 +69,8 @@ const chunengList = [
 
 
 const messNewList = [
-  {id: 1, name: '电压（V）', aValue: '1_177', bValue: '1_178', cValue: '1_179', total: ''},
-  {id: 2,  name: '电流（A）', aValue: '1_174', bValue: '1_175', cValue: '1_176', total: ''},
+  {id: 1, name: '电压（V）', aValue: 'hub_UA', bValue: 'hub_UB', cValue: 'hub_UC', total: ''},
+  {id: 2,  name: '电流（A）', aValue: 'hub_IA', bValue: 'hub_IB', cValue: 'hub_IC', total: ''},
   {id: 3,  name: '功率因数', aValue: '', bValue: '', cValue: '', total: ''},
 ]
 
@@ -120,7 +120,7 @@ const bianyaqiList = [
 const warningData = ref<APITypes.CommonResultPageResultDeviceWarningRecordVO>({});
 const getData = async () => {
   const res = await  getPanelData({
-    key: 'realtime',
+    key: 'total',
     projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
