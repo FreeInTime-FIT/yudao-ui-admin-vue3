@@ -16,9 +16,7 @@ import {
   getPanelData
 } from "@/services/services/IotReportController";
 import {useProjectStore} from "@/store/modules/project";
-import {page} from "@/services/services/DeviceWarningRecordController";
 import {dateFormatter, formatDate} from "@/utils/formatTime";
-import PieBattery from "@/views/screen/components/PieBattery.vue";
 import dayjs from "dayjs";
 echarts.registerTheme('screen', screenConfig);
 
@@ -28,6 +26,7 @@ defineOptions({
 
 const voltageRef = ref();
 const ypxingRef = ref();
+const prevRef = ref();
 const projectStore = useProjectStore();
 const keyValue = ref({});
 
@@ -103,7 +102,7 @@ const bianyaqiList = [
     iconWidth: 36,
   },
 ]
-const warningData = ref<APITypes.CommonResultPageResultDeviceWarningRecordVO>({});
+
 const getData = async () => {
   const res = await  getPanelData({
     key: 'total',
@@ -166,14 +165,18 @@ const getValue = (key, unit = '') => {
 }
 let ypxingChart =  null;
 let voltageChart = null;
+let prevChart = null;
 const handleResize = () => {
   console.log(window.innerWidth, window.innerHeight);
   voltageChart?.resize();
   ypxingChart?.resize();
+  prevChart?.resize();
 }
 onMounted( () => {
   voltageChart = echarts.init(voltageRef.value, 'screen');
   ypxingChart = echarts.init(ypxingRef.value, 'screen');
+  prevChart = echarts.init(prevRef.value, 'screen');
+
   const valList = [{
     valueKey: 'a相',
     name: 'A相',
@@ -314,6 +317,59 @@ onMounted( () => {
         })
       ]
     }, []),
+  })
+  prevChart.setOption({
+    color: '#fff',
+    backgroundColor: 'transparent',
+    tooltip: {
+      show: true,
+    },
+    legend: [{
+      show: true,
+      data: valList.map(item => ({
+        name: item.name,
+        icon: 'circle',
+        itemStyle: {
+          color: "#fff",
+          borderWidth: 4,
+          borderColor: item.color,
+        },
+      })),
+    }],
+    dataset: [
+    ],
+    xAxis,
+    yAxis,
+    series: valList.map(item => {
+      return {
+        type: 'line',
+        encode: {
+          x: 'time',
+          y: item.valueKey,
+        },
+        name: item.name,
+        smooth: true,
+        labelLine: {
+          show: false,
+        },
+        lineStyle: {
+          color: item.color,
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: item.color,
+            },
+            {
+              offset: 1,
+              color: 'transparent'
+            }
+          ])
+        },
+        showSymbol: false,
+      }
+    }),
   })
   ypxingChart.setOption({
     color: '#fff',
@@ -498,6 +554,17 @@ const handleQuery = async ()=> {
     month: dataList[4].data,
     year: dataList[3].data,
   }
+  if (prevChart && !dataList[5].code) {
+    prevChart.setOption({
+     dataset: {
+       ...dataList[5].data,
+       source: dataList[5].data.source.map(item => ({
+         ...item,
+         time: dayjs().hour(item.time).minute(0).second(0).toDate(),
+       }))
+     }
+    });
+  }
   console.log(dataList);
 }
 const powerList = computed(() => {
@@ -675,18 +742,7 @@ const powerList = computed(() => {
         <article class="card-box mt-30px">
           <CardHeader title="治理前台区数据" />
           <div class="shadow-bg">
-            <ElTable
-              :data="warningData.data?.list"
-              row-key="id"
-              class="data-table"
-              border
-              stripe
-            >
-              <ElTableColumn :width="60" label="序号" type="index"  />
-              <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
-              <ElTableColumn label="警告级别" prop="level"  />
-              <ElTableColumn show-overflow-tooltip label="警告信息" prop="info"  />
-            </ElTable>
+            <div class="h-300px" ref="prevRef"></div>
           </div>
 
         </article>
