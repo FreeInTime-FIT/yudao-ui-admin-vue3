@@ -107,15 +107,6 @@ const bianyaqiList = [
     icon: tdIcon3,
     iconWidth: 36,
   },
-  {
-    label: '电压电流',
-    key: '1',
-    full: true,
-    valKey:'SOC值',
-    unit: 'kWh',
-    icon: gfIcon,
-    iconWidth: 32,
-  },
 ]
 const warningData = ref<APITypes.CommonResultPageResultDeviceWarningRecordVO>({});
 const getData = async () => {
@@ -609,7 +600,15 @@ watchPostEffect(()=> {
                 </div>
                 <div class="ml-8px w-0 flex-1">
                   <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">
+                    {{getValue(item.valKey) || item.value || '-'}}
+                    <span class="text-12px fw-normal">{{item.unit}}</span>
+                    <template v-if="item.valKey2">
+                      <span class="ml-3px">{{getValue(item.valKey2) || item.value2 || '-'}}</span>
+                      <span class="text-12px fw-normal">{{item.unit}}</span>
+                    </template>
+
+                  </div>
                 </div>
               </div>
 
@@ -657,8 +656,46 @@ watchPostEffect(()=> {
                     <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
                   </div>
                   <div class="ml-8px w-0 flex-1">
-                    <div class="fw-bold line-height-20px">{{item.label}}</div>
+                    <div class=" line-height-20px">{{item.label}}</div>
                     <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="content_item w-full">
+                <div class="pr-12px flex items-center">
+                  <div class="today-bg">
+                    <img :src="gfIcon" :style="{width:'32px'}"  alt="" />
+                  </div>
+                  <div class="ml-8px w-0 flex-1">
+                    <div class="text-center line-height-16px">电压电流</div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span>Ua:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                      </div>
+                      <div>
+                        <span>Ub:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                      </div>
+                      <div>
+                        <span>Uc:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212V</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span>La:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                      </div>
+                      <div>
+                        <span>Lb:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                      </div>
+                      <div>
+                        <span>Lc:</span>
+                        <span class="font-you-she-biao-ti-hei color-#3DBDFF text-24px">212A</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -822,6 +859,7 @@ watchPostEffect(()=> {
         flex: 1;
         justify-content: space-between;
         align-items: stretch;
+        gap:12px 0;
         //gap: 12px;
       }
       &_item{
