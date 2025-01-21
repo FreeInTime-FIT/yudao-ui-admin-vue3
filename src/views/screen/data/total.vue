@@ -18,7 +18,7 @@ import {
 } from "@/services/services/IotReportController";
 import {useProjectStore} from "@/store/modules/project";
 import {page} from "@/services/services/DeviceWarningRecordController";
-import {dateFormatter} from "@/utils/formatTime";
+import {dateFormatter, formatDate} from "@/utils/formatTime";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
 import dayjs from "dayjs";
 echarts.registerTheme('screen', screenConfig);
@@ -557,6 +557,15 @@ watchPostEffect(()=> {
   if (!projectStore.projectInfo) return
   handleQuery()
 })
+const powerList = computed(() => {
+  const list = keyValue.value['充放电功率表'] || [];
+  if (list&&list.length >= 6) {
+    return list;
+  }
+  return Array(6).fill(1).map((_, i) => {
+    return list[i] || {};
+  })
+})
 </script>
 
 <template>
@@ -621,25 +630,25 @@ watchPostEffect(()=> {
           <CardHeader title="充放电功率" />
           <article class="shadow-bg">
             <ElTable
-              :data="messNewList"
+              :data="powerList"
               row-key="label"
               class="data-table"
               stripe
               border
             >
-              <ElTableColumn label="充放电状态" min-width="60" prop="name"  >
+              <ElTableColumn label="充放电状态" min-width="60" prop="start_ts"  >
                 <template #default="{row}">
-                  <span class="font-bold">{{row.name}}</span>
+                  <span class="font-bold" v-if="row.sum_value">{{row.sum_value > 0 ? '放电' : '充电'}}</span>
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="功率" min-width="40" prop="voltageKey"  >
+              <ElTableColumn label="功率" min-width="80" prop="sum_value"  >
                 <template #default="{row}">
-                  {{getValue(row.aValue)}}
+                  {{Math.abs(row.sum_value)}}
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="上传时间" min-width="40" prop="powerKey"  >
+              <ElTableColumn label="上传时间" min-width="120" prop="start_ts"  >
                 <template #default="{row}">
-                  {{getValue(row.cValue)}}
+                  {{formatDate(row.start_ts, 'YYYY-MM-DD HH:mm:ss')}}
                 </template>
               </ElTableColumn>
             </ElTable>
