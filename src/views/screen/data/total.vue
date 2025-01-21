@@ -111,22 +111,7 @@ const getData = async () => {
   keyValue.value = res.data || {};
   return res;
 }
-let timer = setInterval(() => {
-  getData();
-}, 5000)
-onUnmounted(() => {
-  clearInterval(timer);
-})
-watch(() => projectStore.projectInfo, (project) => {
-  if (!project) {
-    projectStore.getProjectList();
-    return;
-  }
-  handleQuery();
-  getData();
-}, {
-  immediate: true,
-})
+
 const projectInfo = computed(() => {
   const project = projectStore.projectInfo || {};
 
@@ -575,6 +560,22 @@ const powerList = computed(() => {
   return Array(6).fill(1).map((_, i) => {
     return list[i] || {};
   })
+})
+let timer = setInterval(() => {
+  getData();
+}, 5000)
+onUnmounted(() => {
+  clearInterval(timer);
+})
+watch(() => projectStore.projectInfo, (project) => {
+  if (!project) {
+    projectStore.getProjectList();
+    return;
+  }
+  handleQuery();
+  getData();
+}, {
+  immediate: true,
 })
 </script>
 
