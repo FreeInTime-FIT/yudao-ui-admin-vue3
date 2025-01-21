@@ -512,6 +512,14 @@ const handleQuery = async ()=> {
       projectId: projectStore.projectInfo?.id,
     }),
   ]);
+  getLatestPrice({
+    key:'全年电压',
+    projectId: projectStore.projectInfo?.id,
+  })
+  getLatestPrice({
+    key:'当月电压',
+    projectId: projectStore.projectInfo?.id,
+  })
   console.log(dataList)
    if(voltageChart) {
      voltageChart.setOption({
