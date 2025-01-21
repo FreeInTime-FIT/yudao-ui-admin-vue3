@@ -17,10 +17,17 @@
             :key="item.id"
             :value="item.id"
             :label="item.code"
-           />
-          </el-select>
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="变压器容量(kVA)" prop="transformerCapacity" >
+      <el-form-item label="治前时间" prop="treatmentTime">
+        <el-date-picker
+          v-model="formData.treatmentTime"
+          type="date"
+          placeholder="请输入治前时间"
+        />
+      </el-form-item>
+      <el-form-item label="变压器容量(kVA)" prop="transformerCapacity">
         <el-input v-model="formData.transformerCapacity" placeholder="请输入变压器容量(kVA)"/>
       </el-form-item>
       <el-form-item label="负荷功率(kW)" prop="loadPower">

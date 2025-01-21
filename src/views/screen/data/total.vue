@@ -113,8 +113,8 @@ const getData = async () => {
   return res;
 }
 let timer = setInterval(() => {
-  // getData();
-}, 10000)
+  getData();
+}, 5000)
 onUnmounted(() => {
   clearInterval(timer);
 })
@@ -454,9 +454,12 @@ const handleQuery = async ()=> {
     getLatestPrice({
       key:'当月电压',
       projectId: projectStore.projectInfo?.id,
-    })
+    }),
+    getLatestPrice({
+      key: "total_治理前_电压曲线",
+      projectId: projectStore.projectInfo?.id,
+    }),
   ]);
-
   console.log(dataList)
    if(voltageChart) {
      voltageChart.setOption({
