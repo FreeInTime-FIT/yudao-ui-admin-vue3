@@ -607,16 +607,16 @@ watch(() => projectStore.projectInfo, (project) => {
 }, {
   immediate: true,
 })
-let clickCount = 0;
+let clickCount = 1;
 let now = Date.now();
 const handleCenter = () => {
   if (now > Date.now() - 1000) {
     clickCount += 1;
   } else {
-    clickCount = 0
+    clickCount = 1
   }
   if (clickCount === 5) {
-    clickCount = 0;
+    clickCount = 1;
     showCenter.value = !showCenter.value;
     wsCache.set('screen-total', showCenter.value)
 
