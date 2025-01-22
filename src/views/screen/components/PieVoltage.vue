@@ -96,47 +96,47 @@
       title: [
         {
           text: '当月电压情况分析',
-          top: '4%',
-          left: '5%',
+          top: '1%',
+          left: '8%',
           textStyle: {
             color: '#fff',
           },
         },
         {
           text: '全年电压情况分析',
-          top: '4%',
-          left: '60%',
+          top: '1%',
+          left: '55%',
           textStyle: {
             color: '#fff',
           },
         }
       ],
       series: [{
-        top: '5%',
+        top: '15%',
         left: '5%',
         right: '55%',
         bottom: '5%',
         index: 0,
       }, {
-        top: '10%',
+        top: '15%',
         left: '55%',
         right: '5%',
-        bottom: '10%',
+        bottom: '5%',
         index: 1,
       }].reduce((res, posItem, idx) => [
         ...res,
         ...[{
           name: 'A相',
-          start: '100%',
-          end: '90%',
+          start: '90%',
+          end: '85%',
         }, {
           name: 'B相',
-          start: '90%',
+          start: '85%',
           end: '80%',
         }, {
           name: 'C相',
           start: '80%',
-          end: '70%',
+          end: '75%',
         }].map((item) => ({
           type: 'pie',
           gridIndex: idx,
@@ -221,8 +221,7 @@
 </script>
 
 <template>
-  <div class="h-400px w-full" :class="data.class" ref="batteryRef"></div>
-
+  <div class="h-216px w-full" :class="data.class" ref="batteryRef"></div>
 </template>
 
 <style scoped lang="scss">

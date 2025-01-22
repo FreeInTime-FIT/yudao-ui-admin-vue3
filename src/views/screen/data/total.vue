@@ -600,13 +600,13 @@ watch(() => projectStore.projectInfo, (project) => {
 <template>
   <section class="w-full overflow-x-hidden">
     <div class="flex gap-24px">
-      <div class=" w-25%">
+      <div class="w-25%">
         <CardHeader title="台区整体情况" >
           <h3 class="text-18px mb-0 mt-0">
             台区整体情况
           </h3>
         </CardHeader>
-        <article class="flex mb-40px shadow-bg items-center">
+        <article class="flex mb-20px shadow-bg items-center">
           <div>
             <img :src="earthBg" class="w-95px" alt="" />
           </div>
@@ -664,13 +664,15 @@ watch(() => projectStore.projectInfo, (project) => {
             <ElTable
               :data="powerList"
               row-key="label"
+              current-row-key="start_ts"
               class="data-table"
               stripe
               border
             >
-              <ElTableColumn label="充放电状态" min-width="60" prop="start_ts"  >
+              <ElTableColumn label="充放电状态" min-width="60" prop="status"  >
                 <template #default="{row}">
                   <span class="font-bold" v-if="row.sum_value">{{row.sum_value > 0 ? '放电' : '充电'}}</span>
+                  <span class="font-bold" v-else-if="row.sum_value === 0">无</span>
                 </template>
               </ElTableColumn>
               <ElTableColumn label="功率" min-width="80" prop="sum_value"  >
@@ -746,7 +748,7 @@ watch(() => projectStore.projectInfo, (project) => {
           </div>
 
         </div>
-        <article>
+        <article class="mt-0">
           <CardHeader title="今日数据" />
           <div class="shadow-bg">
             <div ref="voltageRef" class="h-216px"></div>
@@ -764,11 +766,11 @@ watch(() => projectStore.projectInfo, (project) => {
         <article class="card-box mt-30px">
           <CardHeader title="治理前台区数据" />
           <div class="shadow-bg">
-            <div class="h-300px" ref="prevRef"></div>
+            <div class="h-220px" ref="prevRef"></div>
           </div>
 
         </article>
-        <article class="card-box mt-30px">
+        <article class="card-box mt-36px">
           <CardHeader title="台区电压分析" />
           <div class="shadow-bg flex flex-wrap">
             <PieVoltage :data="voltageData" />
