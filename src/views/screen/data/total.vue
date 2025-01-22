@@ -636,7 +636,7 @@ const handleCenter = () => {
             </div>
             <div class="flex p-12px border-bottom-blue justify-between">
               <div>储能容量</div>
-              <div>{{getValue('platformInfo.energyStorageCapacity', 'kVA')}}</div>
+              <div>{{getValue('platformInfo.energyStorageCapacity', 'kWh')}}</div>
             </div>
             <div class="flex p-12px  border-bottom-blue justify-between">
               <div>变压器容量</div>
