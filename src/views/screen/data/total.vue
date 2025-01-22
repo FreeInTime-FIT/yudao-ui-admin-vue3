@@ -84,8 +84,8 @@ const bianyaqiList = [
   {
     label: '有功功率',
     key: '1',
-    valKey:'transformerLoadRatio',
-    unit: '%',
+    valKey:'activePower',
+    unit: 'kW',
     icon: tdIcon4,
     iconWidth: 36,
   },
@@ -213,10 +213,12 @@ onMounted( () => {
       align: 'center',
       interval: 'auto',
       hideOverlap: true,
+      alignMinLabel: 'left',
       showMaxLabel: true,
       showMinLabel: true,
-      padding: [0, 5, 5, 0],
+      // padding: [0, 5, 5, 0],
     },
+    // startValue: dayjs().hour(0).minute(0).second(0).toDate(),
   }
   const yAxis = {
     type: 'value',
@@ -573,12 +575,13 @@ const handleQuery = async ()=> {
     month: dataList[4].data,
     year: dataList[3].data,
   }
+
   if (prevChart && !dataList[5].code) {
     prevChart.setOption({
      dataset: {
        ...dataList[5].data,
        source: dealSourceData(dataList[5].data.source),
-     }
+     },
     });
   }
   console.log(dataList);
