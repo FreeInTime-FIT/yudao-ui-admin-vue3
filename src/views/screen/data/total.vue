@@ -26,6 +26,7 @@ defineOptions({
   name: 'ScreenDataTotal',
 })
 const { wsCache } = useCache()
+const boxRef = ref();
 const showCenter = ref(wsCache.get('screen-total'));
 const voltageRef = ref();
 const ypxingRef = ref();
@@ -625,7 +626,7 @@ const handleCenter = () => {
 </script>
 
 <template>
-  <section class="relative">
+  <section class="relative" ref="boxRef">
     <div class="flex gap-24px page-box">
       <div class="w-25%">
         <CardHeader title="台区整体情况" >
@@ -817,7 +818,7 @@ const handleCenter = () => {
     right: 0;
     bottom: 0;
     transform-origin: 0 0;
-    width: 1920px;
+    width: 1896px;
     padding: 12px;
     box-sizing: border-box;
     transform: scale(v-bind(scale));
