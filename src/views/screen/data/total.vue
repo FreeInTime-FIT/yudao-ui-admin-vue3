@@ -19,12 +19,14 @@ import {
 import {useProjectStore} from "@/store/modules/project";
 import {dateFormatter, formatDate} from "@/utils/formatTime";
 import dayjs from "dayjs";
+import {useCache} from "@/hooks/web/useCache";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
   name: 'ScreenDataTotal',
 })
-
+const { wsCache } = useCache()
+const showCenter = ref(wsCache.get('screen-total'));
 const voltageRef = ref();
 const ypxingRef = ref();
 const prevRef = ref();
@@ -592,6 +594,22 @@ watch(() => projectStore.projectInfo, (project) => {
 }, {
   immediate: true,
 })
+let clickCount = 0;
+let now = Date.now();
+const handleCenter = () => {
+  if (now > Date.now() - 1000) {
+    clickCount += 1;
+  } else {
+    clickCount = 0
+  }
+  if (clickCount === 5) {
+    clickCount = 0;
+    showCenter.value = !showCenter.value;
+    wsCache.set('screen-total', showCenter.value)
+
+  }
+  now = Date.now();
+}
 </script>
 
 <template>
@@ -688,8 +706,8 @@ watch(() => projectStore.projectInfo, (project) => {
       </div>
       <div class="flex-1">
         <div class="total-box">
-          <img :src="centerBg" class="w-full" alt="" />
-          <div class="content">
+          <img :src="centerBg" @click="handleCenter" class="w-full" alt="" />
+          <div class="content" v-if="showCenter">
             <div class="content_title">变压器负载率{{getValue('transformerLoadRatio')}}%</div>
             <div class="content_list">
               <div v-for="item in bianyaqiList" class="content_item" :class="item.full ? 'w-full' : 'w-50%'" :key="item.id">
