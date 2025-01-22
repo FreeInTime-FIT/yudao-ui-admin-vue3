@@ -10,6 +10,7 @@ import fdlIcon from '@/views/screen/assets/real/icon-fdl.png'
 import tdIcon2 from '@/views/screen/assets/real/today-icon-2.png'
 import tdIcon3 from '@/views/screen/assets/data/icon-3.png'
 import tdIcon4 from '@/views/screen/assets/data/battery-icon-3.png'
+import PieVoltage from "@/views/screen/components/PieVoltage.vue";
 import get from "lodash-es/get";
 import {
   getLatestPrice,
@@ -30,7 +31,15 @@ const prevRef = ref();
 const projectStore = useProjectStore();
 const keyValue = ref({});
 
-const chunengList = [
+const chunengList: {
+  label: string;
+  key: string;
+  valKey: string;
+  valKey2?: string;
+  unit?: string;
+  icon?: string | Object;
+  iconWidth: number;
+}[] = [
   {
     label: 'SOC值',
     key: '1',
@@ -144,7 +153,7 @@ const getValue = (key, unit = '') => {
     ...(unref(keyValue)),
   }, key);
   if (v || v === 0)  {
-    return v +  + (unit || '')
+    return v + (unit || '')
   }
   return v || '';
 }
@@ -200,10 +209,14 @@ onMounted( () => {
     },
   }
   const yAxis = {
-    name: '(Kw)',
     type: 'value',
+    nameLocation: 'end',
     splitLine: {
       show: false,
+    },
+    nameTextStyle: {
+      color: '#00AAFF',
+      fontWeight: '600',
     },
     axisLabel: {
       color: '#00AAFF',
@@ -232,13 +245,13 @@ onMounted( () => {
     ],
     grid: [
       {
-        top: '20%',
+        top: '30%',
         right: '55%',
         left: '5%',
         bottom: '10%',
       },
       {
-        top: '20%',
+        top: '30%',
         left: '55%',
         right: '5%',
         bottom: '10%',
@@ -256,10 +269,13 @@ onMounted( () => {
     ],
     yAxis: [
       {
+        name: '功率(kW)',
         gridIndex: 0,
         ...yAxis,
       },
       {
+        name: '电压(V)',
+
         gridIndex: 1,
         ...yAxis,
       },
@@ -324,7 +340,10 @@ onMounted( () => {
     dataset: [
     ],
     xAxis,
-    yAxis,
+    yAxis: {
+      ...yAxis,
+      name: '电压(V)',
+    },
     series: valList.map(item => {
       return {
         type: 'line',
@@ -380,7 +399,6 @@ onMounted( () => {
       },
     },
     yAxis: [{
-      name: '功率(kw)',
       nameTextStyle: {
         color: '#fff',
       },
@@ -595,19 +613,19 @@ watch(() => projectStore.projectInfo, (project) => {
           <div class="flex-1 p-12px">
             <div class="flex p-[12px_20px_12px_12px]">
               <div class="border-bottom-primary pb-12px">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</div>
-              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('projectCode')}}</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('name')}}</div>
             </div>
             <div class="flex  p-[12px_20px_12px_12px]">
               <div class="border-bottom-primary pb-12px">台区位置</div>
-              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('userName')}}</div>
+              <div class="border-bottom-primary-1 pb-12px flex-1 text-right">{{getValue('address')}}</div>
             </div>
             <div class="flex p-12px border-bottom-blue justify-between">
               <div>储能容量</div>
-              <div>{{getValue('code4')}}</div>
+              <div>{{getValue('platformInfo.energyStorageCapacity', 'kVA')}}</div>
             </div>
             <div class="flex p-12px  border-bottom-blue justify-between">
               <div>变压器容量</div>
-              <div>{{getValue('code5')}}</div>
+              <div>{{getValue('platformInfo.transformerCapacity', 'kVA')}}</div>
             </div>
           </div>
         </article>
@@ -621,15 +639,18 @@ watch(() => projectStore.projectInfo, (project) => {
                 </div>
                 <div class="ml-8px w-0 flex-1">
                   <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF whitespace-nowrap font-you-she-biao-ti-hei fw-bold text-22px line-height-30px">
-                    <span class="whitespace-nowrap">
+                  <div class="color-#3DBDFF flex items-center flex-wrap font-you-she-biao-ti-hei fw-bold text-22px line-height-30px">
+                    <div class="whitespace-nowrap">
+                         <span class="whitespace-nowrap">
                       {{getValue(item.valKey) || item.value || '-'}}
                     </span>
-                    <span class="text-12px fw-normal">{{item.unit}}</span>
-                    <template v-if="item.valKey2">
+                      <span class="text-12px fw-normal">{{item.unit}}</span>
+                    </div>
+
+                    <div class="whitespace-nowrap" v-if="item.valKey2">
                       <span class="ml-3px whitespace-nowrap">{{getValue(item.valKey2) || item.value2 || '-'}}</span>
                       <span class="text-12px fw-normal">{{item.unit}}</span>
-                    </template>
+                    </div>
                   </div>
                 </div>
               </div>
