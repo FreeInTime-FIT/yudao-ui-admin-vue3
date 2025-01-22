@@ -30,7 +30,7 @@ const ypxingRef = ref();
 const prevRef = ref();
 const projectStore = useProjectStore();
 const keyValue = ref({});
-
+const scale = ref(1);
 const chunengList: {
   label: string;
   key: string;
@@ -165,6 +165,7 @@ const handleResize = () => {
   voltageChart?.resize();
   ypxingChart?.resize();
   prevChart?.resize();
+  scale.value = window.innerWidth / 1920;
 }
 onMounted( () => {
   voltageChart = echarts.init(voltageRef.value, 'screen');
@@ -484,6 +485,7 @@ onMounted( () => {
       },
     ],
   })
+  handleResize();
   window.addEventListener('resize', handleResize);
 })
 onUnmounted(() => {
@@ -519,6 +521,13 @@ const handleQuery = async ()=> {
       projectId: projectStore.projectInfo?.id,
     }),
   ]);
+
+  const dealSourceData = (source) => {
+    return source && source.map(item => ({
+      ...item,
+      time: dayjs(item.time).toDate(),
+    }))
+  }
   console.log(dataList)
    if(voltageChart) {
      voltageChart.setOption({
@@ -526,17 +535,11 @@ const handleQuery = async ()=> {
          !dataList[1].code ?
          {
            ...dataList[1].data,
-           source: dataList[1].data.source.map(item => ({
-             ...item,
-             time: dayjs().hour(item.time).minute(0).second(0).toDate(),
-           }))
+           source: dealSourceData(dataList[1].data.source),
          } : {},
          !dataList[0].code ? {
            ...dataList[0].data,
-           source: dataList[0].data.source.map(item => ({
-             ...item,
-             time: dayjs().hour(item.time).minute(0).second(0).toDate(),
-           }))
+           source: dealSourceData(dataList[0].data.source),
            } : {},
        ],
      });
@@ -546,10 +549,7 @@ const handleQuery = async ()=> {
      ypxingChart.setOption({
        dataset: {
          ...dataList[2].data,
-         source: dataList[2].data.source.map(item => ({
-           ...item,
-           time: dayjs().hour(item.time).minute(0).second(0).toDate(),
-         }))
+         source: dealSourceData(dataList[2].data.source),
        },
      });
    }
@@ -561,10 +561,7 @@ const handleQuery = async ()=> {
     prevChart.setOption({
      dataset: {
        ...dataList[5].data,
-       source: dataList[5].data.source.map(item => ({
-         ...item,
-         time: dayjs().hour(item.time).minute(0).second(0).toDate(),
-       }))
+       source: dealSourceData(dataList[5].data.source),
      }
     });
   }
@@ -598,8 +595,8 @@ watch(() => projectStore.projectInfo, (project) => {
 </script>
 
 <template>
-  <section class="w-full overflow-x-hidden">
-    <div class="flex gap-24px">
+  <section class="relative">
+    <div class="flex gap-24px page-box">
       <div class="w-25%">
         <CardHeader title="台区整体情况" >
           <h3 class="text-18px mb-0 mt-0">
@@ -783,7 +780,18 @@ watch(() => projectStore.projectInfo, (project) => {
 </template>
 
 <style scoped lang="scss">
-
+  .page-box{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform-origin: 0 0;
+    width: 1920px;
+    padding: 12px;
+    box-sizing: border-box;
+    transform: scale(v-bind(scale));
+  }
   .border-bottom-primary{
     position: relative;
     &:after{
