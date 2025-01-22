@@ -202,6 +202,7 @@ onMounted( () => {
     },
     axisTick: {
       show: true,
+      alignWithLabel: true,
       lineStyle: {
         color: '#00AAFF',
       }
@@ -209,6 +210,10 @@ onMounted( () => {
     axisLabel: {
       color: '#00AAFF',
       fontWeight: '600',
+      align: 'center',
+      interval: 'auto',
+      hideOverlap: true,
+      padding: [0, 5, 5, 0],
     },
   }
   const yAxis = {
@@ -400,8 +405,15 @@ onMounted( () => {
       splitLine: {
         show: false,
       },
+      axisLabel: {
+        align: 'center',
+        interval: 'auto',
+        hideOverlap: true,
+        padding: [0, 10, 10, 0],
+      },
     },
     yAxis: [{
+      name: '功率(kW)',
       nameTextStyle: {
         color: '#fff',
       },
