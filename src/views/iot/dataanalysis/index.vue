@@ -57,6 +57,18 @@
           </el-select>
         </el-form-item>
 
+        <!-- 添加批量输入按钮 -->
+        <el-form-item>
+          <el-button 
+            type="primary" 
+            @click="openBatchInput" 
+            :disabled="!formState.deviceId"
+            style="width: 100%"
+          >
+            批量输入字段
+          </el-button>
+        </el-form-item>
+
         <!-- 时间选择 -->
         <el-form-item label="时间范围">
           <el-date-picker
@@ -89,6 +101,30 @@
         <el-button type="primary" @click="downloadCSV">下载CSV</el-button>
       </div>
     </div>
+
+    <!-- 添加批量输入对话框 -->
+    <el-dialog
+      v-model="batchInputVisible"
+      title="批量输入字段"
+      width="500px"
+    >
+      <el-form>
+        <el-form-item label="输入字段列表">
+          <el-input
+            v-model="batchInputText"
+            type="textarea"
+            :rows="4"
+            placeholder="请输入或粘贴字段列表，用空格分隔，如：1#342 1#343 1#344"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="batchInputVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleBatchInput">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -116,6 +152,10 @@ const loading = ref(false)
 
 // echarts实例
 let chartInstance: echarts.ECharts | null = null
+
+// 批量输入相关
+const batchInputVisible = ref(false)
+const batchInputText = ref('')
 
 // 初始化图表
 const initChart = () => {
@@ -384,6 +424,33 @@ const downloadCSV = () => {
   URL.revokeObjectURL(link.href)
 }
 
+// 打开批量输入对话框
+const openBatchInput = () => {
+  batchInputVisible.value = true
+  batchInputText.value = ''
+}
+
+// 处理批量输入
+const handleBatchInput = () => {
+  const inputFields = batchInputText.value.trim().split(/\s+/)
+  const matchedFields: string[] = []
+  
+  inputFields.forEach(input => {
+    const field = fieldList.value.find(f => f.id === input)
+    if (field) {
+      matchedFields.push(field.id)
+    }
+  })
+
+  if (matchedFields.length === 0) {
+    ElMessage.warning('未找到匹配的字段')
+  } else {
+    formState.fields = matchedFields
+    ElMessage.success(`已匹配 ${matchedFields.length} 个字段`)
+    batchInputVisible.value = false
+  }
+}
+
 // 组件挂载时初始化
 onMounted(() => {
   initChart()
@@ -421,6 +488,12 @@ onMounted(() => {
 
 .chart-actions {
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog-footer {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
