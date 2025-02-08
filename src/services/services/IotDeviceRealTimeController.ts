@@ -12,6 +12,19 @@ export async function columns(body: APITypes.RealTimeQueryParam, options?: { [ke
   });
 }
 
+/** 此处后端没有提供注释 POST /admin-api/iot/device/real-time/data-list */
+export async function dataList(
+  body: APITypes.RealTimeListQueryParam,
+  options?: { [key: string]: any },
+) {
+  return request<APITypes.CommonResultListMapStringObject>({
+    url: `/admin-api/iot/device/real-time/data-list`,
+    method: 'POST',
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /admin-api/iot/device/real-time/data-page */
 export async function dataPage(
   body: APITypes.RealTimeQueryParam,

@@ -22,7 +22,6 @@ import * as MailAccountController from './MailAccountController';
 import * as DictTypeController from './DictTypeController';
 import * as DictDataController from './DictDataController';
 import * as DeptController from './DeptController';
-import * as GoViewProjectController from './GoViewProjectController';
 import * as ProjectInfoController from './ProjectInfoController';
 import * as HourlyPricesController from './HourlyPricesController';
 import * as DeviceManagementController from './DeviceManagementController';
@@ -42,24 +41,22 @@ import * as PermissionController from './PermissionController';
 import * as OAuth2OpenController from './OAuth2OpenController';
 import * as CaptchaController from './CaptchaController';
 import * as AuthController from './AuthController';
-import * as IotReportController from './IotReportController';
 import * as IotDeviceRealTimeController from './IotDeviceRealTimeController';
 import * as DeviceMessageController from './DeviceMessageController';
 import * as FileController from './FileController';
 import * as AppDictDataController from './AppDictDataController';
 import * as AppAreaController from './AppAreaController';
-import * as TestController from './TestController';
 import * as SmsLogController from './SmsLogController';
 import * as OperateLogController from './OperateLogController';
 import * as OAuth2TokenController from './OAuth2TokenController';
 import * as MailLogController from './MailLogController';
 import * as LoginLogController from './LoginLogController';
 import * as AreaController from './AreaController';
+import * as IotReportController from './IotReportController';
 import * as DeviceWarningRecordController from './DeviceWarningRecordController';
 import * as RedisController from './RedisController';
 import * as JobLogController from './JobLogController';
 import * as ApiAccessLogController from './ApiAccessLogController';
-import * as GoViewDataController from './GoViewDataController';
 import * as DefaultController from './DefaultController';
 export default {
   UserProfileController,
@@ -82,7 +79,6 @@ export default {
   DictTypeController,
   DictDataController,
   DeptController,
-  GoViewProjectController,
   ProjectInfoController,
   HourlyPricesController,
   DeviceManagementController,
@@ -102,23 +98,21 @@ export default {
   OAuth2OpenController,
   CaptchaController,
   AuthController,
-  IotReportController,
   IotDeviceRealTimeController,
   DeviceMessageController,
   FileController,
   AppDictDataController,
   AppAreaController,
-  TestController,
   SmsLogController,
   OperateLogController,
   OAuth2TokenController,
   MailLogController,
   LoginLogController,
   AreaController,
+  IotReportController,
   DeviceWarningRecordController,
   RedisController,
   JobLogController,
   ApiAccessLogController,
-  GoViewDataController,
   DefaultController,
 };

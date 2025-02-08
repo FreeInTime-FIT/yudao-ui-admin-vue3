@@ -535,12 +535,6 @@ declare namespace APITypes {
     msg?: string;
   };
 
-  type CommonResultGoViewProjectRespVO = {
-    code?: number;
-    data?: GoViewProjectRespVO;
-    msg?: string;
-  };
-
   type CommonResultHourlyPricesRespVO = {
     code?: number;
     data?: HourlyPricesRespVO;
@@ -886,12 +880,6 @@ declare namespace APITypes {
   type CommonResultPageResultFileRespVO = {
     code?: number;
     data?: PageResultFileRespVO;
-    msg?: string;
-  };
-
-  type CommonResultPageResultGoViewProjectRespVO = {
-    code?: number;
-    data?: PageResultGoViewProjectRespVO;
     msg?: string;
   };
 
@@ -1342,11 +1330,6 @@ declare namespace APITypes {
     id: string;
   };
 
-  type deleteProjectParams = {
-    /** 编号 */
-    id: number;
-  };
-
   type deleteRoleParams = {
     /** 角色编号 */
     id: number;
@@ -1545,17 +1528,23 @@ declare namespace APITypes {
   };
 
   type DeviceManagementRespVO = {
+    /** 创建时间 */
+    createTime?: string;
+    updateTime?: string;
+    creator?: string;
+    updater?: string;
+    deleted?: boolean;
     /** 主键ID */
     id: number;
     /** 平台项目Key */
     productKey?: string;
     /** 平台设备名称 */
     deviceName?: string;
+    treatmentTime?: string;
     /** 设备编号 */
     deviceCode: string;
     /** 项目编号 */
     projectId: string;
-    projectCode?: string;
     /** 变压器容量(kVA) */
     transformerCapacity?: number;
     /** 负荷功率(kW) */
@@ -1583,48 +1572,47 @@ declare namespace APITypes {
     temperatureRange?: string;
     /** 备注 */
     remark?: string;
-    /** 创建时间 */
-    createTime?: string;
+    mode?: 'OFFLINE' | 'GREEN' | 'ENERGY' | 'VIRTUAL' | 'CUSTOM';
+    transformerLoadRatio?: number;
+    activePower?: number;
+    powerFactor?: number;
+    voltageLevel?: string;
+    projectCode?: string;
   };
 
   type DeviceManagementSaveReqVO = {
-    /** 主键ID */
-    id: number;
-    /** 设备编号 */
-    deviceCode: string;
+    createTime?: string;
+    updateTime?: string;
+    creator?: string;
+    updater?: string;
+    deleted?: boolean;
+    id?: number;
     /** 平台项目Key */
     productKey?: string;
     /** 平台设备名称 */
     deviceName?: string;
-    /** 项目编号 */
-    projectId: string;
-    /** 变压器容量(kVA) */
+    treatmentTime?: string;
+    deviceCode?: string;
+    projectId?: string;
     transformerCapacity?: number;
-    /** 负荷功率(kW) */
     loadPower?: number;
-    /** 储能类型 */
     energyStorageType?: string;
-    /** 储能容量(kWh) */
     energyStorageCapacity?: number;
     totalCapacity?: number;
-    /** 额定功率(kW) */
     ratedPower?: number;
-    /** 电池类型 */
     batteryType?: string;
-    /** 电池电压范围(V) */
     batteryVoltageRange?: string;
-    /** 放电深度(%) */
     dischargeDepth?: number;
-    /** 循环寿命(次) */
     cycleLife?: number;
-    /** 充放电速率(C) */
     chargeDischargeRate?: string;
-    /** 预期寿命(年) */
     expectedLifespan?: number;
-    /** 温度范围(°C) */
     temperatureRange?: string;
-    /** 备注 */
     remark?: string;
+    mode?: 'OFFLINE' | 'GREEN' | 'ENERGY' | 'VIRTUAL' | 'CUSTOM';
+    transformerLoadRatio?: number;
+    activePower?: number;
+    powerFactor?: number;
+    voltageLevel?: string;
   };
 
   type DeviceWarningRecordVO = {
@@ -2346,14 +2334,6 @@ declare namespace APITypes {
     comment?: string;
   };
 
-  type getDataByHttpParams = {
-    body: string;
-  };
-
-  type getDataBySQLParams = {
-    reqVO: GoViewDataGetBySqlReqVO;
-  };
-
   type getDataSourceConfigParams = {
     /** 编号 */
     id: number;
@@ -2691,11 +2671,6 @@ declare namespace APITypes {
     id: number;
   };
 
-  type GetLatestForKeys = {
-    keys?: string[];
-    projectId?: string;
-  };
-
   type getLatestParams = {
     c: string;
     projectId?: string;
@@ -2801,13 +2776,6 @@ declare namespace APITypes {
     readStatus?: string;
     /** 创建时间 */
     createTime?: string;
-    /** 页码，从 1 开始 */
-    pageNo: string;
-    /** 每页条数，最大值为 100 */
-    pageSize: string;
-  };
-
-  type getMyProjectPageParams = {
     /** 页码，从 1 开始 */
     pageNo: string;
     /** 每页条数，最大值为 100 */
@@ -2943,11 +2911,6 @@ declare namespace APITypes {
   type getProjectInfoParams = {
     /** 编号 */
     id: string;
-  };
-
-  type getProjectParams = {
-    /** 编号 */
-    id: number;
   };
 
   type getRoleMenuListParams = {
@@ -3160,55 +3123,11 @@ declare namespace APITypes {
     id: number;
   };
 
-  type GoViewDataGetBySqlReqVO = {
-    /** SQL 语句 */
-    sql: string;
-  };
-
   type GoViewDataRespVO = {
     /** 数据维度 */
     dimensions: string[];
     /** 数据明细列表 */
     source: Record<string, any>[];
-  };
-
-  type GoViewProjectCreateReqVO = {
-    /** 项目名称 */
-    name: string;
-  };
-
-  type GoViewProjectRespVO = {
-    /** 编号 */
-    id: number;
-    /** 项目名称 */
-    name: string;
-    /** 发布状态 */
-    status: number;
-    /** 报表内容 */
-    content?: string;
-    /** 预览图片 URL */
-    picUrl?: string;
-    /** 项目备注 */
-    remark?: string;
-    /** 创建人编号 */
-    creator: string;
-    /** 创建时间 */
-    createTime: string;
-  };
-
-  type GoViewProjectUpdateReqVO = {
-    /** 编号 */
-    id: number;
-    /** 项目名称 */
-    name: string;
-    /** 发布状态 */
-    status: number;
-    /** 报表内容 */
-    content?: string;
-    /** 预览图片 URL */
-    picUrl?: string;
-    /** 项目备注 */
-    remark?: string;
   };
 
   type HourlyPricesRespVO = {
@@ -3333,11 +3252,6 @@ declare namespace APITypes {
     updateSupport?: boolean;
     /** Excel 文件 */
     file: any;
-  };
-
-  type IotReportSqlQuery = {
-    sql?: string;
-    projectId?: string;
   };
 
   type JobLogRespVO = {
@@ -4128,13 +4042,6 @@ declare namespace APITypes {
     total: number;
   };
 
-  type PageResultGoViewProjectRespVO = {
-    /** 数据 */
-    list: GoViewProjectRespVO[];
-    /** 总量 */
-    total: number;
-  };
-
   type PageResultHourlyPricesRespVO = {
     /** 数据 */
     list: HourlyPricesRespVO[];
@@ -4488,6 +4395,21 @@ declare namespace APITypes {
   type pushParams = {
     /** 编号 */
     id: number;
+  };
+
+  type RealTimeListQueryParam = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
+    /** 平台项目Key */
+    productKey?: string;
+    /** 平台设备名称 */
+    deviceName?: string;
+    /** 传感器编号 */
+    index?: number;
+    ts?: string[];
+    columns?: string[];
   };
 
   type RealTimeQueryParam = {
