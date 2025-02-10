@@ -93,7 +93,11 @@
 
     <!-- 右侧图表区 -->
     <div class="right-panel">
-      <div class="chart-container" ref="chartRef">
+      <div
+class="chart-container" ref="chartRef" v-loading="chartLoading" 
+        element-loading-text="数据加载中..."
+        element-loading-background="rgba(255, 255, 255, 0.9)"
+      >
         <div id="dataChart" style="width: 100%; height: 500px"></div>
       </div>
       <div class="chart-actions">
@@ -132,7 +136,7 @@
 import {ref, reactive, onMounted} from 'vue'
 import * as echarts from 'echarts'
 import type {EChartsOption} from 'echarts'
-import {ElMessage} from 'element-plus'
+import {ElMessage, ElLoading} from 'element-plus'
 import { getProjectInfoList } from '@/services/services/ProjectInfoController'
 import { columns, dataList } from '@/services/services/IotDeviceRealTimeController'
 
@@ -156,6 +160,10 @@ let chartInstance: echarts.ECharts | null = null
 // 批量输入相关
 const batchInputVisible = ref(false)
 const batchInputText = ref('')
+
+// 添加 loading 相关的状态
+const chartLoading = ref(false)
+const elementLoadingSpinner = 'el-icon-loading'
 
 // 初始化图表
 const initChart = () => {
@@ -248,6 +256,8 @@ const handleQuery = async () => {
   }
 
   loading.value = true
+  chartLoading.value = true // 开始加载时显示 loading
+  
   try {
     const selectedProject = projectList.value.find(p => p.id === formState.projectId)
     const res = await dataList({
@@ -267,6 +277,7 @@ const handleQuery = async () => {
     console.error('查询数据失败:', error)
   } finally {
     loading.value = false
+    chartLoading.value = false // 结束加载时隐藏 loading
   }
 }
 
@@ -484,6 +495,8 @@ onMounted(() => {
 
 .chart-container {
   margin-bottom: 20px;
+  position: relative;
+  min-height: 500px;
 }
 
 .chart-actions {
@@ -497,5 +510,14 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+/* 添加 loading 相关样式 */
+:deep(.el-loading-spinner) {
+  .el-loading-text {
+    color: #409EFF;
+    font-size: 14px;
+    margin-top: 8px;
+  }
 }
 </style>
