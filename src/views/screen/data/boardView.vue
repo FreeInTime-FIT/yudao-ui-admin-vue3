@@ -126,7 +126,7 @@
             </div>
             <div class="ml-8px w-0 flex-1 ">
               <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{item.render ? item.render(item) : getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
             </div>
           </div>
 
@@ -562,6 +562,23 @@ const batteryInfo = [
     unit: 'kW',
     valKey:  '电池功率',
     icon: tdIcon3,
+    iconWidth: 27,
+  },
+  {
+    label: '状态',
+    key: '6',
+    valKey:  '电池功率',
+    icon: tdIcon3,
+    render() {
+      const v = getValue('电池功率', false);
+      if (!v) {
+        return '-'
+      }
+      if (v > 0) {
+        return  '放电'
+      }
+      return '充电';
+    },
     iconWidth: 27,
   },
   {
