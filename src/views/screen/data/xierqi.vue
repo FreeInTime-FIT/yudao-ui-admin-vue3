@@ -497,15 +497,25 @@ const batteryInfo = [
         </div>
       </div>
 
-      <div class="grid grid-cols-3 gap-8px mt-12px">
-        <div v-for="i in 6" :key="i" class="load-box">
-          <div class="load-title">
-            <span>负载点电压{{ i > 3 ? 'V' + (i-3) : i }}a:</span>
-            <span>{{getValue(`负载点电压${i > 3 ? 'V' + (i-3) : i}a`, true) || '220V'}}</span>
+      <div class="mt-12px">
+        <div class="grid grid-cols-6 gap-2px">
+          <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
+            <div class="grid-title">负载点电压V{{item}}:</div>
+            <div class="grid-value">{{getValue(`负载点电压V${item}`, true) || '220V'}}</div>
           </div>
-          <div class="load-title">
-            <span>负载点电流{{ i > 3 ? 'I' + (i-3) : i }}a:</span>
-            <span>{{getValue(`负载点电流${i > 3 ? 'I' + (i-3) : i}a`, true) || '3A'}}</span>
+          <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
+            <div class="grid-title">负载点电流I{{item}}:</div>
+            <div class="grid-value">{{getValue(`负载点电流I${item}`, true) || '3A'}}</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-6 gap-2px mt-12px">
+          <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
+            <div class="grid-title">并网点电压V{{item}}:</div>
+            <div class="grid-value">{{getValue(`并网点电压V${item}`, true) || '220V'}}</div>
+          </div>
+          <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
+            <div class="grid-title">并网点电流I{{item}}:</div>
+            <div class="grid-value">{{getValue(`并网点电流I${item}`, true) || '3A'}}</div>
           </div>
         </div>
       </div>
@@ -707,5 +717,33 @@ const batteryInfo = [
 .shadow-bg {
   padding: 12px;
   box-shadow: inset 0 0 20px 0px #024A8A;
+}
+
+.grid-box {
+  background-color: rgba(2, 74, 138, 0.3);
+  border-left: 3px solid rgba(30, 188, 161, 1);
+  padding: 12px 16px;
+  text-align: center;
+  color: #fff;
+}
+
+.grid-box-blue {
+  border-left: 3px solid rgba(25, 164, 255, 1);
+}
+
+.grid-title {
+  color: rgba(30, 188, 161, 1);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.grid-box-blue .grid-title {
+  color: rgba(25, 164, 255, 1);
+}
+
+.grid-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
 }
 </style>
