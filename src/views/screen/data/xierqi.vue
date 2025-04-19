@@ -19,7 +19,7 @@ import dot from '@/views/screen/assets/data/dot.png'
 import batteryBlue from '@/views/screen/assets/real/battery-blue.png'
 import batteryGreen from '@/views/screen/assets/real/battery-green.png'
 import money from '@/views/screen/assets/real/money.png'
-
+import building from '@/views/screen/assets/5421744856302_.pic.png'
 
 defineOptions({ name: '云监控系统' })
 
@@ -599,10 +599,9 @@ const getValue = (key: string, hasEmpty: boolean) => {
         </div>
       </div>
 
-      <div class="h-40%">
-        <div class="flex-1 h-full board-building">
-          <!-- 建筑模型 -->
-        </div>
+      <div class="flex justify-center items-center">
+        <!-- 建筑模型 -->
+        <img :src="building" alt="" class="h-522px w-630px" />
       </div>
 
       <div class="mt-12px">
