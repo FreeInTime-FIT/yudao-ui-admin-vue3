@@ -42,6 +42,10 @@ const getLastData = async () => {
 const realRef = ref();
 const realChartRef = ref();
 
+// 添加两个新的ref用于Echarts圆环图
+const supplyChartRef = ref();
+const microGridChartRef = ref();
+
 const useTotalOptions = {
   legend: {
     bottom: 0,
@@ -86,7 +90,7 @@ const useTotalRef = computed(() => {
       {
         label: '上日剩余供电电量',
         value: getValue('上日剩余供电电量', false) || 35,
-      }, 
+      },
       {
         label: '占比',
         value: getValue('上日剩余供电占比', false) || 70,
@@ -102,7 +106,7 @@ const getterTotalRef = computed(() => {
       {
         label: '微网提供的总电量',
         value: getValue('微网提供的总电量', false) || 7.1,
-      }, 
+      },
       {
         label: '占比',
         value: getValue('微网总电量占比', false) || 70,
@@ -111,9 +115,189 @@ const getterTotalRef = computed(() => {
   }
 })
 
+// 解决无法访问初始化函数的问题，先定义函数
+
+// 初始化供电电量圆环图的方法
+function initSupplyChart() {
+  if (!supplyChartRef.value) return;
+
+  const chart = echarts.init(supplyChartRef.value, screenConfig);
+  const microGridValue = getValue('上日微电网供电电量', false) || 35;
+  const totalValue = (getValue('上日计划用电量', false) || 50);
+  const percentage = Math.round((microGridValue / totalValue) * 100);
+
+  chart.setOption({
+    backgroundColor: 'transparent',
+    title: {
+      text: '上日微电网供电电量',
+      subtext: `${microGridValue}kWh`,
+      left: 'center',
+      top: '25%',
+      textStyle: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold'
+      },
+      subtextStyle: {
+        color: '#FCFF00',
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    },
+    graphic: {
+      type: 'text',
+      left: 'center',
+      top: '65%',
+      style: {
+        text: `占比 ${percentage}%`,
+        textAlign: 'center',
+        fill: '#FCFF00',
+        fontSize: 14,
+        fontWeight: 'bold'
+      }
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['70%', '90%'],
+        center: ['50%', '50%'],
+        startAngle: 90,
+        data: [
+          {
+            value: percentage,
+            name: '已使用',
+            itemStyle: {
+              color: '#FCFF00'
+            }
+          },
+          {
+            value: 100 - percentage,
+            name: '未使用',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: '#0066FF' },
+                { offset: 1, color: '#4e71c6' }
+              ])
+            }
+          }
+        ],
+        label: {
+          show: false
+        },
+        labelLine: {
+          show: false
+        },
+        silent: true,
+        clockwise: true,
+        animation: true,
+        animationDuration: 1000,
+        animationEasing: 'cubicInOut'
+      }
+    ]
+  });
+
+  // 监听容器大小变化，自动调整图表大小
+  useResizeObserver(supplyChartRef, () => {
+    chart && chart.resize();
+  });
+}
+
+// 初始化微网供电量圆环图的方法
+function initMicroGridChart() {
+  if (!microGridChartRef.value) return;
+
+  const chart = echarts.init(microGridChartRef.value, screenConfig);
+  const microGridValue = getValue('微网提供的总电量', false) || 7.1;
+  const totalValue = getValue('累计用电量', false) || 10.1;
+  const percentage = Math.round((microGridValue / totalValue) * 100);
+
+  chart.setOption({
+    backgroundColor: 'transparent',
+    title: {
+      text: '微网提供的总电量',
+      subtext: `${microGridValue}kWh`,
+      left: 'center',
+      top: '25%',
+      textStyle: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold'
+      },
+      subtextStyle: {
+        color: '#FCFF00',
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    },
+    graphic: {
+      type: 'text',
+      left: 'center',
+      top: '65%',
+      style: {
+        text: `占比 ${percentage}%`,
+        textAlign: 'center',
+        fill: '#FCFF00',
+        fontSize: 14,
+        fontWeight: 'bold'
+      }
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['70%', '90%'],
+        center: ['50%', '50%'],
+        startAngle: 90,
+        data: [
+          {
+            value: percentage,
+            name: '微网供电',
+            itemStyle: {
+              color: '#FF3030'
+            }
+          },
+          {
+            value: 100 - percentage,
+            name: '其他供电',
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: '#0066FF' },
+                { offset: 1, color: '#4e71c6' }
+              ])
+            }
+          }
+        ],
+        label: {
+          show: false
+        },
+        labelLine: {
+          show: false
+        },
+        silent: true,
+        clockwise: true,
+        animation: true,
+        animationDuration: 1000,
+        animationEasing: 'cubicInOut'
+      }
+    ]
+  });
+
+  // 监听容器大小变化，自动调整图表大小
+  useResizeObserver(microGridChartRef, () => {
+    chart && chart.resize();
+  });
+}
+
 watchEffect(() => {
   if (projectStore.projectInfo) {
     getLastData();
+  }
+})
+
+// 添加数据变化时重新渲染图表的监听
+watchEffect(() => {
+  if (keyValue.value) {
+    initSupplyChart();
+    initMicroGridChart();
   }
 })
 
@@ -137,17 +321,8 @@ onMounted(() => {
   if (projectStore.projectInfo) {
     getLastData();
   }
-})
 
-const getValue = (key: string, hasEmpty: boolean) => {
-  const v = unref(keyValue)[key];
-  if (!v && v !== 0 && hasEmpty) {
-    return '-'
-  }
-  return v;
-}
-
-onMounted(() => {
+  // 初始化实时电价图表
   const chart = echarts.init(realRef.value, screenConfig);
   const axisProps = {
     nameTextStyle: {
@@ -171,13 +346,13 @@ onMounted(() => {
       show: true,
     },
   }
-  
+
   const valueTypes = [{
     value: 'price',
     label: '今天',
     color: '#FFAE3A',
   }]
-  
+
   getLatestPrice({
     key: '实时电价'
   }).then(res => {
@@ -296,8 +471,12 @@ onMounted(() => {
       }))
     })
   })
-  
+
   realChartRef.value = chart;
+
+  // 初始化供电电量和微网供电量图表
+  initSupplyChart();
+  initMicroGridChart();
 })
 
 const solarList = [
@@ -417,6 +596,14 @@ const batteryInfo = [
     iconWidth: 26,
   },
 ]
+
+const getValue = (key: string, hasEmpty: boolean) => {
+  const v = unref(keyValue)[key];
+  if (!v && v !== 0 && hasEmpty) {
+    return '-'
+  }
+  return v;
+}
 </script>
 
 <template>
@@ -479,7 +666,7 @@ const batteryInfo = [
                 <img
                   :src="type.icon"
                   :class="type.iconCls"
-                  alt="" 
+                  alt=""
                 />
               </div>
               <div class="ml-10px">
@@ -523,31 +710,21 @@ const batteryInfo = [
 
     <div class="w-23.5% pr-20px">
       <div class="pie-statistics shadow-bg">
-        <div class="flex-1">
-          <PieBattery
-            class="h-13vw"
-            title="上日剩余供电电量"
-            unit="kWh"
-            :options="useCurrentOptions"
-            :data="useTotalRef"
-          />
-          <div class="text-center mb-8px">
-            <span class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日计划用电量', true) || '50'}}kWh</span>
+        <div class="flex items-center h-7vw">
+          <div ref="supplyChartRef" class="w-50% h-full"></div>
+          <div class="w-50% pl-25px">
+            <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">上日计划用电量</div>
+            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日计划用电量', true) || '50'}}kWh</div>
           </div>
         </div>
       </div>
 
       <div class="pie-statistics shadow-bg mt-12px">
-        <div class="flex-1">
-          <PieBattery
-            class="h-13vw"
-            title="微网供电量"
-            unit="kWh"
-            :options="useCurrentOptions"
-            :data="getterTotalRef"
-          />
-          <div class="text-center mb-8px">
-            <span class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('累计用电量', true) || '10.1'}}kWh</span>
+        <div class="flex items-center h-7vw">
+          <div ref="microGridChartRef" class="w-50% h-full"></div>
+          <div class="w-50% pl-25px">
+            <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">累计用电量</div>
+            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('累计用电量', true) || '10.1'}}kWh</div>
           </div>
         </div>
       </div>
@@ -653,7 +830,7 @@ const batteryInfo = [
   justify-content: space-between;
   margin-bottom: 4px;
   font-size: 14px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -673,11 +850,11 @@ const batteryInfo = [
   background-color: rgba(30, 188, 161, 0.1);
   border-left: 3px solid rgba(30, 188, 161, 1);
   padding-left: 5px;
-  
+
   .bg-icon {
     background-color: rgba(1, 206, 220, 0.2);
   }
-  
+
   .ele-title {
     color: rgba(30, 188, 161, 1);
   }
@@ -687,7 +864,7 @@ const batteryInfo = [
   background-color: rgba(25, 164, 255, 0.1);
   border-left: 3px solid rgba(25, 164, 255, 1);
   padding-left: 5px;
-  
+
   .ele-title {
     color: rgba(25, 164, 255);
   }
