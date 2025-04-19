@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core'
+import {useResizeObserver} from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
-import PieBattery from "@/views/screen/components/PieBattery.vue";
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
-import {
-  getLatestPrice, getPanelData
-} from "@/services/services/IotReportController";
+import {getLatestPrice, getPanelData} from "@/services/services/IotReportController";
 import dayjs from "dayjs";
-import { useProjectStore } from "@/store/modules/project";
+import {useProjectStore} from "@/store/modules/project";
 import cdlIcon from "@/views/screen/assets/real/icon-cdl.png";
 import gfIcon from "@/views/screen/assets/real/icon-gf.png";
 import tdIcon3 from "@/views/screen/assets/real/today-icon-3.png";
@@ -18,14 +15,13 @@ import icon1 from "@/views/screen/assets/data/icon-1.png";
 import icon2 from "@/views/screen/assets/data/icon-2.png";
 import icon3 from "@/views/screen/assets/data/icon-3.png";
 import icon4 from "@/views/screen/assets/data/icon-4.png";
-import icon5 from "@/views/screen/assets/data/icon-5.png";
-import icon6 from "@/views/screen/assets/data/xiaoyi-icon-1.png";
-import icon7 from "@/views/screen/assets/data/xiaoyi-icon-2.png";
-import icon8 from "@/views/screen/assets/real/center-elc-icon.png";
-import eleIcon from "@/views/screen/assets/real/center-elc-icon.png";
 import dot from '@/views/screen/assets/data/dot.png'
+import batteryBlue from '@/views/screen/assets/real/battery-blue.png'
+import batteryGreen from '@/views/screen/assets/real/battery-green.png'
+import money from '@/views/screen/assets/real/money.png'
 
-defineOptions({ name: '云监控系统' })
+
+defineOptions({name: '云监控系统'})
 
 const keyValue = ref<Record<string, any>>({});
 const projectStore = useProjectStore();
@@ -45,75 +41,6 @@ const realChartRef = ref();
 // 添加两个新的ref用于Echarts圆环图
 const supplyChartRef = ref();
 const microGridChartRef = ref();
-
-const useTotalOptions = {
-  legend: {
-    bottom: 0,
-    right: 0,
-    left: undefined,
-    top: undefined,
-    width: '100%',
-    orient: 'horizontal',
-  },
-  title: {
-    left: '54%',
-  },
-  series: {
-    top: 0,
-    bottom: 10,
-    left: '30%',
-  },
-}
-
-const useCurrentOptions = {
-  legend: {
-    bottom: 0,
-    right: 0,
-    left: undefined,
-    top: undefined,
-    width: '100%',
-    orient: 'horizontal',
-  },
-  series: {
-    left: '30%',
-    bottom: 10,
-  },
-  title: {
-    left: '54%',
-  },
-}
-
-const useTotalRef = computed(() => {
-  return {
-    dimensions: ['label', 'value'],
-    source: [
-      {
-        label: '上日剩余供电电量',
-        value: getValue('上日剩余供电电量', false) || 35,
-      },
-      {
-        label: '占比',
-        value: getValue('上日剩余供电占比', false) || 70,
-      }
-    ],
-  }
-})
-
-const getterTotalRef = computed(() => {
-  return {
-    dimensions: ['label', 'value'],
-    source: [
-      {
-        label: '微网提供的总电量',
-        value: getValue('微网提供的总电量', false) || 7.1,
-      },
-      {
-        label: '占比',
-        value: getValue('微网总电量占比', false) || 70,
-      }
-    ],
-  }
-})
 
 // 解决无法访问初始化函数的问题，先定义函数
 
@@ -175,8 +102,8 @@ function initSupplyChart() {
             name: '未使用',
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#0066FF' },
-                { offset: 1, color: '#4e71c6' }
+                {offset: 0, color: '#0066FF'},
+                {offset: 1, color: '#4e71c6'}
               ])
             }
           }
@@ -260,8 +187,8 @@ function initMicroGridChart() {
             name: '其他供电',
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#0066FF' },
-                { offset: 1, color: '#4e71c6' }
+                {offset: 0, color: '#0066FF'},
+                {offset: 1, color: '#4e71c6'}
               ])
             }
           }
@@ -610,22 +537,25 @@ const getValue = (key: string, hasEmpty: boolean) => {
   <div class="flex gap-24px">
     <div class="w-24%">
       <article>
-        <CardHeader title='实时电价' />
+        <CardHeader title='实时电价'/>
         <div class="real-price shadow-bg !p-0" ref="realRef"></div>
       </article>
 
       <article class="mt-12px">
-        <CardHeader title='电池' />
+        <CardHeader title='电池'/>
         <div class="flex flex-wrap shadow-bg !pt-30px">
           <div v-for="item in batteryInfo" :key="item.key" class="w-50%">
             <div class="flex items-center mb-16px pl-10px">
               <div class="today-bg">
-                <img :src="item.icon" :style="{width: item.iconWidth + 'px'}" alt="" />
+                <img :src="item.icon" :style="{width: item.iconWidth + 'px'}" alt=""/>
               </div>
               <div class="ml-8px w-0 flex-1">
-                <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-                <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">
-                  {{item.render ? item.render() : getValue(item.valKey, true) || '-'}}{{item.unit}}
+                <div class="fw-bold text-14px line-height-20px">{{ item.label }}</div>
+                <div
+                  class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">
+                  {{ item.render ? item.render() : getValue(item.valKey, true) || '-' }}{{
+                    item.unit
+                  }}
                 </div>
               </div>
             </div>
@@ -634,16 +564,17 @@ const getValue = (key: string, hasEmpty: boolean) => {
       </article>
 
       <article class="mt-12px">
-        <CardHeader title='负载' />
+        <CardHeader title='负载'/>
         <div class="shadow-bg">
           <div class="flex items-center mb-16px pl-10px">
             <div class="today-bg">
-              <img :src="tdIcon3" style="width: 27px;" alt="" />
+              <img :src="tdIcon3" style="width: 27px;" alt=""/>
             </div>
             <div class="ml-8px w-0 flex-1">
               <div class="fw-bold text-14px line-height-20px">用电功率</div>
-              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">
-                {{getValue('用电功率', true) || '-5.59'}}KW
+              <div
+                class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">
+                {{ getValue('用电功率', true) || '-5.59' }}KW
               </div>
             </div>
           </div>
@@ -652,7 +583,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
     </div>
 
     <div class="flex-1">
-      <card-header title="光伏" />
+      <card-header title="光伏"/>
       <div class="flex gap-8px pt-4px">
         <div class="flex-1">
           <div class="flex gap-8px mb-8px" v-for="item in solarList" :key="item.id">
@@ -670,8 +601,9 @@ const getValue = (key: string, hasEmpty: boolean) => {
                 />
               </div>
               <div class="ml-10px">
-                <div class="ele-title">{{item.name}}{{type.label}}</div>
-                <div class="ele-value">{{keyValue[`${type[item.key]}`] || '-'}}{{type.unit}}</div>
+                <div class="ele-title">{{ item.name }}{{ type.label }}</div>
+                <div class="ele-value">{{ keyValue[`${type[item.key]}`] || '-' }}{{ type.unit }}
+                </div>
               </div>
             </div>
           </div>
@@ -687,34 +619,37 @@ const getValue = (key: string, hasEmpty: boolean) => {
       <div class="mt-12px">
         <div class="grid grid-cols-6 gap-2px">
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
-            <div class="grid-title">负载点电压V{{item}}:</div>
-            <div class="grid-value">{{getValue(`负载点电压V${item}`, true) || '220V'}}</div>
+            <div class="grid-title">负载点电压V{{ item }}:</div>
+            <div class="grid-value">{{ getValue(`负载点电压V${item}`, true) || '220V' }}</div>
           </div>
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
-            <div class="grid-title">负载点电流I{{item}}:</div>
-            <div class="grid-value">{{getValue(`负载点电流I${item}`, true) || '3A'}}</div>
+            <div class="grid-title">负载点电流I{{ item }}:</div>
+            <div class="grid-value">{{ getValue(`负载点电流I${item}`, true) || '3A' }}</div>
           </div>
         </div>
         <div class="grid grid-cols-6 gap-2px mt-12px">
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
-            <div class="grid-title">并网点电压V{{item}}:</div>
-            <div class="grid-value">{{getValue(`并网点电压V${item}`, true) || '220V'}}</div>
+            <div class="grid-title">并网点电压V{{ item }}:</div>
+            <div class="grid-value">{{ getValue(`并网点电压V${item}`, true) || '220V' }}</div>
           </div>
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
-            <div class="grid-title">并网点电流I{{item}}:</div>
-            <div class="grid-value">{{getValue(`并网点电流I${item}`, true) || '3A'}}</div>
+            <div class="grid-title">并网点电流I{{ item }}:</div>
+            <div class="grid-value">{{ getValue(`并网点电流I${item}`, true) || '3A' }}</div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="w-23.5% pr-20px">
+      <card-header title="光伏"/>
       <div class="pie-statistics shadow-bg">
         <div class="flex items-center h-7vw">
           <div ref="supplyChartRef" class="w-50% h-full"></div>
           <div class="w-50% pl-25px">
             <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">上日计划用电量</div>
-            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日计划用电量', true) || '50'}}kWh</div>
+            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">
+              {{ getValue('上日计划用电量', true) || '50' }}kWh
+            </div>
           </div>
         </div>
       </div>
@@ -724,68 +659,73 @@ const getValue = (key: string, hasEmpty: boolean) => {
           <div ref="microGridChartRef" class="w-50% h-full"></div>
           <div class="w-50% pl-25px">
             <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">累计用电量</div>
-            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('累计用电量', true) || '10.1'}}kWh</div>
+            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">
+              {{ getValue('累计用电量', true) || '10.1' }}kWh
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="energy-info-box mt-12px">
+        <div class="info-icon">
+          <img :src="batteryGreen" class="w-58px" alt=""/>
+        </div>
+        <div class="info-content">
+          <div class="info-row">
+            <div class="info-label">上日节约电费：</div>
+            <div class="info-value">{{ getValue('上日节约电费', true) || '7000' }}元</div>
+            <div class="info-label ml-32px">上日节约电量：</div>
+            <div class="info-value">{{ getValue('上日节约电量', true) || '6000' }}元</div>
+            <div class="info-label-primary ml-32px">上日减少排放：</div>
+            <div class="info-value-primary">{{ getValue('上日减少排放', true) || '12' }}kg</div>
           </div>
         </div>
       </div>
 
-      <div class="mt-12px shadow-bg p-12px">
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">上日光伏发电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日光伏发电', true) || '8.1'}}KWH</div>
+      <div class="energy-info-box mt-12px">
+        <div class="info-icon">
+          <img :src="money" class="w-58px" alt=""/>
         </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">上日用电用量：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日用电用量', true) || '8.1'}}KWH</div>
-        </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">占比：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('占比', true) || '100'}}%</div>
-        </div>
-      </div>
-
-      <div class="mt-12px shadow-bg p-12px">
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">上日节约电费：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日节约电费', true) || '7000'}}元</div>
-        </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">上日节约电量：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日节约电量', true) || '6000'}}元</div>
-        </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">上日减少排放：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('上日减少排放', true) || '12'}}kg</div>
+        <div class="info-content">
+          <div class="info-row">
+            <div class="info-label">上日光伏发电：</div>
+            <div class="info-value">{{ getValue('上日光伏发电', true) || '8.1' }}KWH</div>
+            <div class="info-label ml-32px">上日电池充电：</div>
+            <div class="info-value">{{ getValue('上日电池充电', true) || '8.1' }}KWH</div>
+            <div class="info-label-primary ml-32px">占比</div>
+            <div class="info-value-primary">{{ getValue('占比', true) || '100' }}%</div>
+          </div>
         </div>
       </div>
 
-      <div class="mt-12px shadow-bg p-12px">
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日累计用电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日累计用电', true) || '5001'}}KWH</div>
+      <div class="energy-info-box mt-12px">
+        <div class="info-icon">
+          <img :src="icon3" class="w-58px" alt=""/>
         </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日峰谷用电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日峰谷用电', true) || '1.3'}}KWH</div>
-        </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日峰值电荷：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日峰值电荷', true) || '9.32'}}KWH</div>
+        <div class="info-content">
+          <div class="info-row">
+            <div class="info-label">当日累计用电：</div>
+            <div class="info-value">{{ getValue('当日累计用电', true) || '5001' }}KWH</div>
+            <div class="info-label ml-32px">当日峰谷用电：</div>
+            <div class="info-value">{{ getValue('当日峰谷用电', true) || '1.3' }}KWH</div>
+            <div class="info-label ml-32px">当日峰值电荷：</div>
+            <div class="info-value">{{ getValue('当日峰值电荷', true) || '9.32' }}KWH</div>
+          </div>
         </div>
       </div>
 
-      <div class="mt-12px shadow-bg p-12px">
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日光伏发电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日光伏发电', true) || '8.2'}}KWH</div>
+      <div class="energy-info-box mt-12px">
+        <div class="info-icon">
+          <img :src="batteryBlue" class="w-58px battery-blue" alt=""/>
         </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日电池放电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日电池放电', true) || '7.1'}}KWH</div>
-        </div>
-        <div class="battery-info-item">
-          <div class="font-you-she-biao-ti-hei fw-bold text-16px">当日电池充电：</div>
-          <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">{{getValue('当日电池充电', true) || '2.1'}}KWH</div>
+        <div class="info-content">
+          <div class="info-row">
+            <div class="info-label">当日光伏发电：</div>
+            <div class="info-value">{{ getValue('当日光伏发电', true) || '8.2' }}KWH</div>
+            <div class="info-label ml-32px">当日电池充电：</div>
+            <div class="info-value">{{ getValue('当日电池充电', true) || '7.1' }}KWH</div>
+            <div class="info-label ml-32px">当日电池放电：</div>
+            <div class="info-value">{{ getValue('当日电池放电', true) || '2.1' }}KWH</div>
+          </div>
         </div>
       </div>
     </div>
@@ -922,5 +862,64 @@ const getValue = (key: string, hasEmpty: boolean) => {
   font-size: 22px;
   font-weight: bold;
   color: #fff;
+}
+
+// 添加新的样式
+.energy-info-box {
+  display: flex;
+  background-color: rgba(0, 32, 56, 0.6);
+  box-shadow: inset 0 0 20px 0px #024A8A;
+  border-radius: 4px;
+  padding: 16px;
+  overflow: hidden;
+  height: 88px;
+}
+
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85px;
+  padding-right: 10px;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.info-label {
+  font-size: 16px;
+  color: #3DBDFF;
+  font-weight: bold;
+}
+
+.info-value {
+  font-size: 26px;
+  color: #3DBDFF;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.info-label-primary {
+  font-size: 16px;
+  color: #FFFF00;
+  font-weight: bold;
+}
+
+.info-value-primary {
+  font-size: 26px;
+  color: #FFFF00;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.battery-blue {
+  filter: hue-rotate(140deg) brightness(1.2);
 }
 </style>
