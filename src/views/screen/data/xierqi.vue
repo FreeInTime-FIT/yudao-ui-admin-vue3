@@ -534,8 +534,8 @@ const getValue = (key: string, hasEmpty: boolean) => {
 </script>
 
 <template>
-  <div class="flex gap-24px">
-    <div class="w-24%">
+  <div class="flex gap-24px h-screen p-12px">
+    <div class="w-460px">
       <article>
         <CardHeader title='实时电价' />
         <div class="real-price shadow-bg !p-0" ref="realRef"></div>
@@ -580,12 +580,12 @@ const getValue = (key: string, hasEmpty: boolean) => {
       </article>
     </div>
 
-    <div class="flex-1">
+    <div class="w-960px">
       <card-header title="光伏" />
       <div class="flex gap-8px pt-4px">
         <div class="flex-1">
           <div class="flex gap-8px mb-8px" v-for="item in solarList" :key="item.id">
-            <div v-for="type in solarTypes" :key="type.value" class="flex-1 flex items-center" :class="type.cls">
+            <div v-for="type in solarTypes" :key="type.value" class="flex-1 flex items-center h-80px" :class="type.cls">
               <div class="bg-icon">
                 <img :src="type.icon" :class="type.iconCls" alt="" />
               </div>
@@ -599,9 +599,9 @@ const getValue = (key: string, hasEmpty: boolean) => {
         </div>
       </div>
 
-      <div class="flex justify-center items-center">
+      <div class="flex justify-center items-center my-12px">
         <!-- 建筑模型 -->
-        <img :src="building" alt="" class="h-522px w-630px" />
+        <img :src="building" alt="" class="h-500px w-600px" />
       </div>
 
       <div class="mt-12px">
@@ -628,14 +628,14 @@ const getValue = (key: string, hasEmpty: boolean) => {
       </div>
     </div>
 
-    <div class="w-23.5% pr-20px">
+    <div class="w-450px">
       <card-header title="光伏" />
       <div class="pie-statistics shadow-bg">
-        <div class="flex items-center h-7vw">
+        <div class="flex items-center h-180px pt-10px">
           <div ref="supplyChartRef" class="w-50% h-full"></div>
           <div class="w-50% pl-25px">
             <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">上日计划用电量</div>
-            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">
+            <div class="fw-bold text-26px">
               {{ getValue('上日计划用电量', true) || '50' }}kWh
             </div>
           </div>
@@ -643,11 +643,11 @@ const getValue = (key: string, hasEmpty: boolean) => {
       </div>
 
       <div class="pie-statistics shadow-bg mt-12px">
-        <div class="flex items-center h-7vw">
+        <div class="flex items-center h-180px pt-10px">
           <div ref="microGridChartRef" class="w-50% h-full"></div>
           <div class="w-50% pl-25px">
             <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-6px">累计用电量</div>
-            <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px">
+            <div class="fw-bold text-26px">
               {{ getValue('累计用电量', true) || '10.1' }}kWh
             </div>
           </div>
@@ -678,7 +678,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
         </div>
       </div>
       <!-- 开销电费 -->
-      <div class="mt-30px">
+      <div class="mt-15px">
         <div class="bg-icon-primary flex items-center h-88px">
           <div class="bg-icon h-full w-88px">
             <img :src="money" style="width: 35px;" alt="开销电费" />
@@ -702,7 +702,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
         </div>
       </div>
       <!-- 累计用电 -->
-      <div class="mt-30px">
+      <div class="mt-15px">
         <div class="bg-icon-success flex items-center h-88px">
           <div class="bg-icon h-full w-88px">
             <img :src="icon3" style="width: 50px;" alt="累计用电" />
@@ -726,7 +726,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
         </div>
       </div>
       <!-- 累计发电 -->
-      <div class="mt-30px">
+      <div class="mt-15px">
         <div class="bg-icon-success flex items-center h-88px">
           <div class="bg-icon h-full w-88px">
             <img :src="batteryBlue" style="width: 30px;" alt="累计发电" />
@@ -757,7 +757,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
 <style scoped lang="scss">
 .real-price {
   box-sizing: border-box;
-  height: 12vw;
+  height: 240px;
 }
 
 .pie-statistics {
@@ -846,6 +846,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
 
 .ele-title {
   font-weight: bold;
+  font-size: 14px;
 }
 
 .ele-value {
@@ -855,15 +856,16 @@ const getValue = (key: string, hasEmpty: boolean) => {
 
 .shadow-bg {
   padding: 12px;
+  height: 195px;
   box-shadow: inset 0 0 20px 0px #024A8A;
 }
 
 .grid-box {
   background-color: rgba(2, 74, 138, 0.3);
   border-left: 3px solid rgba(30, 188, 161, 1);
-  padding: 12px 16px;
   text-align: center;
   color: #fff;
+  height: 80px;
 }
 
 .grid-box-blue {
@@ -872,6 +874,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
 
 .grid-title {
   color: rgba(30, 188, 161, 1);
+  padding-top: 10px;
   font-size: 14px;
   font-weight: bold;
 }
@@ -884,57 +887,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
   font-size: 22px;
   font-weight: bold;
   color: #fff;
-}
-
-// 添加新的样式
-.energy-info-box {
-  display: flex;
-  background-color: rgba(0, 32, 56, 0.6);
-  box-shadow: inset 0 0 20px 0px #024A8A;
-  border-radius: 4px;
-  padding: 16px;
-  overflow: hidden;
-  height: 88px;
-  position: relative;
-  border-left: 2px solid #01CEDC;
-}
-
-.energy-info-list {
-  display: flex;
-  overflow: hidden;
-  height: 88px;
-  position: relative;
-  border-left: 2px solid #01CEDC;
-}
-
-
-.info-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 90px;
-  position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 10px;
-    top: -16px;
-    bottom: -16px;
-    width: 60px;
-    background-color: rgba(58, 235, 240, 0.6);
-    z-index: 0;
-  }
-
-  img {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-.info-content {
-  flex: 1;
-  padding-left: 30px;
+  margin-top: 6px;
 }
 
 .info-row {
@@ -952,23 +905,8 @@ const getValue = (key: string, hasEmpty: boolean) => {
   }
 }
 
-.info-label {
-  font-size: 16px;
-  color: #3DBDFF;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.info-value {
-  font-size: 26px;
-  color: #3DBDFF;
-  font-weight: bold;
-}
-
-.info-value-yellow {
-  font-size: 26px;
-  color: #FFFF00;
-  font-weight: bold;
+.color-\#FCFF00 {
+  color: #FCFF00;
 }
 
 .battery-blue {
