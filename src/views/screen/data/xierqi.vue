@@ -834,9 +834,9 @@ const getValue = (key: string, hasEmpty: boolean) => {
         <div class="flex items-center h-45 pt-3">
           <div ref="supplyChartRef" class="w-50% h-full"></div>
           <div class="w-50% pl-6">
-            <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-2">上日计划用电量</div>
+            <div class="font-you-she-biao-ti-hei fw-bold text-16px mb-2">上日累计量用电量</div>
             <div class="fw-bold text-26px">
-              {{ getValue('上日计划用电量', true) || '50' }}kWh
+              {{ getValue('上日累计量', true) || '50' }}kWh
             </div>
           </div>
         </div>
