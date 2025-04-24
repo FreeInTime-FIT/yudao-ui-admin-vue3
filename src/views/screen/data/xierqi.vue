@@ -226,23 +226,23 @@ function initMicroGridChart() {
 // 初始化负载功率曲线图
 function initLoadChart(): echarts.ECharts | null {
   if (!loadChartRef.value) return null;
-  
+
   const chart = echarts.init(loadChartRef.value, screenConfig);
-  
+
   // 封装获取数据的方法，方便重复调用
   const fetchPowerData = () => {
     // 如果正在加载数据或没有项目信息，则不发起请求
     if (isLoadingPowerData.value || !projectStore.projectInfo) return;
-    
+
     // 设置加载状态为true
     isLoadingPowerData.value = true;
-    
+
     getLatestPrice({
       key: "today_功率曲线",
       projectId: projectStore.projectInfo?.id,
     }).then(res => {
       if (!res.data) return;
-      
+
       // 定义各曲线的颜色
       const colors = {
         '光伏发电功率': '#FFAE3A',
@@ -251,16 +251,16 @@ function initLoadChart(): echarts.ECharts | null {
         '微网并网功率': '#19A4FF',
         '微网负荷功率': '#FCFF00'
       };
-      
+
       // 将时间字符串转换为日期对象
       const formattedData = (res.data.source || []).map(item => ({
         ...item,
         time: dayjs(item.time).toDate()
       }));
-      
+
       // 获取所有的数据系列（除了time）
       const seriesKeys = res.data.dimensions.filter(dim => dim !== 'time');
-      
+
       // 创建数据系列
       const series = seriesKeys.map(key => {
         return {
@@ -285,28 +285,28 @@ function initLoadChart(): echarts.ECharts | null {
           })
         };
       });
-      
+
       chart.setOption({
         backgroundColor: 'transparent',
         tooltip: {
           trigger: 'axis',
           formatter: function(params) {
             if (!params.length) return '';
-            
+
             const time = dayjs(params[0].data[0]).format('MM-DD HH:mm');
             let res = `<div>${time}</div>`;
-            
+
             params.forEach(param => {
               const color = param.color;
               const name = param.seriesName;
               const value = param.data[1];
-              
+
               res += `<div style="display:flex;align-items:center;">
                       <div style="width:10px;height:10px;border-radius:50%;background:${color};margin-right:5px;"></div>
                       <div>${name}: ${value} kW</div>
                     </div>`;
             });
-            
+
             return res;
           }
         },
@@ -372,23 +372,23 @@ function initLoadChart(): echarts.ECharts | null {
       isLoadingPowerData.value = false;
     });
   };
-  
+
   // 首次加载数据
   fetchPowerData();
-  
+
   // 设置定时器，每10秒刷新一次数据
   let powerChartTimer = setInterval(() => {
     fetchPowerData();
   }, 10000);
-  
+
   // 添加定时器到全局定时器数组
   timers.push(powerChartTimer);
-  
+
   // 监听容器大小变化，自动调整图表大小
   useResizeObserver(loadChartRef, () => {
     chart && chart.resize();
   });
-  
+
   return chart;
 }
 
@@ -982,7 +982,6 @@ const getValue = (key: string, hasEmpty: boolean) => {
 }
 
 .board-building {
-  background: url(@/views/screen/assets/data/building.png) no-repeat center;
   background-size: contain;
 }
 
