@@ -28,7 +28,7 @@ const projectStore = useProjectStore();
 
 const getLastData = async () => {
   const res = await getPanelData({
-    key: 'xierqi',
+    key: 'Xierqi',
     projectId: projectStore.projectInfo?.id,
   })
   keyValue.value = res.data || {};
@@ -474,9 +474,9 @@ const batteryInfo = [
     iconWidth: 26,
   },
   {
-    label: '充放电次数(14日)',
+    label: '充放电次数(当日)',
     key: '2',
-    valKey: '充放电次数',
+    valKey: '电池充放电次数',
     unit: '',
     icon: gfIcon,
     iconWidth: 44,
@@ -509,7 +509,7 @@ const batteryInfo = [
   {
     label: '温度-单体温度最大值',
     key: '5',
-    valKey: '单体温度最大值',
+    valKey: '电池单体温度最大值',
     icon: tdIcon2,
     unit: '°',
     iconWidth: 25,
@@ -517,7 +517,7 @@ const batteryInfo = [
   {
     label: '温度-单体温度最小值',
     key: '6',
-    valKey: '单体温度最小值',
+    valKey: '电池单体温度最小值',
     unit: '°',
     icon: tdIcon1,
     iconWidth: 26,
@@ -552,7 +552,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
               <div class="ml-8px w-0 flex-1">
                 <div class="fw-bold text-14px line-height-20px">{{ item.label }}</div>
                 <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">
-                  {{ item.render ? item.render() : getValue(item.valKey, true) || '-' }}{{
+                  {{ item.render ? item.render() : getValue(item.valKey, true) }}{{
                     item.unit
                   }}
                 </div>
@@ -591,7 +591,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
               </div>
               <div class="ml-10px">
                 <div class="ele-title">{{ item.name }}{{ type.label }}</div>
-                <div class="ele-value">{{ keyValue[`${type[item.key]}`] || '-' }}{{ type.unit }}
+                <div class="ele-value">{{ keyValue[`${type[item.key]}`]}}{{ type.unit }}
                 </div>
               </div>
             </div>
@@ -608,21 +608,21 @@ const getValue = (key: string, hasEmpty: boolean) => {
         <div class="grid grid-cols-6 gap-2px">
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
             <div class="grid-title">负载点电压V{{ item }}:</div>
-            <div class="grid-value">{{ getValue(`负载点电压V${item}`, true) || '220V' }}</div>
+            <div class="grid-value">{{ getValue(`负载点电压V${item}`, true)}}V</div>
           </div>
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
             <div class="grid-title">负载点电流I{{ item }}:</div>
-            <div class="grid-value">{{ getValue(`负载点电流I${item}`, true) || '3A' }}</div>
+            <div class="grid-value">{{ getValue(`负载点电流I${item}`, true) }}A</div>
           </div>
         </div>
         <div class="grid grid-cols-6 gap-2px mt-12px">
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box">
             <div class="grid-title">并网点电压V{{ item }}:</div>
-            <div class="grid-value">{{ getValue(`并网点电压V${item}`, true) || '220V' }}</div>
+            <div class="grid-value">{{ getValue(`并网点电压V${item}`, true) }}V</div>
           </div>
           <div v-for="item in ['a', 'b', 'c']" :key="item" class="grid-box grid-box-blue">
             <div class="grid-title">并网点电流I{{ item }}:</div>
-            <div class="grid-value">{{ getValue(`并网点电流I${item}`, true) || '3A' }}</div>
+            <div class="grid-value">{{ getValue(`并网点电流I${item}`, true) }}A</div>
           </div>
         </div>
       </div>
