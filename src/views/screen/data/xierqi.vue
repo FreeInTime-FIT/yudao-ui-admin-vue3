@@ -662,12 +662,12 @@ const getValue = (key: string, hasEmpty: boolean) => {
           <div class="ml-10px w-0 flex-1">
             <div class="info-row">
               <div class="info-block">
-                <div class="ele-title">当日光伏发电：</div>
-                <div class="ele-value">{{ getValue('当日光伏发电', true) || '8.2' }}KWH</div>
+                <div class="ele-title">上日光伏发电：</div>
+                <div class="ele-value">{{ getValue('上日光伏发电量',false) }}KWH</div>
               </div>
               <div class="info-block">
-                <div class="ele-title">当日电池发电：</div>
-                <div class="ele-value">{{ getValue('当日电池发电', true) || '7.1' }}KWH</div>
+                <div class="ele-title">上日电池充电：</div>
+                <div class="ele-value">{{ getValue('上日电池充电量', false) }}KWH</div>
               </div>
               <div class="info-block">
                 <div class="ele-title">占比</div>
@@ -695,7 +695,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
               </div>
               <div class="info-block">
                 <div class="ele-title">上日减少碳排：</div>
-                <div class="ele-value color-#FCFF00">{{ getValue('上日减少碳排', true) || '12' }}kg</div>
+                <div class="ele-value color-#FCFF00">{{ getValue('上日减少碳排', false) }}kg</div>
               </div>
             </div>
           </div>
@@ -714,12 +714,12 @@ const getValue = (key: string, hasEmpty: boolean) => {
                 <div class="ele-value">{{ getValue('当日累计用电', true) || '5001' }}KWH</div>
               </div>
               <div class="info-block">
-                <div class="ele-title">当日峰值用电：</div>
-                <div class="ele-value">{{ getValue('当日峰值用电', true) || '1.3' }}KWH</div>
+                <div class="ele-title">当日微网供电：</div>
+                <div class="ele-value">{{ getValue('当日微网供电', true) || '1.3' }}KWH</div>
               </div>
               <div class="info-block">
-                <div class="ele-title">当日峰值功率：</div>
-                <div class="ele-value">{{ getValue('当日峰值功率', true) || '9.32' }}KWH</div>
+                <div class="ele-title">当日微网取电：</div>
+                <div class="ele-value">{{ getValue('当日微网取电', true) || '9.32' }}KWH</div>
               </div>
             </div>
           </div>
@@ -735,15 +735,15 @@ const getValue = (key: string, hasEmpty: boolean) => {
             <div class="info-row">
               <div class="info-block">
                 <div class="ele-title">当日光伏发电：</div>
-                <div class="ele-value">{{ getValue('当日光伏发电量', true) || '8.2' }}KWH</div>
+                <div class="ele-value">{{ getValue('当日光伏发电', true) }}KWH</div>
               </div>
               <div class="info-block">
-                <div class="ele-title">当日电池发电：</div>
-                <div class="ele-value">{{ getValue('当日电池发电量', true) || '7.1' }}KWH</div>
+                <div class="ele-title">当日电池充电：</div>
+                <div class="ele-value">{{ getValue('当日电池充电', true) }}KWH</div>
               </div>
               <div class="info-block">
-                <div class="ele-title">当日电池容量：</div>
-                <div class="ele-value">{{ getValue('当日电池容量', true) || '2.1' }}KWH</div>
+                <div class="ele-title">当日电池放电：</div>
+                <div class="ele-value">{{ getValue('当日电池放电', true) }}KWH</div>
               </div>
             </div>
           </div>
@@ -897,7 +897,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
 }
 
 .info-block {
-  margin-right: 30px;
+  margin-right: 10px;
 
   &:last-child {
     display: flex;
