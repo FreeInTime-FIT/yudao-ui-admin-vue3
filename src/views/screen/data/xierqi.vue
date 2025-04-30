@@ -58,8 +58,8 @@ function initSupplyChart() {
   if (!supplyChartRef.value) return;
 
   const chart = echarts.init(supplyChartRef.value, screenConfig);
-  const microGridValue = getValue('上日微电网供电电量', false) || 35;
-  const totalValue = (getValue('上日计划用电量', false) || 50);
+  const microGridValue = getValue('微网电量', false) || 0;
+  const totalValue = (getValue('上日累计量', false)) || 1;
   const percentage = Math.round((microGridValue / totalValue) * 100);
 
   chart.setOption({
@@ -143,7 +143,7 @@ function initMicroGridChart() {
   if (!microGridChartRef.value) return;
 
   const chart = echarts.init(microGridChartRef.value, screenConfig);
-  const microGridValue = getValue('微网提供的总电量', false) || 7.1;
+  const microGridValue = getValue('微网累计供电量', false) || 7.1;
   const totalValue = getValue('累计用电量', false) || 10.1;
   const percentage = Math.round((microGridValue / totalValue) * 100);
 
@@ -829,7 +829,7 @@ const getValue = (key: string, hasEmpty: boolean) => {
 
     <!-- 右侧部分 原来固定宽度450px -->
     <div class="col-span-3">
-      <card-header title="光伏" />
+      <card-header title="电量数据" />
       <div class="pie-statistics shadow-bg">
         <div class="flex items-center h-45 pt-3">
           <div ref="supplyChartRef" class="w-50% h-full"></div>
