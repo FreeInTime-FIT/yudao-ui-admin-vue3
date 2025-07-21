@@ -99,6 +99,7 @@
           <el-button
             link
             type="danger"
+            v-if="scope.row.id !== 1"
             @click="handleDelete(scope.row.id)"
             v-hasPermi="['system:oauth2-client:delete']"
           >

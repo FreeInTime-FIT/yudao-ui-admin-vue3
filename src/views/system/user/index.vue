@@ -170,16 +170,22 @@
                         <Icon icon="ep:key" />重置密码
                       </el-dropdown-item>
                       <el-dropdown-item
-                        command="handleRole"
-                        v-if="checkPermi(['system:permission:assign-user-role'])"
+                        @click="handleCommand('handleRole', scope.row)"
+                        v-hasPermi="['system:permission:assign-user-role']"
                       >
                         <Icon icon="ep:circle-check" />分配角色
                       </el-dropdown-item>
                       <el-dropdown-item
-                        command="handleProject"
-                        v-if="checkPermi(['system:permission:assign-user-role'])"
+                        @click="handleCommand('handleProject', scope.row)"
+                        v-hasPermi="['system:permission:assign-user-role']"
                       >
                         <Icon icon="ep:circle-check" />分配项目
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        @click="handleCommand('handleApiKey', scope.row)"
+                        v-hasPermi="['system:user-api-config:query']"
+                      >
+                        <Icon icon="ep:key" />API密钥
                       </el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
@@ -206,6 +212,8 @@
   <UserAssignProjectForm ref="assignProjectFormRef" @success="getList" />
   <!-- 分配角色 -->
   <UserAssignRoleForm ref="assignRoleFormRef" @success="getList" />
+  <!-- API密钥管理 -->
+  <UserApiKeyForm ref="apiKeyFormRef" @success="getList" />
 </template>
 <script lang="ts" setup>
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -218,6 +226,7 @@ import UserForm from './UserForm.vue'
 import UserImportForm from './UserImportForm.vue'
 import UserAssignRoleForm from './UserAssignRoleForm.vue'
 import UserAssignProjectForm from './UserAssignProjectForm.vue'
+import UserApiKeyForm from './UserApiKeyForm.vue'
 import DeptTree from './DeptTree.vue'
 
 defineOptions({ name: 'SystemUser' })
@@ -315,8 +324,6 @@ const handleExport = async () => {
 
 /** 操作分发 */
 const handleCommand = (command: string, row: UserApi.UserVO) => {
-  console.log('handleCommand', command, row  )
-  debugger
   switch (command) {
     case 'handleDelete':
       handleDelete(row.id)
@@ -329,6 +336,9 @@ const handleCommand = (command: string, row: UserApi.UserVO) => {
       break
     case 'handleProject':
       handleProject(row)
+      break
+    case 'handleApiKey':
+      handleApiKey(row)
       break
     default:
       break
@@ -372,6 +382,12 @@ const handleRole = (row: UserApi.UserVO) => {
 const assignProjectFormRef = ref()
 const handleProject = (row: UserApi.UserVO) => {
   unref(assignProjectFormRef)?.open(row)
+}
+
+/** API密钥管理 */
+const apiKeyFormRef = ref()
+const handleApiKey = (row: UserApi.UserVO) => {
+  apiKeyFormRef.value?.open(row.id)
 }
 
 /** 初始化 */

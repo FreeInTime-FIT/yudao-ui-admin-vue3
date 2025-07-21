@@ -709,6 +709,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultListUserApiConfigRespVO = {
+    code?: number;
+    data?: UserApiConfigRespVO[];
+    msg?: string;
+  };
+
   type CommonResultListUserSimpleRespVO = {
     code?: number;
     data?: UserSimpleRespVO[];
@@ -736,6 +742,12 @@ declare namespace APITypes {
   type CommonResultMailTemplateRespVO = {
     code?: number;
     data?: MailTemplateRespVO;
+    msg?: string;
+  };
+
+  type CommonResultMapStringObject = {
+    code?: number;
+    data?: Record<string, any>;
     msg?: string;
   };
 
@@ -796,6 +808,12 @@ declare namespace APITypes {
   type CommonResultObject = {
     code?: number;
     data?: Record<string, any>;
+    msg?: string;
+  };
+
+  type CommonResultOpenPlatformTokenRespVO = {
+    code?: number;
+    data?: OpenPlatformTokenRespVO;
     msg?: string;
   };
 
@@ -1027,6 +1045,12 @@ declare namespace APITypes {
     msg?: string;
   };
 
+  type CommonResultPageResultUserApiConfigRespVO = {
+    code?: number;
+    data?: PageResultUserApiConfigRespVO;
+    msg?: string;
+  };
+
   type CommonResultPageResultUserRespVO = {
     code?: number;
     data?: PageResultUserRespVO;
@@ -1114,6 +1138,12 @@ declare namespace APITypes {
   type CommonResultTenantSimpleRespVO = {
     code?: number;
     data?: TenantSimpleRespVO;
+    msg?: string;
+  };
+
+  type CommonResultUserApiConfigRespVO = {
+    code?: number;
+    data?: UserApiConfigRespVO;
     msg?: string;
   };
 
@@ -1356,6 +1386,11 @@ declare namespace APITypes {
   };
 
   type deleteTenantParams = {
+    /** 编号 */
+    id: number;
+  };
+
+  type deleteUserApiConfigParams = {
     /** 编号 */
     id: number;
   };
@@ -3101,6 +3136,26 @@ declare namespace APITypes {
     size?: number;
   };
 
+  type getUserApiConfigPageParams = {
+    /** 用户ID */
+    userId?: string;
+    /** API密钥 */
+    appKey?: string;
+    /** 状态 */
+    status?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 页码，从 1 开始 */
+    pageNo: string;
+    /** 每页条数，最大值为 100 */
+    pageSize: string;
+  };
+
+  type getUserApiConfigParams = {
+    /** 编号 */
+    id: number;
+  };
+
   type getUserPageParams = {
     /** 用户账号，模糊匹配 */
     username?: string;
@@ -3870,6 +3925,24 @@ declare namespace APITypes {
     sex?: number;
   };
 
+  type OpenPlatformTokenReqVO = {
+    /** 应用Key */
+    appKey: string;
+    /** 应用Secret */
+    appSecret: string;
+    /** 时间戳 */
+    timestamp: number;
+  };
+
+  type OpenPlatformTokenRespVO = {
+    /** 访问令牌 */
+    accessToken: string;
+    /** 刷新令牌 */
+    refreshToken: string;
+    /** 过期时间 */
+    expiresTime: string;
+  };
+
   type OperateLogRespVO = {
     /** 日志编号 */
     id: number;
@@ -4210,6 +4283,13 @@ declare namespace APITypes {
     total: number;
   };
 
+  type PageResultUserApiConfigRespVO = {
+    /** 数据 */
+    list: UserApiConfigRespVO[];
+    /** 总量 */
+    total: number;
+  };
+
   type PageResultUserRespVO = {
     /** 数据 */
     list: UserRespVO[];
@@ -4440,11 +4520,15 @@ declare namespace APITypes {
     refreshToken: string;
   };
 
+  type regenerateApiKeysParams = {
+    /** 配置编号 */
+    id: number;
+  };
+
   type ResponseModel = {
     repCode?: string;
     repMsg?: string;
     repData?: Record<string, any>;
-    success?: boolean;
     repCodeEnum?:
       | 'SUCCESS'
       | 'ERROR'
@@ -4465,6 +4549,7 @@ declare namespace APITypes {
       | 'API_REQ_LOCK_GET_ERROR'
       | 'API_REQ_LIMIT_CHECK_ERROR'
       | 'API_REQ_LIMIT_VERIFY_ERROR';
+    success?: boolean;
   };
 
   type revokeTokenParams = {
@@ -4908,6 +4993,40 @@ declare namespace APITypes {
   type uploadFileParams = {
     /** 文件附件 */
     path?: string;
+  };
+
+  type UserApiConfigRespVO = {
+    /** 主键ID */
+    id?: number;
+    /** 用户ID */
+    userId?: number;
+    /** API密钥 */
+    appKey?: string;
+    /** API秘钥 */
+    appSecret?: string;
+    /** 状态 */
+    status?: number;
+    /** 备注 */
+    remark?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 更新时间 */
+    updateTime?: string;
+  };
+
+  type UserApiConfigSaveReqVO = {
+    /** 主键ID */
+    id?: number;
+    /** 用户ID */
+    userId: number;
+    /** API密钥 */
+    appKey: string;
+    /** API秘钥 */
+    appSecret: string;
+    /** 状态 */
+    status: number;
+    /** 备注 */
+    remark?: string;
   };
 
   type UserImportRespVO = {

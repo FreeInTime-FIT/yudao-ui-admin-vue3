@@ -4,6 +4,7 @@
 // API 唯一标识：
 import * as UserProfileController from './UserProfileController';
 import * as UserController from './UserController';
+import * as UserApiConfigController from './UserApiConfigController';
 import * as TenantController from './TenantController';
 import * as TenantPackageController from './TenantPackageController';
 import * as SocialClientController from './SocialClientController';
@@ -44,6 +45,7 @@ import * as AuthController from './AuthController';
 import * as IotDeviceRealTimeController from './IotDeviceRealTimeController';
 import * as DeviceMessageController from './DeviceMessageController';
 import * as FileController from './FileController';
+import * as OpenPlatformAuthController from './OpenPlatformAuthController';
 import * as AppDictDataController from './AppDictDataController';
 import * as AppAreaController from './AppAreaController';
 import * as SmsLogController from './SmsLogController';
@@ -57,10 +59,12 @@ import * as DeviceWarningRecordController from './DeviceWarningRecordController'
 import * as RedisController from './RedisController';
 import * as JobLogController from './JobLogController';
 import * as ApiAccessLogController from './ApiAccessLogController';
+import * as OpenPlatformDataController from './OpenPlatformDataController';
 import * as DefaultController from './DefaultController';
 export default {
   UserProfileController,
   UserController,
+  UserApiConfigController,
   TenantController,
   TenantPackageController,
   SocialClientController,
@@ -101,6 +105,7 @@ export default {
   IotDeviceRealTimeController,
   DeviceMessageController,
   FileController,
+  OpenPlatformAuthController,
   AppDictDataController,
   AppAreaController,
   SmsLogController,
@@ -114,5 +119,6 @@ export default {
   RedisController,
   JobLogController,
   ApiAccessLogController,
+  OpenPlatformDataController,
   DefaultController,
 };
