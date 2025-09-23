@@ -17,23 +17,44 @@ interface MenuGroup {
 const menu: MenuGroup[] = [
   {
     title: '控制参数',
-    items: ['转动惯量设定', '阻尼系数设定', '调频系数设定', '调压系数设定', '控制模式切换'],
+    items: [
+      '转动惯量设定  0.7',
+      '阻尼系数设定  0.55',
+      '调频系数设定  1.52',
+      '调压系数设定  1.33',
+      '控制模式切换  1',
+    ],
   },
   {
     title: '总进线并网点状态参数（网）',
-    items: ['进线并网点电压', '进线并网点电流', '进线并网点频率'],
+    items: [
+      '进线并网点电压  380V',
+      '进线并网点电流  120A±10',
+      '进线并网点频率  50.002Hz',
+    ],
   },
   {
     title: '新能源发电并网点状态参数（源）',
-    items: ['新能源发电并网点电压', '新能源发电并网点电流', '新能源发电并网点频率'],
+    items: [
+      '新能源发电并网点电压  380V',
+      '新能源发电并网点电流  310A±10',
+      '新能源发电并网点频率  50.005Hz',
+    ],
   },
   {
     title: '负荷状态参数（荷）',
-    items: ['负荷电压', '负荷电流', '负荷频率'],
+    items: [
+      '负荷电压  380V',
+      '负荷电流  190A',
+      '负荷频率  50.004Hz',
+    ],
   },
   {
     title: '储能状态参数（储）',
-    items: ['储能SOC', '储能满功率运行支撑时长'],
+    items: [
+      '储能SOC  92%',
+      '储能满功率运行支撑时长  120分钟',
+    ],
   },
 ]
 
@@ -117,16 +138,17 @@ onMounted(() => {
       <!-- 左侧菜单 -->
       <aside class="h-full flex flex-col">
         <div class="flex-1 overflow-y-auto pr-8px">
-          <div v-for="group in menu" :key="group.title" class="mb-48px">
+          <div v-for="group in menu" :key="group.title" class="mb-18px">
             <div class="zkt-title px-10px py-6px mb-8px">{{ group.title }}</div>
             <div class="space-y-8px">
               <ElButton
                 v-for="item in group.items"
                 :key="item"
-                size="small"
-                class="w-100% justify-start !bg-transparent mb-8px !text-white !border-1 !border-#2b4b7e hover:!bg-#0b122a"
+                
+                class="w-100% justify-between !bg-transparent mb-8px !text-white !border-1 !border-#2b4b7e hover:!bg-#0b122a"
               >
-                {{ item }}
+                <span class="truncate text-left">{{ item.split('  ')[0] }}</span>
+                <span class="color-#FFD84D fw-600 pl-8px">{{ item.split('  ')[1] }}</span>
               </ElButton>
             </div>
           </div>
