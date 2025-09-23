@@ -113,9 +113,9 @@
     </div>
     <div class="w-23.5% pr-20px">
       <CardHeader title="电池" />
-      <div class="flex flex-wrap shadow-bg !pt-30px ">
+      <div class="flex flex-wrap shadow-bg !pt-40px battery-list">
         <div v-for="item in batteryInfo" class="w-50%" :key="item.key">
-          <div class=" flex items-center mb-16px pl-10px">
+          <div class=" flex items-center mb-16px pl-10px battery-item">
             <div class="today-bg">
               <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
             </div>
@@ -665,6 +665,15 @@ const batteryInfo = [
   justify-content: center;
   background: url(@/views/screen/assets/real/today-bg.png) no-repeat;
   background-size: 100% 100%;
+}
+.battery-list{
+  padding-top: 46px !important;
+  padding-bottom: 8px;
+}
+.battery-item{
+  margin-bottom: 22px !important;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 .bg-icon-primary{
   background-color:rgba(30, 188, 161, 0.1);

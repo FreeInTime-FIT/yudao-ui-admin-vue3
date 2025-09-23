@@ -60,6 +60,25 @@
          - boardView_fork.vue // refactor 改为静态数据，删除接口与轮询
    ```
 
+### 4. 适配电池区域间距（1920x1080）
+
+**变更类型**: improvement
+
+> **目的**: 在1920x1080下提升右侧电池模块可读性
+> **详细描述**: 为电池容器新增类 `battery-list` 与条目类 `battery-item`，增加顶部内边距与条目上下间距
+> **影响范围**: 仅 `src/views/screen/data/boardView_fork.vue` 样式
+> **API变更**: 无
+> **配置变更**: 无
+> **性能影响**: 无
+
+``` 
+src
+- views
+  - screen
+    - data
+      - boardView_fork.vue // improvement 电池区域间距优化（battery-list/battery-item）
+```
+
 ### 变更检查清单
 
 - [x] 代码遵循项目编码规范
