@@ -1,47 +1,30 @@
-## {datetime: YYYY-MM-DD HH:mm:ss}
+## 2025-09-23 00:00:00
 
-### 1. {功能简述}
+### 1. 屏幕实时页改为静态数据渲染
 
-**变更类型**: {类型: feature/fix/improvement/refactor/docs/test/build}
+**变更类型**: refactor
 
-> **目的**: {功能目的}
-> **详细描述**: {功能详细描述}
-> **变更原因**: {为什么需要这个变更}
-> **影响范围**: {可能受影响的其他模块或功能}
-> **API变更**: {如果有API变更，详细说明旧API和新API}
-> **配置变更**: {环境变量、配置文件等变更}
-> **性能影响**: {对系统性能的影响}
-
-   ```
-   src
-   - components  // {类型: add/del/refact/-} {文件夹的作用}
-     - MyComponent // {类型: add/del/refact} {文件的功能}
-   - views    // {类型: add/del/refact} {文件的功能}
-     - module
-       - NewFeature.vue // {类型: add} {新功能组件}
-   ```
-
-### 2. {功能简述}
-
-**变更类型**: {类型: feature/fix/improvement/refactor/docs/test/build}
-
-> **目的**: {功能目的}
-> **详细描述**: {功能详细描述}
-> **变更原因**: {为什么需要这个变更}
-> **影响范围**: {可能受影响的其他模块或功能}
-> **API变更**: {如果有API变更，详细说明旧API和新API}
-> **配置变更**: {环境变量、配置文件等变更}
-> **性能影响**: {对系统性能的影响}
+> **目的**: 取消接口依赖，使用静态数据演示渲染
+> **详细描述**: 去除 `getPanelData` 与 `page` 请求、清除轮询与监听，新增静态 `keyValue` 与 `warningData` 并在 `onMounted` 初始化
+> **变更原因**: 需求切换为本地静态数据渲染
+> **影响范围**: 仅 `src/views/screen/data/realtime_fork.vue`
+> **API变更**: 无
+> **配置变更**: 无
+> **性能影响**: 移除轮询后减少请求压力
 
    ```
    src
-   - api    // {类型: add/del/refact/-} {文件夹的作用}
-     - module // {类型: add/del/refact} {文件的功能}
-       - index.ts // {类型: add/del/refact} {文件的功能}
-   - store
-     - modules // {类型: add/del/refact} {文件的功能}
-       - newModule.ts // {类型: add} {新模块状态管理}
+   - views    // refactor 页面视图
+     - screen
+       - data
+         - realtime_fork.vue // refactor 改为静态数据，删除接口与轮询
    ```
+
+### 变更检查清单
+
+- [x] 代码遵循项目编码规范
+- [x] 所有 TypeScript 类型定义完整
+- [x] 文档已更新（codelf）
 
 ### 变更检查清单
 

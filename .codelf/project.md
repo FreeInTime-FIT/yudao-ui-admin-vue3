@@ -117,4 +117,7 @@ root
     - styles // 全局样式
     - utils // 工具函数
     - views // 页面视图组件
+        - screen
+          - data
+            - realtime_fork.vue // 使用静态数据渲染的实时大屏数据页（已移除接口轮询）
 ```
