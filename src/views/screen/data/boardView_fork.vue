@@ -35,10 +35,10 @@
         </div>
         <div class="value-content-2">
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px" :type="(keyValue['并网状态'] >> 4 & 1) === 0 ? 'primary' : 'info'">并网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 0 ? 'primary' : 'info'">并网</ElButton>
           </div>
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="(keyValue['并网状态'] >> 4 & 1) === 1 ? 'primary' : 'info'">离网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 1 ? 'primary' : 'info'">离网</ElButton>
           </div>
         </div>
       </div>
@@ -73,12 +73,7 @@
       <div class="board-bg-box">
         <div class="board-bg">
           <img :src="board" class="pointer-events-none" alt="" />
-          <div class="board-pos board-pos1">光伏发电量：{{ keyValue['微电网日发电量'] }}kWh</div>
-          <div class="board-pos board-pos2">变压器频率：50Hz</div>
-          <div class="board-pos board-pos3">储能电量：{{ keyValue['储能电量'] }}kWh</div>
-          <div class="board-pos board-pos4">
-            <div>总用电量：{{ keyValue['总用电量'] }}kWh</div>
-          </div>
+        
         </div>
       </div>
 
@@ -119,14 +114,14 @@
     <div class="w-23.5% pr-20px">
       <CardHeader title="电池" />
       <div class="flex flex-wrap shadow-bg !pt-30px ">
-        <div v-for="item in batteryInfo" class="w-50%" :key="item.id">
+        <div v-for="item in batteryInfo" class="w-50%" :key="item.key">
           <div class=" flex items-center mb-16px pl-10px">
             <div class="today-bg">
               <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
             </div>
             <div class="ml-8px w-0 flex-1 ">
               <div class="fw-bold text-14px line-height-20px">{{item.label}}</div>
-              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{item.render ? item.render(item) : getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+              <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-24px">{{item.render ? item.render() : getValue(item.valKey, false) || '-'}}{{item.unit}}</div>
             </div>
           </div>
 
@@ -194,14 +189,12 @@
 import { useResizeObserver } from '@vueuse/core'
 import CardHeader from "@/views/screen/components/CardHeader.vue";
 import PieBattery from "@/views/screen/components/PieBattery.vue";
-import board from '@/views/screen/assets/data/board.png'
+import board from '@/views/screen/assets/realtime_fork/board_image.png'
 import * as echarts from "echarts";
 import screenConfig from "@/views/screen/config/echart.json";
-import {
-  getLatestPrice, getPanelData
-} from "@/services/services/IotReportController";
+// 已切换为静态数据渲染，移除接口依赖
 import dayjs from "dayjs";
-import {useProjectStore} from "@/store/modules/project";
+// 已切换为静态数据，移除项目状态依赖
 import cdlIcon from "@/views/screen/assets/real/icon-cdl.png";
 import gfIcon from "@/views/screen/assets/real/icon-gf.png";
 import tdIcon3 from "@/views/screen/assets/real/today-icon-3.png";
@@ -220,16 +213,38 @@ import icon8 from "@/views/screen/assets/real/center-elc-icon.png";
 import eleIcon from "@/views/screen/assets/real/center-elc-icon.png";
 import dot from '@/views/screen/assets/data/dot.png'
 defineOptions({ name: '数据中心' })
-const keyValue = ref<any>({});
-const keys = []
-const projectStore = useProjectStore();
-const getLastData = async () => {
-  const res = await getPanelData({
-    key: 'boardView',
-    projectId: projectStore.projectInfo?.id,
-  })
-  keyValue.value = res.data || {};
-  return res;
+const keyValue = ref<Record<string, string | number>>({});
+
+// 静态数据定义
+const staticData = {
+  '用电功率': 1250,
+  '当日用电量': 2850,
+  '电网功率': 800,
+  '并网状态': 16, // 二进制位控制按钮状态
+  '微电网日用电量': 2850,
+  '微电网日发电量': 3200,
+  '光伏1发电量': 1800,
+  '光伏2发电量': 1400,
+  'pv1电流': 8.5,
+  'pv2电流': 6.8,
+  'pv1电压': 220,
+  'pv2电压': 215,
+  'pv1功率': 1.87,
+  'pv2功率': 1.46,
+  '七日用电量': 19800,
+  '电池电量': 75,
+  '充放电次数': 12,
+  '电池功率': 2.5,
+  '单体温度最大值': 45,
+  '单体温度最小值': 38,
+  '节电量': 1250,
+  '减碳量': 680,
+  '节省金额': 15600,
+};
+
+const getLastData = () => {
+  keyValue.value = { ...staticData };
+  return { data: staticData };
 }
 const realRef = ref();
 const realChartRef = ref();
@@ -278,7 +293,7 @@ const useTotalRef = computed(() => {
         value: getValue('电池电量', false) || 0,
       }, {
         label: '电池已放电量',
-        value: 100 - (getValue('电池电量', false) || 0),
+        value: 100 - ((getValue('电池电量', false) as number) || 0),
       }
     ],
   }
@@ -297,44 +312,14 @@ const getterTotalRef = computed(() => {
     ],
   }
 })
-watchEffect(() => {
-  if (projectStore.projectInfo) {
-    getLastData({
-      projectId: projectStore.projectInfo?.id,
-    });
-    // getLatestPrice({
-    //   key: '用电统计',
-    //   projectId: projectStore.projectInfo?.id,
-    // }).then(res => {
-    //   useTotalRef.value = res.data;
-    // })
-    // getLatestPrice({
-    //   key: '发电统计',
-    //   projectId: projectStore.projectInfo?.id,
-    // }).then(res => {
-    //   getterTotalRef.value = res.data;
-    // })
-  }
-})
-let timer = setInterval(() => {
-  getLastData({
-    projectId: projectStore.projectInfo?.id,
-  });
-}, 5000)
+// 已切换为静态数据，移除轮询和监听
 useResizeObserver(realRef, () => {
   if (realChartRef.value) {
     realChartRef.value.resize();
   }
 });
-onUnmounted(() => {
-  clearInterval(timer);
-})
 onMounted(() => {
-  if (projectStore.projectInfo) {
-    getLastData({
-      projectId: projectStore.projectInfo?.id,
-    })
-  }
+  getLastData();
 })
 const getValue = (key, hasEmpty) => {
   const v = unref(keyValue)[key];
@@ -345,7 +330,7 @@ const getValue = (key, hasEmpty) => {
 }
 onMounted(() => {
   const chart = echarts.init(realRef.value, screenConfig);
-  const now = dayjs('00:00', 'HH:mm');
+  // 已移除未使用的now变量
   const axisProps = {
     nameTextStyle: {
       color: '#fff',
@@ -373,41 +358,45 @@ onMounted(() => {
     label: '今天',
     color: '#FFAE3A',
   }]
-  getLatestPrice({
-    key: '实时电价'
-  }).then(res => {
+  // 使用静态电价数据
+  const staticPriceData = {
+    source: [
+      {
+        hour: '00:00',
+        price: 0.3,
+      },
+      {
+        hour: '08:00',
+        price: 0.6
+      },
+      {
+        hour: '12:00',
+        price: 0.91
+      },
+      {
+        hour: '18:00',
+        price: 0.6
+      },
+      {
+        hour: '21:00',
+        price: 0.3
+      },
+      {
+        hour: '24:00',
+        price: 0.3
+      },
+    ]
+  };
+  
+  // 模拟异步操作
+  Promise.resolve(staticPriceData).then(res => {
     chart.setOption({
       backgroundColor: 'transparent',
       top:0,
       bottom: 0,
       dataset:  {
-        ...res.data,
-        source: (res.data.source?.length ? res.data.source : [
-          {
-            hour: '00:00',
-            price: 0.3,
-          },
-          {
-            hour: '08:00',
-            price: 0.6
-          },
-          {
-            hour: '12:00',
-            price: 0.91
-          },
-          {
-            hour: '18:00',
-            price: 0.6
-          },
-          {
-            hour: '21:00',
-            price: 0.3
-          },
-          {
-            hour: '24:00',
-            price: 0.3
-          },
-        ]).map(item => ({
+        ...res,
+        source: res.source.map(item => ({
           ...item,
           hour: dayjs(item.hour, 'HH:mm').toDate(),
         }))
@@ -425,7 +414,7 @@ onMounted(() => {
         },
         interval: 1000 * 60 * 60 * 2,
         axisLabel: {
-          formatter: function (value, index) {
+          formatter: function (value) {
             return dayjs(value).format('HH:mm');
           }
         },
@@ -460,7 +449,7 @@ onMounted(() => {
           },
         })),
       },
-      series: valueTypes.map((type, idx) => ({
+      series: valueTypes.map((type) => ({
         type: 'line',
         smooth: true,
         name: type.label,
@@ -570,7 +559,7 @@ const batteryInfo = [
     valKey:  '电池功率',
     icon: tdIcon3,
     render() {
-      const v = getValue('电池功率', false);
+      const v = getValue('电池功率', false) as number;
       if (!v) {
         return '-'
       }
@@ -602,7 +591,7 @@ const batteryInfo = [
 
 <style lang="scss">
 .board-bg-box{
-  padding: 32px 6vw 20px;
+  padding: 32px 2vw 20px;
 }
 .board-bg{
   position: relative;

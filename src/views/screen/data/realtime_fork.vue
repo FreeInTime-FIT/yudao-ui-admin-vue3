@@ -183,18 +183,18 @@ const getValue = (key, unit = '') => {
 </script>
 
 <template>
-  <section class="w-full overflow-x-hidden">
-    <div class="flex gap-24px">
+  <section class="w-full h-screen overflow-x-hidden">
+    <div class="flex gap-24px h-full">
       
-      <div class="flex-1">
-        <img :src="centerBg" class="w-full" alt="" />
+      <div class="flex-1 h-full">
+        <img :src="centerBg" class="w-full h-full object-cover" alt="" />
         
       </div>
-      <div class="w-24% pr-20px">
+      <div class="w-24% pr-20px h-full flex flex-col">
 
-        <article class="card-box">
+        <article class="card-box flex-1 flex flex-col">
           <CardHeader title="当日数据" />
-          <div class="flex flex-wrap ">
+          <div class="flex flex-wrap flex-1 overflow-y-auto">
             <div v-for="item in todayDataList" class="w-50%" :key="item.key">
               <div class=" flex items-center mb-20px mr-20px pl-30px">
                 <div class="today-bg">
@@ -209,15 +209,16 @@ const getValue = (key, unit = '') => {
             </div>
           </div>
         </article>
-        <article class="card-box mt-30px">
+        <article class="card-box mt-30px flex-1 flex flex-col">
           <card-header title="警告信息" />
-          <div class="shadow-bg">
+          <div class="shadow-bg flex-1 flex flex-col">
             <ElTable
               :data="warningData.data?.list"
               row-key="id"
-              class="data-table"
+              class="data-table flex-1"
               border
               stripe
+              :height="'100%'"
             >
               <ElTableColumn :width="60" label="序号" type="index"  />
               <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
