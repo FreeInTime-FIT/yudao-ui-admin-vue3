@@ -8,49 +8,82 @@ interface MenuGroup {
   items: string[]
 }
 
-const menu: MenuGroup[] = [
+// 随机数据状态
+function randomInRange(min: number, max: number, digits = 0): number {
+  const v = Math.random() * (max - min) + min
+  const p = Math.pow(10, digits)
+  return Math.round(v * p) / p
+}
+
+const activePowerKw = ref<number>(randomInRange(240, 280))
+const acPort1VoltageV = ref<number>(randomInRange(370, 390))
+const acPort2VoltageV = ref<number>(randomInRange(370, 390))
+const dcInnerVoltageV = ref<number>(680)
+const pvPeakKw = ref<number>(360)
+const pvDcVoltageV = ref<number>(680)
+const pvEfficiency = ref<number>(97)
+const batteryVoltageV = ref<number>(680)
+const batteryCurrentA = ref<number>(randomInRange(70, 85))
+const batterySoc = ref<number>(95)
+const dcOutV = ref<number>(0)
+const dcOutA = ref<number>(0)
+const chargerTotalKWh = ref<number>(516)
+const loadJgsKw = ref<number>(590)
+const loadXwyKw = ref<number>(460)
+
+// 定时更新随机项
+let timer = setInterval(() => {
+  activePowerKw.value = randomInRange(240, 280)
+  acPort1VoltageV.value = randomInRange(370, 390)
+  acPort2VoltageV.value = randomInRange(370, 390)
+  batteryCurrentA.value = randomInRange(70, 85)
+}, 2000)
+
+onUnmounted(() => clearInterval(timer))
+
+const menu = computed<MenuGroup[]>(() => ([
   {
     title: '控制参数',
     items: [
       '控制模式设定  并网模式',
-      '有功功率给定  240kW-280kW变化',
-      '交流端口1电压  380V上下',
-      '交流端口2电压  380V上下',
-      '直流内部电压  680V',
+      `有功功率给定  ${activePowerKw.value}kW`,
+      `交流端口1电压  ${acPort1VoltageV.value}V`,
+      `交流端口2电压  ${acPort2VoltageV.value}V`,
+      `直流内部电压  ${dcInnerVoltageV.value}V`,
     ],
   },
   {
     title: '光伏参数',
     items: [
-      '峰值功率  360kW',
-      '直流电压  680V',
-      '最大效率  97%',
+      `峰值功率  ${pvPeakKw.value}kW`,
+      `直流电压  ${pvDcVoltageV.value}V`,
+      `最大效率  ${pvEfficiency.value}%`,
     ],
   },
   {
     title: '储能电池参数',
     items: [
-      '电池组电压  680V',
-      '电池组电流  77A上下',
-      '电池组SOC  95%',
+      `电池组电压  ${batteryVoltageV.value}V`,
+      `电池组电流  ${batteryCurrentA.value}A`,
+      `电池组SOC  ${batterySoc.value}%`,
     ],
   },
   {
     title: '充电桩参数',
     items: [
-      '直流输出电压  0V',
-      '直流输出电流  0A',
-      '充电桩输出总量  516kWh',
+      `直流输出电压  ${dcOutV.value}V`,
+      `直流输出电流  ${dcOutA.value}A`,
+      `充电桩输出总量  ${chargerTotalKWh.value}kWh`,
     ],
   },
   {
     title: '负荷参数',
     items: [
-      '金刚石负荷功率  590kW',
-      '玄武岩负荷功率  460kW',
+      `金刚石负荷功率  ${loadJgsKw.value}kW`,
+      `玄武岩负荷功率  ${loadXwyKw.value}kW`,
     ],
   },
-]
+]))
 </script>
 
 <template>

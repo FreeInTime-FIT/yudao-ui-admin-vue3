@@ -591,7 +591,7 @@ const batteryInfo = [
 
 <style lang="scss">
 .board-bg-box{
-  padding: 32px 2vw 20px;
+  padding: 24px 1px 46px;
 }
 .board-bg{
   position: relative;
