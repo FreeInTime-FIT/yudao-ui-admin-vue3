@@ -92,7 +92,7 @@
                 :class="type.iconCls"
                 alt="" /></div>
               <div class="ml-10px">
-                <div class="ele-title">{{item.name}}{{type.label}}</div>
+                <div class="ele-title">{{type.getLabel ? type.getLabel(item) : type.label}}</div>
                 <div class="ele-value">{{keyValue[`${type[item.key]}`]}}{{type.unit}}</div>
               </div>
             </div>
@@ -218,34 +218,42 @@ const keyValue = ref<Record<string, string | number>>({});
 // 静态数据定义
 const staticData = {
   '用电功率': 1250,
-  '当日用电量': 2850,
+  '当日用电量': 1644.8,
   '电网功率': 800,
   '并网状态': 16, // 二进制位控制按钮状态
-  '微电网日用电量': 2850,
-  '微电网日发电量': 3200,
-  '光伏1发电量': 1800,
-  '光伏2发电量': 1400,
-  'pv1电流': 8.5,
-  'pv2电流': 6.8,
-  'pv1电压': 220,
-  'pv2电压': 215,
-  'pv1功率': 1.87,
-  'pv2功率': 1.46,
+  '微电网日用电量': 3947.6,
+  '微电网日发电量': 1315.8,
+  // 光伏展示重定义
+  '当日发电量-1': 8025,
+  '累计发电量-1': 40125,
+  '发电功率-1': 920,
+  '装机功率-1': 1350,
+  '风电累计发电量-2': 7828,
+  '风电当日发电量-2': 4800,
+  '发电功率值': 800,
+  '装机容量值': 1100,
   '七日用电量': 19800,
   '电池电量': 75,
   '充放电次数': 12,
-  '电池功率': 2.5,
-  '单体温度最大值': 45,
-  '单体温度最小值': 38,
-  '节电量': 1250,
-  '减碳量': 680,
-  '节省金额': 15600,
+  '装机功率':600,
+  '装机电量': 1.2,
+  '单体温度最大值': 27,
+  '单体温度最小值': 28,
+  '节电量': 2368.2 ,
+  '减碳量': 1376,
+  '节省金额': 1012.4,
 };
 
 const getLastData = () => {
   keyValue.value = { ...staticData };
   return { data: staticData };
 }
+// 随机区间工具
+function randomInRange(min: number, max: number): number {
+  return Math.round(Math.random() * (max - min) + min);
+}
+// 定时随机更新关键功率指标
+let dynamicTimer: any;
 const realRef = ref();
 const realChartRef = ref();
 // const getterTotalRef = ref();
@@ -320,6 +328,16 @@ useResizeObserver(realRef, () => {
 });
 onMounted(() => {
   getLastData();
+  // 每2秒波动：用电功率(150~190)，电网功率(50~80)
+  dynamicTimer = setInterval(() => {
+    const kv = keyValue.value;
+    if (!kv) return;
+    kv['用电功率'] = randomInRange(150, 190);
+    kv['电网功率'] = randomInRange(50, 80);
+  }, 2000);
+})
+onUnmounted(() => {
+  if (dynamicTimer) clearInterval(dynamicTimer);
 })
 const getValue = (key, hasEmpty) => {
   const v = unref(keyValue)[key];
@@ -484,26 +502,29 @@ const solarTypes = [{
   value: 'fdl',
   label: '发电量',
   unit: 'kWh',
-  gf1: '光伏1发电量',
-  gf2: '光伏2发电量',
+  gf1: '当日发电量-1',
+  gf2: '累计发电量-1',
+  getLabel: (item: any) => (item.id === '1' ? '当日发电量' : '累计发电量'),
   icon: icon1,
   iconCls: 'w-41px',
   cls: 'bg-icon-primary'
 },{
   value: 'fdl1',
-  label: '电流',
-  unit: 'A',
-  gf1: 'pv1电流',
-  gf2: 'pv2电流',
+  label: '功率',
+  unit: 'kW',
+  gf1: '发电功率-1',
+  gf2: '装机功率-1',
+  getLabel: (item: any) => (item.id === '1' ? '发电功率' : '装机功率'),
   icon: icon2,
   iconCls: 'w-41px',
   cls: 'bg-icon-primary'
 },{
   value: 'fdl12',
-  label: '电压',
-  unit: 'V',
-  gf1: 'pv1电压',
-  gf2: 'pv2电压',
+  label: '发电量',
+  unit: 'kWh',
+  gf1: '风电累计发电量-2',
+  gf2: '风电当日发电量-2',
+  getLabel: (item: any) => (item.id === '1' ? '风电累计发电量' : '风电当日发电量'),
   icon: icon3,
   iconCls: 'w-36px',
   cls: 'bg-icon-success'
@@ -511,8 +532,9 @@ const solarTypes = [{
   value: 'fdl34',
   label: '功率',
   unit: 'kW',
-  gf1: 'pv1功率',
-  gf2: 'pv2功率',
+  gf1: '发电功率值',
+  gf2: '装机容量值',
+  getLabel: (item: any) => (item.id === '1' ? '发电功率值' : '装机容量值'),
   icon: icon4,
   iconCls: 'w-35px',
   cls: 'bg-icon-success'
@@ -530,7 +552,7 @@ const solarList = [{
 },]
 const batteryInfo = [
   {
-    label: '电池电量(电池soc)',
+    label: '电池soc',
     key: '1',
     valKey:'电池电量',
     unit: '%',
@@ -538,7 +560,7 @@ const batteryInfo = [
     iconWidth: 26,
   },
   {
-    label: '充放电次数(当日)',
+    label: '累计充放次数',
     key: '2',
     valKey:  '充放电次数',
     unit: '',
@@ -546,28 +568,19 @@ const batteryInfo = [
     iconWidth: 44,
   },
   {
-    label: '功率',
+    label: '装机功率',
     key: '3',
     unit: 'kW',
-    valKey:  '电池功率',
+    valKey:  '装机功率',
     icon: tdIcon3,
     iconWidth: 27,
   },
   {
-    label: '状态',
+    label: '装机电量',
     key: '6',
-    valKey:  '电池功率',
+    valKey:  '装机电量',
     icon: tdIcon3,
-    render() {
-      const v = getValue('电池功率', false) as number;
-      if (!v) {
-        return '-'
-      }
-      if (v > 0) {
-        return  '放电'
-      }
-      return '充电';
-    },
+    unit: 'kWh',
     iconWidth: 27,
   },
   {
