@@ -16,44 +16,36 @@ interface MenuGroup {
 
 const menu: MenuGroup[] = [
   {
-    title: '控制参数',
+    title: '并网点状态',
     items: [
-      '转动惯量设定  0.7',
-      '阻尼系数设定  0.55',
-      '调频系数设定  1.52',
-      '调压系数设定  1.33',
-      '控制模式切换  1',
+      '并网点电压  10.5kV',
+      '电网频率  50Hz',
+      '交换功率  1050kVA',
+      '功率因数  0.97',
     ],
   },
   {
-    title: '总进线并网点状态参数（网）',
+    title: '储能调节能力',
     items: [
-      '进线并网点电压  380V',
-      '进线并网点电流  120A',
-      '进线并网点频率  50.002Hz',
+      '当前状态  300 kVA/70%SOC',
+      '上调能力  600 kVA',
+      '下调能力  900 kVA',
     ],
   },
   {
-    title: '新能源发电并网点状态参数（源）',
+    title: '分布式电源调节能力',
     items: [
-      '新能源发电并网点电压  380V',
-      '新能源发电并网点电流  310A',
-      '新能源发电并网点频率  50.005Hz',
+      '当前状态  2420 kW',
+      '上调能力  242 kW',
+      '下调能力  2420 kW',
     ],
   },
   {
-    title: '负荷状态参数（荷）',
+    title: '负荷可调能力',
     items: [
-      '负荷电压  380V',
-      '负荷电流  190A',
-      '负荷频率  50.004Hz',
-    ],
-  },
-  {
-    title: '储能状态参数（储）',
-    items: [
-      '储能SOC  92%',
-      '储能满功率运行支撑时长  120分钟',
+      '运行功率  200 kW',
+      '上调能力  100 kW',
+      '下调功率  300 kW',
     ],
   },
 ]
@@ -134,13 +126,13 @@ onMounted(() => {
 
 <template>
   <section class="zkt-root w-full overflow-hidden" :style="{ height: 'calc(100vh - 80px)' }">
-    <div class="h-full grid grid-cols-[27%_46%_27%] gap-24px">
+    <div class="h-full grid grid-cols-[27%_46%_27%] ">
       <!-- 左侧菜单 -->
       <aside class="h-full flex flex-col">
         <div class="flex-1 overflow-y-auto pr-8px">
-          <div v-for="group in menu" :key="group.title" class="mb-18px">
-            <div class="zkt-title px-10px py-6px mb-8px">{{ group.title }}</div>
-            <div class="space-y-8px">
+          <div v-for="group in menu" :key="group.title" class="mb-28px">
+            <div class="zkt-title px-10px py-6px mb-18px">{{ group.title }}</div>
+            <div class="space-y-20px">
               <ElButton
                 v-for="item in group.items"
                 :key="item"
@@ -162,7 +154,7 @@ onMounted(() => {
           <img :src="p1" class="w-full" alt="设备示意图" />
         </div>
         <div class="mt-16px px-20px text-18px leading-8 text-justify max-w-900px">
-          主动构网运行：中科院电工所自主研发的高速协调控制器悉知电网频率、电压变化，主动调节园区内部源、荷、储，为电网提供有功、无功的功率支撑。
+          基于自主产权的高速协调控制器，快速感知电网频率、电压变化，主动调节园区内部源、荷、储，为电网提供惯量、有功、无功功率支撑
         </div>
 
         <!-- 复杂流程图与框图区域使用图片占位（如后续有设计图可替换） -->
@@ -173,12 +165,15 @@ onMounted(() => {
           <div class="placeholder-img">
             <img :src="p3" class="w-full h-full " alt="框图占位" />
           </div>
+          <div class="placeholder-img">
+            <img :src="p3" class="w-full h-full " alt="框图占位" />
+          </div>
         </div>
       </main>
 
       <!-- 右侧图表 -->
-      <aside class="h-full flex flex-col gap-16px overflow-hidden pr-20px mr-20px">
-        <div v-for="(cfg, i) in charts" :key="cfg.title" class="shadow-bg flex-1 min-h-0 overflow-hidden">
+      <aside class="h-full flex flex-col gap-16px overflow-hidden pr-20px mr-2px">
+        <div v-for="(cfg, i) in charts" :key="cfg.title" class="shadow-bg h-319px overflow-hidden">
           <div :ref="(el) => (chartRefs[i].value = el as HTMLDivElement)" class="w-full h-full"></div>
         </div>
       </aside>
@@ -207,7 +202,7 @@ onMounted(() => {
   justify-content: center;
 }
 .shadow-bg{
-  padding: 12px;
+  
   box-shadow: inset 0 0 20px 0px #024A8A;
 }
 .el-button{
