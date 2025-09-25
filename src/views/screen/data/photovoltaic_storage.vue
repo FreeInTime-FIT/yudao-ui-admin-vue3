@@ -211,9 +211,7 @@ const menu = computed<MenuGroup[]>(() => ([
 .er-image {
   max-width: 120%;
   max-height: 89%;
-  object-fit: contain;
-
-  margin-bottom: 117px;
+  object-fit: contain;  
 }
 
 .el-button {

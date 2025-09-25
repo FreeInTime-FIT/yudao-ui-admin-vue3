@@ -125,11 +125,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="zkt-root w-full overflow-hidden" :style="{ height: 'calc(100vh - 80px)' }">
+  <section class="zkt-root w-full overflow-y-auto scrollbar-hidden" :style="{ height: 'calc(100vh - 80px)' }">
     <div class="h-full grid grid-cols-[27%_46%_27%] ">
       <!-- 左侧菜单 -->
       <aside class="h-full flex flex-col">
-        <div class="flex-1 overflow-y-auto pr-8px">
+        <div class="flex-1 overflow-y-auto scrollbar-hidden pr-8px">
           <div v-for="group in menu" :key="group.title" class="mb-28px">
             <div class="zkt-title px-10px py-6px mb-18px">{{ group.title }}</div>
             <div class="space-y-20px">
@@ -165,9 +165,6 @@ onMounted(() => {
           <div class="placeholder-img">
             <img :src="p3" class="w-full h-full " alt="框图占位" />
           </div>
-          <div class="placeholder-img">
-            <img :src="p3" class="w-full h-full " alt="框图占位" />
-          </div>
         </div>
       </main>
 
@@ -186,6 +183,20 @@ onMounted(() => {
 .zkt-root{
   background: #000;
   color: #fff;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+.scrollbar-hidden {
+  /* 对于 Webkit 浏览器 (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* 对于 Firefox */
+  scrollbar-width: none;
+  
+  /* 对于 IE */
+  -ms-overflow-style: none;
 }
 .zkt-title{
   background: linear-gradient(90deg, rgba(36,143,218,.25), rgba(36,143,218,.05));
