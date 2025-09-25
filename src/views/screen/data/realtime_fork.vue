@@ -14,7 +14,7 @@ const carbonStats = ref({
   newEnergyGeneration: 19800, // kWh
   carbonReduction: 10.625, // 吨
   equivalentTrees: 664, // 颗
-  carbonCredits: 19.8 // 个
+  carbonCredits: 19 // 个
 })
 
 // 建筑能耗排名数据

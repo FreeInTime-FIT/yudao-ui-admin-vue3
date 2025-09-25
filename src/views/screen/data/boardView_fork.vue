@@ -20,7 +20,7 @@
         </div>
         <div class="value-content-2">
           <div class="text-32px fw-bold text-shadow-num">{{keyValue['当日用电量']}}</div>
-          <div class="fw-bold">当日用电量(kw)</div>
+          <div class="fw-bold">当日用电量(kWh)</div>
         </div>
       </div>
 
@@ -35,10 +35,10 @@
         </div>
         <div class="value-content-2">
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 0 ? 'primary' : 'info'">并网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 1 ? 'primary' : 'info'">并网</ElButton>
           </div>
           <div>
-            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 1 ? 'primary' : 'info'">离网</ElButton>
+            <ElButton class="w-60% max-w-120px min-w-60px mt-8px" :type="((keyValue['并网状态'] as number) >> 4 & 1) === 0 ? 'primary' : 'info'">离网</ElButton>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
           <div><img :src="eleIcon" class="w-44px pointer-events-none" alt="" /></div>
           <div class="ml-12px">
             <div>
-              微电网日用电量
+              微电网累计用电量
             </div>
             <div class="color-#FCFF00 text-26px">
               {{getValue('微电网日用电量', false)}}kWh
@@ -62,7 +62,7 @@
           <div><img :src="eleIcon" class="w-44px pointer-events-none" alt="" /></div>
           <div class="ml-12px">
             <div>
-              微电网日发电量
+              微电网累计发电量
             </div>
             <div class="color-#FCFF00 text-26px">
               {{getValue('微电网日发电量', false)}}kWh
@@ -77,7 +77,14 @@
         </div>
       </div>
 
-      <card-header title="光伏" />
+      <div class="flex gap-8px items-end mb-12px">
+        <div class="flex-1">
+          <card-header title="光伏" hide-action />
+        </div>
+        <div class="flex-1">
+          <card-header title="风电" />
+        </div>
+      </div>
       <div class="flex gap-8px pt-4px">
         <div class="flex-1">
           <div class="flex gap-8px mb-8px" v-for="item in solarList" :key="item.id">
@@ -112,7 +119,7 @@
 
     </div>
     <div class="w-23.5% pr-20px">
-      <CardHeader title="电池" />
+      <CardHeader title="储能" />
       <div class="flex flex-wrap shadow-bg !pt-40px battery-list">
         <div v-for="item in batteryInfo" class="w-50%" :key="item.key">
           <div class=" flex items-center mb-16px pl-10px battery-item">
@@ -135,7 +142,7 @@
               <img :src="icon8" class="w-44px" alt="" />
             </div>
             <div>
-              <div class="color-#fff font-size-[15px]">节电量：</div>
+              <div class="color-#fff font-size-[15px]">累计减少电网电量：</div>
               <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节电量`, true)}}kWh</div>
             </div>
           </div>
@@ -145,7 +152,7 @@
             </div>
             <div>
               <div class="color-#fff font-size-[15px]">减碳量：</div>
-              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`减碳量`, true)}}kg</div>
+              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`减碳量`, true)}}t</div>
 
             </div>
           </div>
@@ -155,13 +162,13 @@
             </div>
             <div>
               <div class="color-#fff font-size-[15px]">节省金额：</div>
-              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节省金额`, true)}}元</div>
+              <div class="font-size-24px font-600 color-#FCFF00">{{getValue(`节省金额`, true)}}万元</div>
 
             </div>
           </div>
         </nav>
 
-        <div class="flex-1 pl-30px">
+        <div class="flex-1 pl-38px">
           <PieBattery
             :data="useTotalRef"
             class="h-11vw"
@@ -217,26 +224,26 @@ const keyValue = ref<Record<string, string | number>>({});
 
 // 静态数据定义
 const staticData = {
-  '用电功率': 1250,
-  '当日用电量': 1644.8,
+  '用电功率': 372,
+  '当日用电量': 5600.4,
   '电网功率': 800,
   '并网状态': 16, // 二进制位控制按钮状态
-  '微电网日用电量': 3947.6,
-  '微电网日发电量': 1315.8,
+  '微电网日用电量':588000.1,
+  '微电网日发电量': 128590.1,
   // 光伏展示重定义
-  '当日发电量-1': 8025,
-  '累计发电量-1': 40125,
-  '发电功率-1': 920,
-  '装机功率-1': 1350,
-  '风电累计发电量-2': 7828,
-  '风电当日发电量-2': 4800,
-  '发电功率值': 800,
+  '当日发电量-1': 8900,
+  '累计发电量-1': 78540,
+  '发电功率-1': 400,
+  '装机功率-1': 3740,
+  '累计发电量-2': 50050,
+  '当日发电量-2': 25,
+  '发电功率值': 0,
   '装机容量值': 1100,
   '七日用电量': 19800,
-  '电池电量': 75,
-  '充放电次数': 12,
-  '装机功率':600,
-  '装机电量': 1.2,
+  '电池电量': 95,
+  '充放电次数': 2,
+  '装机功率':2,
+  '装机电量': 8,
   '单体温度最大值': 27,
   '单体温度最小值': 28,
   '节电量': 2368.2 ,
@@ -297,11 +304,11 @@ const useTotalRef = computed(() => {
     dimensions: ['label', 'value'],
     source: [
       {
-        label: '电池剩余电量',
-        value: getValue('电池电量', false) || 0,
+        label: '新能源电量',
+        value: 22,
       }, {
-        label: '电池已放电量',
-        value: 100 - ((getValue('电池电量', false) as number) || 0),
+        label: '电网电量',
+        value: 100 - 22,
       }
     ],
   }
@@ -311,11 +318,11 @@ const getterTotalRef = computed(() => {
     dimensions: ['label', 'value'],
     source: [
       {
-        label: '光伏1',
-        value: getValue('光伏1发电量', false) || 0,
+        label: '光伏',
+        value: 61,
       }, {
-        label: '光伏2',
-        value: getValue('光伏2发电量', false) || 0,
+        label: '风电',
+        value: 39,
       }
     ],
   }
@@ -332,7 +339,7 @@ onMounted(() => {
   dynamicTimer = setInterval(() => {
     const kv = keyValue.value;
     if (!kv) return;
-    kv['用电功率'] = randomInRange(150, 190);
+    kv['用电功率'] = randomInRange(346, 380);
     kv['电网功率'] = randomInRange(50, 80);
   }, 2000);
 })
@@ -522,9 +529,9 @@ const solarTypes = [{
   value: 'fdl12',
   label: '发电量',
   unit: 'kWh',
-  gf1: '风电累计发电量-2',
-  gf2: '风电当日发电量-2',
-  getLabel: (item: any) => (item.id === '1' ? '风电累计发电量' : '风电当日发电量'),
+  gf1: '累计发电量-2',
+  gf2: '当日发电量-2',
+  getLabel: (item: any) => (item.id === '1' ? '累计发电量' : '当日发电量'),
   icon: icon3,
   iconCls: 'w-36px',
   cls: 'bg-icon-success'
@@ -570,7 +577,7 @@ const batteryInfo = [
   {
     label: '装机功率',
     key: '3',
-    unit: 'kW',
+    unit: 'MW',
     valKey:  '装机功率',
     icon: tdIcon3,
     iconWidth: 27,
@@ -580,7 +587,7 @@ const batteryInfo = [
     key: '6',
     valKey:  '装机电量',
     icon: tdIcon3,
-    unit: 'kWh',
+    unit: 'MWh',
     iconWidth: 27,
   },
   {
@@ -641,6 +648,20 @@ const batteryInfo = [
 .real-price{
   box-sizing: border-box;
   height: 12vw;
+}
+.card-screen-header{
+  position: relative;
+  padding: 10px 0;
+  margin-bottom: 12px;
+  &:before{
+    content: '';
+    position: absolute;
+    height: 2px;
+    left: 0;
+    width: 32px;
+    bottom: -1px;
+    background-color: #29F0F1;
+  }
 }
 .border-total{
   background: url("@/views/screen/assets/lineBg.png") no-repeat top center;

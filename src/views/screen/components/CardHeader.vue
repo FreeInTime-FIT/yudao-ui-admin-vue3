@@ -6,9 +6,10 @@ import arrow3 from '@/views/screen/assets/real/arrow-3.png';
 defineOptions({
   name: 'CardHeader',
 })
-const { title } = defineProps<{
+const { title, hideAction } = defineProps<{
   title: string;
   size?: 'small' | 'default';
+  hideAction?: true;
 }>()
 </script>
 
@@ -18,7 +19,7 @@ const { title } = defineProps<{
       <h3 class="text-18px mb-0 mt-0">{{title}}</h3>
     </slot>
 
-    <div class="action">
+    <div class="action" v-if="!hideAction">
       <img :src="arrow1" class="w-16px" alt="" />
       <img :src="arrow2" class="w-16px" alt="" />
       <img :src="arrow3" class="w-16px" alt="" />
