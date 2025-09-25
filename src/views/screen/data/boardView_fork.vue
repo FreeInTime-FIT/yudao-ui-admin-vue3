@@ -168,7 +168,7 @@
           </div>
         </nav>
 
-        <div class="flex-1 pl-38px">
+        <div class="flex-1">
           <PieBattery
             :data="useTotalRef"
             class="h-11vw"
@@ -246,9 +246,9 @@ const staticData = {
   '装机电量': 8,
   '单体温度最大值': 27,
   '单体温度最小值': 28,
-  '节电量': 2368.2 ,
-  '减碳量': 1376,
-  '节省金额': 1012.4,
+  '节电量': 100943.15 ,
+  '减碳量': 54.17,
+  '节省金额': 3.55,
 };
 
 const getLastData = () => {
