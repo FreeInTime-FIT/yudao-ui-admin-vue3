@@ -106,7 +106,7 @@ v-for="item in projectStore.projectList"
         </div>
       </div>
       <article
-        class="flex flex-col ml-[16px] box-border pt-[12px] h-[100%] overflow-y-auto"
+        class="flex flex-col pt-[12px] ml-[16px] mr-[16px]  box-border  h-[100%] overflow-y-auto"
         :class="{full: $route.meta.full}"
       >
         <router-view>

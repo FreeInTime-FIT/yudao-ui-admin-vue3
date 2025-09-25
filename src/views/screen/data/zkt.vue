@@ -172,7 +172,7 @@ onMounted(() => {
       </main>
 
       <!-- 右侧图表 -->
-      <aside class="h-full flex flex-col gap-16px overflow-hidden pr-20px mr-2px">
+      <aside class="h-full flex flex-col gap-16px overflow-hidden  mr-10px">
         <div v-for="(cfg, i) in charts" :key="cfg.title" class="shadow-bg h-319px overflow-hidden">
           <div :ref="(el) => (chartRefs[i].value = el as HTMLDivElement)" class="w-full h-full"></div>
         </div>

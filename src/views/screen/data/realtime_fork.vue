@@ -1,476 +1,552 @@
 <script setup lang="ts">
 import * as echarts from 'echarts'
 import screenConfig from '@/views/screen/config/echart.json'
-import CardHeader from '@/views/screen/components/CardHeader.vue'
 import centerBg from '@/views/screen/assets/realtime_fork/image.png'
-import gfIcon from '@/views/screen/assets/real/icon-gf.png'
-import cdlIcon from '@/views/screen/assets/real/icon-cdl.png'
-import tdIcon1 from '@/views/screen/assets/real/today-icon-1.png'
-import tdIcon2 from '@/views/screen/assets/real/today-icon-2.png'
-import tdIcon3 from '@/views/screen/assets/real/today-icon-3.png'
-import tdIcon4 from '@/views/screen/assets/real/today-icon-4.png'
 
-import {useProjectStore} from "@/store/modules/project";
-import {dateFormatter} from "@/utils/formatTime";
 echarts.registerTheme('screen', screenConfig);
 
 defineOptions({
   name: 'ScreenDataRealtime',
 })
 
-const projectStore = useProjectStore();
-const detailVisible = ref(false)
-const isEdit = ref(false)
-const keyValue = ref<Record<string, string | number>>({});
+// 碳排放统计数据
+const carbonStats = ref({
+  newEnergyGeneration: 19800, // kWh
+  carbonReduction: 10.625, // 吨
+  equivalentTrees: 664, // 颗
+  carbonCredits: 19.8 // 个
+})
 
-interface TodayDataItem {
-  label: string;
-  key: string;
-  valKey: string;
-  unit: string;
-  icon: string;
-  iconWidth: number;
-  value?: number;
+// 建筑能耗排名数据
+const buildingEnergyRanking = ref([
+  { name: '行政楼', value: 2140, unit: 'kWh' },
+  { name: '生产车间A', value: 1867, unit: 'kWh' },
+  { name: '生产车间B', value: 1768, unit: 'kWh' },
+  { name: '仓储中心', value: 1432, unit: 'kWh' },
+  { name: '研发中心', value: 1245, unit: 'kWh' }
+])
+
+// 图表引用
+const powerCurveChart = ref<HTMLDivElement>()
+const weeklyComparisonChart = ref<HTMLDivElement>()
+const powerConsumptionChart = ref<HTMLDivElement>()
+const electricityAnalysisChart = ref<HTMLDivElement>()
+
+// 创建功率曲线图表
+function createPowerCurveChart() {
+  if (!powerCurveChart.value) return
+  const chart = echarts.init(powerCurveChart.value, 'screen')
+  
+  const option = {
+    backgroundColor: 'transparent',
+    title: {
+      text: '金刚石及玄武岩运行功率曲线',
+      left: 'center',
+      top: 10,
+      textStyle: { color: '#fff', fontSize: 16 }
+    },
+    grid: { left: 60, right: 30, top: 50, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff' }
+    },
+    yAxis: {
+      type: 'value',
+      name: 'kW',
+      nameTextStyle: { color: '#fff' },
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff' },
+      splitLine: { lineStyle: { color: '#024a8a' } }
+    },
+    legend: {
+      top: 30,
+      right: 20,
+      textStyle: { color: '#fff' }
+    },
+    series: [
+      {
+        name: '金刚石',
+        type: 'line',
+        smooth: true,
+        lineStyle: { color: '#FFD84D', width: 2 },
+        data: [120, 180, 250, 300, 280, 320, 290, 200]
+      },
+      {
+        name: '玄武岩',
+        type: 'line',
+        smooth: true,
+        lineStyle: { color: '#4FC3FF', width: 2 },
+        data: [80, 120, 160, 200, 180, 220, 190, 140]
+      }
+    ]
+  }
+  
+  chart.setOption(option)
 }
-const todayDataList: TodayDataItem[] = [
-  {
-    label: '购电量',
-    key: '1',
-    valKey:'购电总量',
-    unit: 'kWh',
-    icon: cdlIcon,
-    iconWidth: 26,
-  },
-  {
-    label: '发电量',
-    key: '2',
-    valKey:  '发电总量',
-    unit: 'kWh',
-    icon: gfIcon,
-    iconWidth: 44,
-  },
-  {
-    label: '储能量',
-    key: '3',
-    unit: 'kWh',
-    valKey:  '储能总量',
-    icon: tdIcon3,
-    iconWidth: 27,
-  },
-  {
-    label: '用电量',
-    key: '4',
-    valKey:  '用电总量',
-    unit: 'kWh',
-    icon: tdIcon2,
-    iconWidth: 25,
-  },
-  {
-    label: '排碳量',
-    key: '11',
-    valKey:  '排碳总量',
-    unit: 'kg',
-    icon: tdIcon1,
-    iconWidth: 26,
-  },
-  {
-    label: '减碳量',
-    key: '21',
-    unit: 'kg',
-    valKey:  '减碳总量',
-    icon: tdIcon1,
-    iconWidth: 26,
-  },
-  {
-    label: '节能量',
-    key: '31',
-    unit: 'kg',
-    icon: tdIcon1,
-    iconWidth: 26,
-    valKey:  '节能总量',
-  },
-  {
-    label: '降费金额',
-    key: '41',
-    unit: '元',
-    valKey:  '降费金额',
-    icon: tdIcon4,
-    iconWidth: 30,
-  },
-]
 
-interface WarningRecordItem {
-  id: number;
-  createTime: string;
-  level: string;
-  info: string;
+// 创建近7日耗能对比图
+function createWeeklyComparisonChart() {
+  if (!weeklyComparisonChart.value) return
+  const chart = echarts.init(weeklyComparisonChart.value, 'screen')
+  
+  const option = {
+    backgroundColor: 'transparent',
+    title: {
+      text: '近7日耗能对比图',
+      left: 'center',
+      top: 10,
+      textStyle: { color: '#fff', fontSize: 16 }
+    },
+    grid: { left: 60, right: 30, top: 50, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: ['2024-06-06', '2024-06-08', '2024-06-10', '2024-06-12'],
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff', rotate: 45 }
+    },
+    yAxis: {
+      type: 'value',
+      name: 'kWh',
+      nameTextStyle: { color: '#fff' },
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff' },
+      splitLine: { lineStyle: { color: '#024a8a' } }
+    },
+    legend: {
+      top: 30,
+      right: 20,
+      textStyle: { color: '#fff' }
+    },
+    series: [
+      {
+        name: '昨日',
+        type: 'bar',
+        itemStyle: { color: '#4FC3FF' },
+        data: [1800, 2400, 1400, 1600]
+      },
+      {
+        name: '今日',
+        type: 'bar',
+        itemStyle: { color: '#FFD84D' },
+        data: [2200, 2600, 1200, 2400]
+      }
+    ]
+  }
+  
+  chart.setOption(option)
 }
-const warningData = ref<{ data: { list: WarningRecordItem[] } }>({
-  data: { list: [] }
-});
 
-function getData() {
-  // 静态面板数据（用于替换接口返回）
-  keyValue.value = {
-    '购电总量': 12680,
-    '发电总量': 8540,
-    '储能总量': 4320,
-    '用电总量': 17020,
-    '排碳总量': 2350,
-    '减碳总量': 3180,
-    '节能总量': 920,
-    '降费金额': 46800,
-  };
+// 创建电力消费统计图表
+function createPowerConsumptionChart() {
+  if (!powerConsumptionChart.value) return
+  const chart = echarts.init(powerConsumptionChart.value, 'screen')
+  
+  const option = {
+    backgroundColor: 'transparent',
+    title: {
+      text: '电力消费统计',
+      left: 'center',
+      top: 10,
+      textStyle: { color: '#fff', fontSize: 16 }
+    },
+    grid: { left: 60, right: 30, top: 50, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`),
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff' }
+    },
+    yAxis: {
+      type: 'value',
+      name: 'kW',
+      nameTextStyle: { color: '#fff' },
+      axisLine: { lineStyle: { color: '#345' } },
+      axisLabel: { color: '#fff' },
+      splitLine: { lineStyle: { color: '#024a8a' } }
+    },
+    legend: {
+      top: 30,
+      right: 20,
+      textStyle: { color: '#fff' }
+    },
+    series: [
+      {
+        name: '昨日',
+        type: 'line',
+        smooth: true,
+        lineStyle: { color: '#4FC3FF', width: 2 },
+        areaStyle: { color: 'rgba(79, 195, 255, 0.3)' },
+        data: [150, 120, 100, 80, 90, 110, 140, 180, 220, 250, 280, 300, 320, 310, 290, 270, 250, 230, 200, 180, 160, 140, 130, 120]
+      },
+      {
+        name: '今日',
+        type: 'line',
+        smooth: true,
+        lineStyle: { color: '#FFD84D', width: 2 },
+        areaStyle: { color: 'rgba(255, 216, 77, 0.3)' },
+        data: [140, 110, 95, 85, 100, 120, 160, 200, 240, 270, 300, 320, 340, 330, 310, 290, 270, 250, 220, 190, 170, 150, 140, 130]
+      }
+    ]
+  }
+  
+  chart.setOption(option)
+}
 
-  // 静态告警列表
-  warningData.value = {
-    data: {
-      list: [
-        { id: 1, createTime: new Date().toISOString(), level: '一般', info: '逆变器1温度偏高' },
-        { id: 2, createTime: new Date(Date.now() - 60_000).toISOString(), level: '提示', info: '今日光伏发电低于昨日' },
-        { id: 3, createTime: new Date(Date.now() - 120_000).toISOString(), level: '重要', info: '储能SOC低于30%' },
-        { id: 4, createTime: new Date(Date.now() - 180_000).toISOString(), level: '一般', info: '并网点电压波动' },
-        { id: 5, createTime: new Date(Date.now() - 240_000).toISOString(), level: '提示', info: '电价即将进入峰时段' },
-      ]
-    }
-  };
-
-  return { data: keyValue.value };
+// 创建用电情况分析图表
+function createElectricityAnalysisChart() {
+  if (!electricityAnalysisChart.value) return
+  const chart = echarts.init(electricityAnalysisChart.value, 'screen')
+  
+  const option = {
+    backgroundColor: 'transparent',
+    title: {
+      text: '金刚石及玄武岩用电情况分析',
+      left: 'center',
+      top: 10,
+      textStyle: { color: '#fff', fontSize: 16 }
+    },
+    grid: [
+      { left: '10%', right: '55%', top: '20%', bottom: '20%' },
+      { left: '55%', right: '10%', top: '20%', bottom: '20%' }
+    ],
+    series: [
+      {
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['25%', '50%'],
+        data: [
+          { value: 421.2, name: '峰时用电' },
+          { value: 30.9, name: '平时用电' },
+          { value: 1.9, name: '谷时用电' }
+        ],
+        itemStyle: {
+          color: function(params: any) {
+            const colors = ['#FFD84D', '#4FC3FF', '#1EBCA1']
+            return colors[params.dataIndex]
+          }
+        },
+        label: {
+          show: true,
+          color: '#fff',
+          formatter: '{b}: {c}kWh'
+        }
+      },
+      {
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['75%', '50%'],
+        data: [
+          { value: 311.6, name: '峰时用电' },
+          { value: 309.1, name: '平时用电' }
+        ],
+        itemStyle: {
+          color: function(params: any) {
+            const colors = ['#FFD84D', '#4FC3FF']
+            return colors[params.dataIndex]
+          }
+        },
+        label: {
+          show: true,
+          color: '#fff',
+          formatter: '{b}: {c}kWh'
+        }
+      }
+    ]
+  }
+  
+  chart.setOption(option)
 }
 
 onMounted(() => {
-  getData();
-});
-const projectInfo = computed(() => {
-  const project = (projectStore.projectInfo || {}) as Record<string, any>;
-
- return {
-   projectCode: project.code,
-   projectName: project.name,
-   address: project.address,
-   userName: project.ownerName,
-   code4: '8000kVA',
-   code5: '8000kW',
-   latlng: [project.lng, project.lat].join(','),
-   ...project,
-   r1: '6000kVA',
-   fh: '6000kW',
-   cn: '电池储能',
-   cnrl: '8000kWh',
-   edgl: '8000kW',
-   dclx: '铅酸电池',
-   dcdy: '48V',
-   fdsd: '90%',
-   xhsm: '1000次循环',
-   cfdsl: '2C',
-   yqsm: '10年',
-   wdfw: '-20℃至60℃',
- }
+  nextTick(() => {
+    createPowerCurveChart()
+    createWeeklyComparisonChart()
+    createPowerConsumptionChart()
+    createElectricityAnalysisChart()
+  })
 })
-const getValue = (key, unit = '') => {
-  const v =  {
-    ...(unref(projectInfo)),
-    ...(unref(keyValue)),
-  }[key] || '';
-  if (v) {
-    return v + (unit || '');
-  }
-  return v;
-}
-
-// 已切换为静态数据渲染，编辑弹窗入口暂不使用
 
 </script>
 
 <template>
-  <section class="w-full h-screen overflow-x-hidden">
-    <div class="flex gap-24px h-full">
+  <section class="dashboard-root w-full h-[calc(100vh-80px)] overflow-hidden bg-#000">
+    <!-- 主要网格布局 -->
+    <div class="dashboard-grid h-full grid grid-cols-[20%_50%_30%] grid-rows-[50%_50%] gap-6px ">
       
-      <div class="flex-1 h-full">
-        <img :src="centerBg" class="w-full h-full object-cover" alt="" />
-        
+      <!-- 左上：碳排放统计 -->
+      <div class="card-container">
+        <div class="card-header">碳排放统计</div>
+        <div class="card-content">
+          <div class="stat-item">
+            <div class="stat-label">新能源发电量：</div>
+            <div class="stat-value">{{ carbonStats.newEnergyGeneration }} kWh</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">碳减排量：</div>
+            <div class="stat-value">{{ carbonStats.carbonReduction }} 吨</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">等效植树数：</div>
+            <div class="stat-value">{{ carbonStats.equivalentTrees }} 颗</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">绿证数：</div>
+            <div class="stat-value">{{ carbonStats.carbonCredits }} 个</div>
+          </div>
+        </div>
       </div>
-      <div class="w-24% pr-20px h-full flex flex-col">
 
-        <article class="card-box flex-1 flex flex-col">
-          <CardHeader title="当日数据" />
-          <div class="flex flex-wrap flex-1 overflow-y-auto">
-            <div v-for="item in todayDataList" class="w-50%" :key="item.key">
-              <div class=" flex items-center mb-20px mr-20px pl-30px">
-                <div class="today-bg">
-                  <img :src="item.icon" :style="{width: item.iconWidth + 'px'}"  alt="" />
-                </div>
-                <div class="ml-8px w-0 flex-1">
-                  <div class="fw-bold line-height-20px">{{item.label}}</div>
-                  <div class="color-#3DBDFF font-you-she-biao-ti-hei fw-bold text-26px line-height-30px">{{getValue(item.valKey) || item.value || '-'}}{{item.unit}}</div>
+      <!-- 中上：碳排放管理及能耗监测主图 -->
+      <div class="card-container relative">
+        <div class="card-header">碳排放管理及能耗监测</div>
+        <div class="main-diagram-container relative">
+          <img :src="centerBg" class="w-full h-full object-cover mt-20px ml-[-26px]" alt="微电网智能源平台" />
+          <!-- 绝对定位的文字标签 -->
+          <div class="absolute-text text-1">市电309kW</div>
+          <div class="absolute-text text-2">光伏760kW</div>
+          <div class="absolute-text text-3">新能源占比 87%</div>
+          <div class="absolute-text text-4">光储充路由器360kW</div>
+          <div class="absolute-text text-5">台区互联路由器270kW</div>
+          <div class="absolute-text text-6">风电680kW</div>
+          <div class="absolute-text text-7">负荷2379kW</div>
                 </div>
               </div>
 
+      <!-- 右上：金刚石及玄武岩运行功率曲线 -->
+      <div class="card-container">
+        <div ref="powerCurveChart" class="w-full h-full"></div>
+      </div>
+
+      <!-- 左下：建筑能耗排名 -->
+      <div class="card-container">
+        <div class="card-header">建筑能耗排名</div>
+        <div class="card-content">
+          <div v-for="item in buildingEnergyRanking" :key="item.name" class="ranking-item">
+            <div class="ranking-icon">
+              <i class="building-icon"></i>
+            </div>
+            <div class="ranking-info">
+              <div class="building-name">{{ item.name }}</div>
+              <div class="building-value">{{ item.value }} {{ item.unit }}</div>
             </div>
           </div>
-        </article>
-        <article class="card-box mt-30px flex-1 flex flex-col">
-          <card-header title="警告信息" />
-          <div class="shadow-bg flex-1 flex flex-col">
-            <ElTable
-              :data="warningData.data?.list"
-              row-key="id"
-              class="data-table flex-1"
-              border
-              stripe
-              :height="'100%'"
-            >
-              <ElTableColumn :width="60" label="序号" type="index"  />
-              <ElTableColumn :width="180" label="时间" prop="createTime" :formatter="dateFormatter" />
-              <ElTableColumn label="警告级别" prop="level"  />
-              <ElTableColumn show-overflow-tooltip label="警告信息" prop="info"  />
-            </ElTable>
+        </div>
+      </div>
+
+      <!-- 中下：电力消费统计 -->
+      <div class="card-container">
+        <div ref="powerConsumptionChart" class="w-full h-full"></div>
           </div>
 
-        </article>
+      <!-- 右上第二行：近7日耗能对比图 -->
+      <div class="card-container row-span-1">
+        <div ref="weeklyComparisonChart" class="w-full h-50%"></div>
+        <div ref="electricityAnalysisChart" class="w-full h-50%"></div>
       </div>
+
     </div>
   </section>
-
-  <ElDialog
-    :title="getValue('projectName')"
-    lock-scroll
-    class="dialog"
-    center
-    align-center
-    :append-to-body="false"
-    v-model="detailVisible"
-  >
-    <ElForm
-      label-width="auto"
-    >
-      <ElFormItem label="项目编号" prop="projectCode">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.projectCode" />
-      </ElFormItem>
-      <ElFormItem label="业主名称" prop="userName">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.userName" />
-      </ElFormItem>
-      <ElFormItem label="项目地址" prop="address">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.address" />
-      </ElFormItem>
-      <ElFormItem label="项目经纬度" prop="latlng">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.latlng" />
-      </ElFormItem>
-      <ElFormItem label="变压器容量" prop="r1">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.r1" />
-      </ElFormItem>
-      <ElFormItem label="负荷总功率" prop="fh">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.fh" />
-      </ElFormItem>
-      <ElFormItem label="储能类型" prop="cn">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.cn" />
-      </ElFormItem>
-      <ElFormItem label="储能容量" prop="cnrl">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.cnrl" />
-      </ElFormItem>
-      <ElFormItem label="额定功率" prop="edgl">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.edgl" />
-      </ElFormItem>
-      <ElFormItem label="电池类型" prop="dclx">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.dclx" />
-      </ElFormItem>
-      <ElFormItem label="电池电压范围" prop="dcdy">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.dcdy" />
-      </ElFormItem>
-      <ElFormItem label="放电深度" prop="fdsd">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.fdsd" />
-      </ElFormItem>
-      <ElFormItem label="循环寿命" prop="xhsm">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.xhsm" />
-      </ElFormItem>
-      <ElFormItem label="充放电速率" prop="cfdsl">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.cfdsl" />
-      </ElFormItem>
-      <ElFormItem label="预期寿命" prop="yqsm">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.yqsm" />
-      </ElFormItem>
-      <ElFormItem label="温度范围" prop="wdfw">
-        <ElInput :readonly="!isEdit" v-model="projectInfo.wdfw" />
-      </ElFormItem>
-    </ElForm>
-    <template #footer v-if="isEdit">
-      <div class="dialog-footer">
-        <el-button @click="detailVisible = false">关闭</el-button>
-        <el-button type="primary" @click="detailVisible = false">
-          确认提交
-        </el-button>
-      </div>
-    </template>
-  </ElDialog>
 </template>
 
 <style scoped lang="scss">
+.dashboard-root {
+  background: #000;
+  color: #fff;
+  font-family: 'Microsoft YaHei', sans-serif;
+}
 
-  .border-bottom-primary{
-    position: relative;
-    &:after{
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: #1EBCA1;
-    }
-  }
-  .border-bottom-primary-1{
-    position: relative;
-    &:after{
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(to right, rgba(30, 188, 161, 0.1), rgba(30, 188, 161, 0.8));
-    }
-  }
-  .border-bottom-blue{
-    position: relative;
-    &:after{
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(to right, rgba(36, 143, 218, 0.1), #248FDA);
-    }
-  }
+.dashboard-grid {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+}
 
-  .shadow-bg{
-    padding: 12px;
-    box-shadow: inset 0 0 20px 0px #024A8A;
+.card-container {
+  background: rgba(11, 18, 42, 0.8);
+  border: 1px solid rgba(36, 143, 218, 0.3);
+  border-radius: 8px;
+  box-shadow: inset 0 0 20px rgba(2, 74, 138, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  background: linear-gradient(90deg, rgba(36, 143, 218, 0.25), rgba(36, 143, 218, 0.05));
+  border-left: 3px solid #248FDA;
+  padding: 12px 16px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #fff;
+}
+
+.card-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+// 碳排放统计样式
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  
+  &:last-child {
+    border-bottom: none;
   }
-  .ele-bg{
+}
+
+.stat-label {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.stat-value {
+  color: #FFD84D;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+// 建筑能耗排名样式
+.ranking-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(36, 143, 218, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #4FC3FF;
+}
+
+.ranking-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(79, 195, 255, 0.2);
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.building-icon {
+  width: 20px;
+  height: 20px;
+  background: #4FC3FF;
+  border-radius: 2px;
     position: relative;
-    padding: 18px 16px;
-    border-radius: 8px;
-    background: linear-gradient(to right, rgba(32, 168, 232, 0.2),  #0b122a 30%, #0b122a 50%, rgba(32, 168, 232, 0.17));
-    &:before{
+  
+  &::before {
       content: '';
       position: absolute;
-      background: url(@/views/screen/assets/real/brackets-left.png) no-repeat;
-      width: 19px;
-      top: -5px;
-      left: -5px;
-      bottom: -5px;
-      background-size: 100% 100%;
-    }
-    &:after{
-      content: '';
-      position: absolute;
-      background: url(@/views/screen/assets/real/brackets-right.png) no-repeat;
-      width: 18px;
-      top: -5px;
-      right: -5px;
-      bottom: -5px;
-      background-size: 100% 100%;
-    }
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 6px solid #4FC3FF;
   }
-  .real-box{
-    margin: 16px 7.5vw 40px;
+}
+
+.ranking-info {
+  flex: 1;
+}
+
+.building-name {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.building-value {
+  color: #FFD84D;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+// 主图容器样式
+.main-diagram-container {
+  flex: 1;
     position: relative;
-    font-weight: bold;
-    .content{
+  overflow: hidden;
+}
+
+// 绝对定位文字样式
+.absolute-text {
       position: absolute;
-      top: 0;
-      left:0 ;
-      right: 0;
-      bottom: 0;
-    }
-    .content_1{
-      position: absolute;
-      top: 16%;
-      left: -50px;
-    }
-    .content_2{
-      position: absolute;
-      top: 16%;
-      right: -50px;
-    }
-    .content_3{
-      position: absolute;
-      top: 60%;
-      left: -100px;
-    }
-    .content_4{
-      position: absolute;
-      top: 60%;
-      right: -110px;
-    }
-    .content_5{
-      position: absolute;
-      bottom: -24px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFD84D;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid rgba(255, 216, 77, 0.5);
+  white-space: nowrap;
+  z-index: 10;
+}
+
+// 根据图片位置调整文字位置
+.text-1 { // 市电309kW
+  top: 7%;
+  left: 3%;
+}
+
+.text-2 { // 光伏760kW
+  top: 2%;
+  left: 22%;
+}
+
+.text-3 { // 新能源占比 87%
+  top: 11%;
       left: 50%;
       transform: translateX(-50%);
-    }
-  }
-  .bg-icon-primary{
-    background-color:rgba(30, 188, 161, 0.1);
-    border-left: 3px solid rgba(30, 188, 161, 100);
-    padding-left: 5px;
-    .bg-icon{
-      background-color: rgba(1, 206, 220, 0.2);
-    }
-    .ele-title{
-      color: rgba(30, 188, 161, 100);;
-    }
-  }
-  .bg-icon-success{
-    background-color: rgba(25, 164, 255, 0.1);
-    border-left: 3px solid rgba(25, 164, 255, 100);
-    padding-left: 5px;
-    .ele-title{
-      color: rgba(25, 164, 255);;
-    }
+  background: rgba(255, 0, 0, 0.8);
+  color: #fff;
+  border-color: rgba(255, 0, 0, 0.8);
+}
 
-    .bg-icon{
-      background-color: rgba(25, 164, 255, 0.2);
-    }
+.text-4 { // 光储充路由器360kW
+  top: 0%;
+  right: 14%;
+}
+
+.text-5 { // 台区互联路由器270kW
+  top: 16%;
+  right: 0%;
+}
+
+.text-6 { // 风电680kW
+  bottom: 37%;
+  left: 15%;
+}
+
+.text-7 { // 负荷2379kW
+  bottom: 33%;
+  right: 10%;
+}
+
+// 响应式调整
+@media (max-width: 1600px) {
+  .absolute-text {
+    font-size: 12px;
+    padding: 2px 6px;
   }
-  .bg-icon{
-    width: 52px;
-    display: flex;
-    align-items: center;
-    height: 61px;
-    justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 25% 45% 30%;
   }
-  .ele-title{
-    font-weight: bold;
-  }
-  .ele-value{
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .today-bg{
-    width: 55px;
-    height: 54px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url(@/views/screen/assets/real/today-bg.png) no-repeat;
-    background-size: 100% 100%;
-  }
-  :deep(.dialog){
-    --el-dialog-margin-top: 50px;
-  }
-  .data-table{
-    //--el-fill-color-lighter: rgb(23,34,70);
-    --el-table-header-bg-color: #172246;
-    :deep( .el-table__cell){
-      padding: 12px 0;
-    }
-    &.el-table--border :deep(th.el-table__cell){
-      border-bottom: 1px dashed #fff;
-    }
-    :deep(td.el-table__cell) {
-      border-right:1px dashed #fff; ;
+  
+  .absolute-text {
+    font-size: 10px;
+    padding: 2px 4px;
     }
   }
 </style>
