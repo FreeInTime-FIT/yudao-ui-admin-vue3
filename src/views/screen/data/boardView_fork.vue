@@ -111,8 +111,8 @@
             class="w-37px"
             alt="" /></div>
           <div class="ml-10px">
-            <div class="ele-title">7天总发电量</div>
-            <div class="ele-value">{{keyValue["七日用电量"]}}kWh</div>
+            <div class="ele-title">风光总发电量</div>
+            <div class="ele-value">{{keyValue["七日用电量"]}}MWh</div>
           </div>
         </div>
       </div>
@@ -168,16 +168,16 @@
           </div>
         </nav>
 
-        <div class="flex-1">
+        <div class="flex-1 pl-150px">
           <PieBattery
             :data="useTotalRef"
-            class="h-11vw"
+            class="h-11vw w-280px"
             title="用电统计"
             unit="%"
             :options="useCurrentOptions"
           />
           <PieBattery
-            class="h-11vw"
+            class="h-11vw w-280px"
             title="发电统计"
             unit="kWh"
             :options="useTotalOptions"
@@ -228,7 +228,7 @@ const staticData = {
   '当日用电量': 5600.4,
   '电网功率': 800,
   '并网状态': 16, // 二进制位控制按钮状态
-  '微电网日用电量':588000.1,
+  '微电网日用电量':87600.5,
   '微电网日发电量': 128590.1,
   // 光伏展示重定义
   '当日发电量-1': 8900,
@@ -239,13 +239,13 @@ const staticData = {
   '当日发电量-2': 25,
   '发电功率值': 0,
   '装机容量值': 1100,
-  '七日用电量': 19800,
+  '七日用电量': 128.59,
   '电池电量': 95,
   '充放电次数': 2,
   '装机功率':2,
   '装机电量': 8,
-  '单体温度最大值': 27,
-  '单体温度最小值': 28,
+  '单体温度最大值': 28,
+  '单体温度最小值': 27,
   '节电量': 100943.15 ,
   '减碳量': 54.17,
   '节省金额': 3.55,
@@ -274,7 +274,7 @@ const useTotalOptions = {
     orient: 'horizontal',
   },
   title: {
-    left: '54%',
+    left: '50%',
   },
   series: {
     top: 0,
@@ -296,7 +296,7 @@ const useCurrentOptions = {
     bottom: 10,
   },
   title: {
-    left: '54%',
+    left: '50%',
   },
 }
 const useTotalRef = computed(() => {
@@ -305,10 +305,10 @@ const useTotalRef = computed(() => {
     source: [
       {
         label: '新能源电量',
-        value: 22,
+        value: 100 - 22,
       }, {
         label: '电网电量',
-        value: 100 - 22,
+        value: 22,
       }
     ],
   }
@@ -340,7 +340,7 @@ onMounted(() => {
     const kv = keyValue.value;
     if (!kv) return;
     kv['用电功率'] = randomInRange(346, 380);
-    kv['电网功率'] = randomInRange(50, 80);
+    kv['电网功率'] = -1 * randomInRange(50, 80);
   }, 2000);
 })
 onUnmounted(() => {

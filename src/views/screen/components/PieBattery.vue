@@ -81,7 +81,9 @@
         textStyle: {
           color: '#fff',
         },
-        ...(data.options?.title || {})
+        ...(data.options?.title || {}),
+        // 确保标题始终居中，不受 series 位置影响
+        left: data.options?.title?.left || 'center',
       },
       series: [{
         type: 'pie',
