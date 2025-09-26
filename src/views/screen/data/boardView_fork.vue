@@ -78,10 +78,10 @@
       </div>
 
       <div class="flex gap-8px items-end mb-12px">
-        <div class="flex-1">
+        <div class="w-40%">
           <card-header title="光伏" hide-action />
         </div>
-        <div class="flex-1">
+        <div class="w-60%">
           <card-header title="风电" />
         </div>
       </div>
@@ -237,7 +237,7 @@ const staticData = {
   '装机功率-1': 3740,
   '累计发电量-2': 50050,
   '当日发电量-2': 25,
-  '发电功率值': 0,
+  '发电功率值': 370,
   '装机容量值': 1100,
   '七日用电量': 128.59,
   '电池电量': 95,
@@ -341,6 +341,7 @@ onMounted(() => {
     if (!kv) return;
     kv['用电功率'] = randomInRange(346, 380);
     kv['电网功率'] = -1 * randomInRange(50, 80);
+    kv['发电功率值'] = randomInRange(360, 380);
   }, 2000);
 })
 onUnmounted(() => {
