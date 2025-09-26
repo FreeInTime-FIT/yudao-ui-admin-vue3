@@ -179,7 +179,7 @@
           <PieBattery
             class="h-11vw w-280px"
             title="发电统计"
-            unit="kWh"
+            unit="%"
             :options="useTotalOptions"
             :data="getterTotalRef"
           />
