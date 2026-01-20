@@ -4,25 +4,6 @@
       <div class="network-surface">
         <img class="network-core" :src="core" alt="" />
 
-        <header class="network-header">
-          <div class="header-left">
-            <span class="header-title">云监控系统</span>
-            <span class="header-subtitle">数据看板</span>
-          </div>
-          <div class="header-center">网络拓扑图</div>
-          <div class="header-right">
-            <span class="header-alert">实时告警</span>
-            <span class="header-admin">
-              <span class="header-avatar"></span>
-              <span>管理中心</span>
-            </span>
-            <div class="header-time">
-              <div class="header-clock">14:21:49</div>
-              <div class="header-date">2024-11-27</div>
-            </div>
-          </div>
-        </header>
-
         <p class="network-footer">
           国网智慧配电网统一管控平台，通过“融合终端+”模式，实现融合终端与主配微协同，提升配网分布式光伏接入能力，解决台区反向过载、三相不平衡、电压越限，实现对分布式资源的“可观、可测、可调、可控”。营销负荷管理系统，采集2.0生产控制域对分布式光伏调控，空调负荷管控，并与虚拟电厂贯通。
         </p>
@@ -65,10 +46,7 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .network-board {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -94,26 +72,13 @@ onBeforeUnmount(() => {
 
 .network-core {
   position: absolute;
-  top: 104px;
+  top: 45px;
   left: 50%;
   width: 1680px;
   height: auto;
   transform: translateX(-50%);
 }
 
-.network-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  padding: 0 40px 0 46px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  background: linear-gradient(90deg, #1b3d7f 0%, #1c468b 48%, #1b3d7f 100%);
-  box-sizing: border-box;
-}
 
 .header-left {
   display: flex;

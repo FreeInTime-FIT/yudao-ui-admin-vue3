@@ -3,26 +3,6 @@
     <div class="wiring-canvas">
       <div class="wiring-surface">
         <img class="wiring-core" :src="core" alt="" />
-
-        <header class="wiring-header">
-          <div class="header-left">
-            <span class="header-title">云监控系统</span>
-            <span class="header-subtitle">数据看板</span>
-          </div>
-          <div class="header-center">一次接线图</div>
-          <div class="header-right">
-            <span class="header-alert">实时告警</span>
-            <span class="header-admin">
-              <span class="header-avatar"></span>
-              <span>管理中心</span>
-            </span>
-            <div class="header-time">
-              <div class="header-clock">14:21:49</div>
-              <div class="header-date">2024-11-27</div>
-            </div>
-          </div>
-        </header>
-
         <p class="wiring-desc">
           国网新型电力系统——现代智慧配电网数智化（源网荷储）微电网应用示范工程
         </p>
@@ -68,10 +48,7 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .wiring-board {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
+  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -81,7 +58,7 @@ onBeforeUnmount(() => {
 
 .wiring-canvas {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   width: 1920px;
   height: 1080px;
