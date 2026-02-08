@@ -118,21 +118,23 @@
         <aside class="villa-column villa-right">
           <article class="panel-block">
             <CardHeader title="电网数据" />
-            <div class="surface-card" :style="{ backgroundImage: `url(${rightPanelBg})` }">
+            <div class="surface-card surface-card--plain" :style="{ backgroundImage: `url(${rightPanelBg})` }">
               <div class="grid-summary">
-                <img class="grid-summary__icon" :src="gridTowerIcon" alt="" />
-                <div>
+                <div class="grid-summary__info">
                   <div class="grid-summary__label">{{ gridSummary.label }}</div>
                   <div class="grid-summary__value">{{ gridSummary.value }}</div>
                 </div>
+                <img class="grid-summary__icon" :src="gridTowerIcon" alt="" />
               </div>
 
               <div class="phase-list">
                 <div class="phase-item" v-for="phase in phaseList" :key="phase.name">
-                  <img class="phase-item__bg" :src="phasePillBg" alt="" />
-                  <div class="phase-item__content">
-                    <span class="phase-item__name">{{ phase.name }}：</span>
-                    <span>{{ phase.value }}</span>
+                  <div class="phase-item__name">{{ phase.name }}：</div>
+                  <div class="phase-item__row">
+                    <img class="phase-item__bg" :src="phasePillBg" alt="" />
+                    <div class="phase-item__content">
+                      <div class="phase-item__detail">{{ phase.value }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -374,6 +376,11 @@ onBeforeUnmount(() => {
   box-shadow: inset 0 0 24px rgba(18, 115, 210, 0.35);
   background-size: 100% 100%;
   background-repeat: no-repeat;
+}
+
+.surface-card--plain {
+  border: none;
+  box-shadow: none;
 }
 
 .project-base-card {
@@ -708,8 +715,14 @@ onBeforeUnmount(() => {
 .grid-summary {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-end;
+  gap: 4px;
   margin-bottom: 12px;
+}
+
+.grid-summary__info {
+  min-width: 0;
+  text-align: right;
 }
 
 .grid-summary__icon {
@@ -739,8 +752,18 @@ onBeforeUnmount(() => {
 }
 
 .phase-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.phase-item__row {
   position: relative;
-  min-height: 52px;
+  width: 100%;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .phase-item__bg {
@@ -755,17 +778,21 @@ onBeforeUnmount(() => {
   z-index: 1;
   display: flex;
   align-items: center;
-  height: 100%;
+  min-height: 24px;
   padding: 0 14px;
   box-sizing: border-box;
   font-size: 13px;
+  line-height: 1.2;
   color: #b6ddff;
 }
 
 .phase-item__name {
   color: #e8f7ff;
-  margin-right: 4px;
   font-weight: 600;
+}
+
+.phase-item__detail {
+  white-space: nowrap;
 }
 
 .charge-box,
