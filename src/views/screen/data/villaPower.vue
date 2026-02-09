@@ -167,8 +167,10 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+import { getPanelData } from '@/services/services/IotReportController'
+import { useProjectStore } from '@/store/modules/project'
 
 import CardHeader from '@/views/screen/components/CardHeader.vue'
 
@@ -207,41 +209,138 @@ type MetricCell = {
   skin: PanelSkin
 }
 
+type UserBlock = {
+  name: string
+  rows: {
+    left: MetricCell
+    right: MetricCell
+  }[]
+}
+
+type PVBlock = {
+  user: string
+  items: MetricCell[]
+}
+
+type PanelData = Record<string, unknown>
+
 const boardRef = ref<HTMLElement>()
 const scale = ref(1)
+const keyValue = ref<PanelData>({})
+const projectStore = useProjectStore()
+let refreshTimer: ReturnType<typeof setInterval> | undefined
 
 const DESIGN_WIDTH = 1920
 // 设计稿是 1920x1080，顶部系统栏约 80px，不在当前内容区域内。
 const DESIGN_HEIGHT = 1000
 
-const projectBase = {
-  totalCharge: '43.9kWh'
+const getRawValue = (key: string): unknown => keyValue.value[key]
+
+const isEmptyValue = (value: unknown): boolean => {
+  return value === null || value === undefined || (typeof value === 'string' && value.trim() === '')
 }
 
-const projectStats: MetricCell[] = [
-  { label: '中压电网侧', value: '0.4kV', icon: batteryPowerIcon, skin: 'blue' },
-  { label: '日节电量', value: '23kWh', icon: leafIcon, skin: 'teal' },
-  { label: '光伏容量', value: '50kW', icon: batteryOutlineIcon, skin: 'blue' },
-  { label: '储能容量', value: '7kWh', icon: plugBatteryIcon, skin: 'teal' },
-  { label: '直流充电桩容量', value: '20kW', icon: chargingIcon, skin: 'blue' },
-  { label: '电网容量', value: '50kW', icon: gridTowerIcon, skin: 'teal' }
-]
+const hasUnit = (value: string): boolean => {
+  return /[a-zA-Z%]|分钟|小时|天|年|元|度|瓦|伏|安/.test(value)
+}
 
-const users = [
+const formatNumber = (value: number): string => {
+  return value.toFixed(2).replace(/\.?0+$/, '')
+}
+
+const formatValue = (value: unknown, unit = '', defaultValue = '-'): string => {
+  if (isEmptyValue(value)) {
+    return defaultValue
+  }
+  const text = String(value).trim()
+  if (!text) {
+    return defaultValue
+  }
+  if (text === '-' || text.toUpperCase() === 'NULL') {
+    return text
+  }
+  if (hasUnit(text)) {
+    return text
+  }
+  const numericValue = Number(text)
+  if (!Number.isFinite(numericValue)) {
+    return unit ? `${text}${unit}` : text
+  }
+  return `${formatNumber(numericValue)}${unit}`
+}
+
+const getText = (key: string, defaultValue = '-'): string => {
+  return formatValue(getRawValue(key), '', defaultValue)
+}
+
+const getValueWithUnit = (key: string, unit: string, defaultValue = '-'): string => {
+  return formatValue(getRawValue(key), unit, defaultValue)
+}
+
+const formatPhaseValue = (phase: 'A' | 'B' | 'C'): string => {
+  return `电流：${getValueWithUnit(`${phase}相电流`, 'A')}  电压：${getValueWithUnit(`${phase}相电压`, 'V')}  有功功率：${getValueWithUnit(`${phase}相有功功率`, 'kW')}`
+}
+
+const fetchPanelData = async () => {
+  const projectId = projectStore.projectInfo?.id
+  if (!projectId) {
+    keyValue.value = {}
+    return
+  }
+  try {
+    const res = await getPanelData({
+      key: 'villaPower',
+      projectId,
+    })
+    keyValue.value = (res.data || {}) as PanelData
+  } catch (error) {
+    console.error('获取别墅看板数据失败', error)
+  }
+}
+
+const projectBase = computed(() => ({
+  totalCharge: getValueWithUnit('微电网日发电总量', 'kWh')
+}))
+
+const projectStats = computed<MetricCell[]>(() => [
+  { label: '中压电网侧', value: getText('电压等级'), icon: batteryPowerIcon, skin: 'blue' },
+  { label: '日节电量', value: getValueWithUnit('日节电量', 'kWh'), icon: leafIcon, skin: 'teal' },
+  { label: '光伏容量', value: getText('光伏容量'), icon: batteryOutlineIcon, skin: 'blue' },
+  { label: '储能容量', value: getText('储能容量'), icon: plugBatteryIcon, skin: 'teal' },
+  { label: '直流充电桩容量', value: getText('直流充电桩容量'), icon: chargingIcon, skin: 'blue' },
+  { label: '电网容量', value: getText('电网容量'), icon: gridTowerIcon, skin: 'teal' }
+])
+
+const users = computed<UserBlock[]>(() => [
   {
     name: '用户1',
     rows: [
       {
-        left: { label: '光伏容量', value: '10kWh', icon: smallBatteryIcon, skin: 'blue' as PanelSkin },
-        right: { label: '光伏实时功率', value: '12.1kWh', icon: waveIcon, skin: 'teal' as PanelSkin }
+        left: { label: '光伏容量', value: getText('用户1光伏容量'), icon: smallBatteryIcon, skin: 'blue' },
+        right: {
+          label: '光伏实时功率',
+          value: getValueWithUnit('用户1光伏实时功率', 'kW'),
+          icon: waveIcon,
+          skin: 'teal'
+        }
       },
       {
-        left: { label: '充电桩容量', value: '10kWh', icon: smallBatteryDarkIcon, skin: 'blue' as PanelSkin },
-        right: { label: '充电实时功率', value: '12.1kWh', icon: ampereBlueIcon, skin: 'teal' as PanelSkin }
+        left: { label: '充电桩容量', value: getText('用户1充电桩容量'), icon: smallBatteryDarkIcon, skin: 'blue' },
+        right: {
+          label: '充电实时功率',
+          value: getValueWithUnit('用户1充电实时功率', 'kW'),
+          icon: ampereBlueIcon,
+          skin: 'teal'
+        }
       },
       {
-        left: { label: '储能容量', value: '10kWh', icon: smallBatteryIcon, skin: 'blue' as PanelSkin },
-        right: { label: '储能实时功率', value: '12.1kWh', icon: gaugeIcon, skin: 'teal' as PanelSkin }
+        left: { label: '储能容量', value: getText('用户1储能容量'), icon: smallBatteryIcon, skin: 'blue' },
+        right: {
+          label: '储能实时功率',
+          value: getValueWithUnit('用户1储能实时功率', 'kW'),
+          icon: gaugeIcon,
+          skin: 'teal'
+        }
       }
     ]
   },
@@ -249,67 +348,91 @@ const users = [
     name: '用户2',
     rows: [
       {
-        left: { label: '光伏容量', value: '10kWh', icon: smallBatteryIcon, skin: 'blue' as PanelSkin },
-        right: { label: '光伏实时功率', value: '12.1kWh', icon: waveIcon, skin: 'teal' as PanelSkin }
+        left: { label: '光伏容量', value: getText('用户2光伏容量'), icon: smallBatteryIcon, skin: 'blue' },
+        right: {
+          label: '光伏实时功率',
+          value: getValueWithUnit('用户2光伏实时功率', 'kW'),
+          icon: waveIcon,
+          skin: 'teal'
+        }
       },
       {
-        left: { label: '充电桩容量', value: '10kWh', icon: smallBatteryDarkIcon, skin: 'blue' as PanelSkin },
-        right: { label: '充电实时功率', value: '12.1kWh', icon: ampereTealIcon, skin: 'teal' as PanelSkin }
+        left: { label: '充电桩容量', value: getText('用户2充电桩容量'), icon: smallBatteryDarkIcon, skin: 'blue' },
+        right: {
+          label: '充电实时功率',
+          value: getValueWithUnit('用户2充电实时功率', 'kW'),
+          icon: ampereTealIcon,
+          skin: 'teal'
+        }
       },
       {
-        left: { label: '储能容量', value: '10kWh', icon: smallBatteryIcon, skin: 'blue' as PanelSkin },
-        right: { label: '储能实时功率', value: '12.1kWh', icon: gaugeIcon, skin: 'teal' as PanelSkin }
+        left: { label: '储能容量', value: getText('用户2储能容量'), icon: smallBatteryIcon, skin: 'blue' },
+        right: {
+          label: '储能实时功率',
+          value: getValueWithUnit('用户2储能实时功率', 'kW'),
+          icon: gaugeIcon,
+          skin: 'teal'
+        }
       }
     ]
   }
-]
+])
 
-const benefitTop = [
-  { label: '发电量', value: '277.83kWh', icon: batteryPowerIcon },
-  { label: '节省金额', value: '3792.15元', icon: moneyIcon },
-  { label: '减碳量', value: '277.83kWh', icon: leafIcon }
-]
+const benefitTop = computed(() => [
+  { label: '发电量', value: getValueWithUnit('微电网日发电总量', 'kWh'), icon: batteryPowerIcon },
+  { label: '节省金额', value: getValueWithUnit('节省金额', '元'), icon: moneyIcon },
+  { label: '减碳量', value: getValueWithUnit('减碳量', 'kg'), icon: leafIcon }
+])
 
-const benefitBottom = [
-  { label: '当年峰谷时长', value: '0 min', icon: leafSlashIcon },
-  { label: '供电可靠性', value: '100%', icon: shieldIcon }
-]
+const benefitBottom = computed(() => [
+  { label: '当年峰谷时长', value: getText('当年停电时长'), icon: leafSlashIcon },
+  { label: '供电可靠性', value: getText('供电可靠性'), icon: shieldIcon }
+])
 
-const pvRows = [
+const pvRows = computed<PVBlock[]>(() => [
   {
     user: '用户1',
     items: [
-      { label: '用户1发电量', value: '1.01kWh', icon: smallBatteryDarkIcon, skin: 'blue' as PanelSkin },
-      { label: '用户1光伏电流', value: '0.2A', icon: ampereTealIcon, skin: 'teal' as PanelSkin },
-      { label: '用户1光伏电压', value: '185.7V', icon: gaugeIcon, skin: 'blue' as PanelSkin },
-      { label: '漏网光伏电压', value: '0.01kW', icon: ampereBlueIcon, skin: 'teal' as PanelSkin }
+      { label: '用户1发电量', value: getValueWithUnit('用户1发电量', 'kWh'), icon: smallBatteryDarkIcon, skin: 'blue' },
+      { label: '用户1光伏电流', value: getValueWithUnit('用户1光伏电流', 'A'), icon: ampereTealIcon, skin: 'teal' },
+      { label: '用户1光伏电压', value: getValueWithUnit('用户1光伏电压', 'V'), icon: gaugeIcon, skin: 'blue' },
+      { label: '漏网光伏电压', value: getValueWithUnit('薄膜光伏电压', 'V'), icon: ampereBlueIcon, skin: 'teal' }
     ]
   },
   {
     user: '用户2',
     items: [
-      { label: '用户2发电量', value: '1.01kWh', icon: smallBatteryDarkIcon, skin: 'blue' as PanelSkin },
-      { label: '用户2光伏电流', value: '0.2A', icon: ampereBlueIcon, skin: 'teal' as PanelSkin },
-      { label: '用户2光伏电压', value: '185.7V', icon: gaugeIcon, skin: 'blue' as PanelSkin },
-      { label: '漏网光伏电流', value: '0.01kW', icon: ampereTealIcon, skin: 'teal' as PanelSkin }
+      { label: '用户2发电量', value: getValueWithUnit('用户2发电量', 'kWh'), icon: smallBatteryDarkIcon, skin: 'blue' },
+      { label: '用户2光伏电流', value: getValueWithUnit('用户2光伏电流', 'A'), icon: ampereBlueIcon, skin: 'teal' },
+      { label: '用户2光伏电压', value: getValueWithUnit('用户2光伏电压', 'V'), icon: gaugeIcon, skin: 'blue' },
+      { label: '漏网光伏电流', value: getValueWithUnit('薄膜光伏电流', 'A'), icon: ampereTealIcon, skin: 'teal' }
     ]
   }
-]
+])
 
-const gridSummary = {
+const gridSummary = computed(() => ({
   label: '三相总有功功率',
-  value: '277.83kWh'
-}
+  value: getValueWithUnit('三相总有功功率', 'kW')
+}))
 
-const phaseList = [
-  { name: 'A相电网', value: '电流：42.9ka  电压：0.5kv  有功功率：28.4kwh' },
-  { name: 'B相电网', value: '电流：42.9ka  电压：0.5kv  有功功率：28.4kwh' },
-  { name: 'C相电网', value: '电流：42.9ka  电压：0.5kv  有功功率：28.4kwh' }
-]
+const phaseList = computed(() => [
+  { name: 'A相电网', value: formatPhaseValue('A') },
+  { name: 'B相电网', value: formatPhaseValue('B') },
+  { name: 'C相电网', value: formatPhaseValue('C') }
+])
 
-const chargeList = ['充电总功率：28.1kWh', '充电电电压：0.5kv', '充电电电流：42ka', '充电桩功率：29.3kWh']
+const chargeList = computed(() => [
+  `充电总功率：${getValueWithUnit('充电桩功率', 'kW')}`,
+  `充电电电压：${getValueWithUnit('充电桩电压', 'V')}`,
+  `充电电电流：${getValueWithUnit('充电桩电流', 'A')}`,
+  `充电桩功率：${getValueWithUnit('充电桩功率', 'kW')}`
+])
 
-const batteryList = ['电池电压：28.1kWh', '电池电流：0.5kv', '电池soc：42ka']
+const batteryList = computed(() => [
+  `电池电压：${getValueWithUnit('电池电压', 'V')}`,
+  `电池电流：${getValueWithUnit('电池电流', 'A')}`,
+  `电池soc：${getValueWithUnit('电池soc', '%')}`
+])
 
 const updateScale = () => {
   if (!boardRef.value) {
@@ -322,13 +445,27 @@ const updateScale = () => {
 
 useResizeObserver(boardRef, updateScale)
 
+watch(
+  () => projectStore.projectInfo?.id,
+  () => {
+    void fetchPanelData()
+  },
+  { immediate: true }
+)
+
 onMounted(() => {
   updateScale()
   window.addEventListener('resize', updateScale)
+  refreshTimer = setInterval(() => {
+    void fetchPanelData()
+  }, 5000)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScale)
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+  }
 })
 </script>
 
