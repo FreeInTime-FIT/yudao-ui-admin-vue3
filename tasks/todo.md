@@ -64,3 +64,59 @@
 - [x] 收敛 `pnpm-lock.yaml` 为最小差异，仅保留 `three` 依赖变更
 - [x] 重新执行路由修复测试与 3D 功能测试/lint
 - [x] 整理提交范围，排除仓库根目录未跟踪原始 glb 文件
+
+## 2026-03-18 `taiziCity.vue` 图片居中展示
+- [x] 核对 `taiziCity.vue` 当前状态与可复用图片资源
+- [x] 与用户确认最小展示方案
+- [x] 实现页面中的图片居中布局
+- [x] 执行定向验证并回填 Review
+
+## Review（2026-03-18 `taiziCity.vue` 图片居中展示）
+- 已按 A 方案在 `src/views/screen/data/taiziCity.vue` 中实现纯展示页：页面使用单一容器承载图片，容器高度为 `calc(100vh - 80px)`，图片在页面中水平、垂直居中。
+- 当前实现直接复用了仓库根目录下已有的用户图片 `fc80198a8c7eccb229cc4b992fe85def.jpg`，避免无关资源搬迁。
+- 已补 `tests/taizi-city-layout.test.mjs` 静态回归测试，先在空页面状态下执行 `node --test tests/taizi-city-layout.test.mjs`，结果失败（3/3 fail）；实现后再次执行同命令，结果通过（3/3 pass）。
+- 已执行 `npx eslint src/views/screen/data/taiziCity.vue tests/taizi-city-layout.test.mjs`，通过。
+
+## 2026-03-18 `taiziCity.vue` 图片资源迁移到 `src/views/screen/assets/`
+- [x] 重新核对中断后的仓库状态、当前图片位置与引用路径
+- [x] 先写失败测试，约束图片资源迁移后的目标路径
+- [x] 将图片迁移到 `src/views/screen/assets/` 下并更新页面引用
+- [x] 执行定向验证并回填 Review
+
+## Review（2026-03-18 `taiziCity.vue` 图片资源迁移）
+- 已重新核对中断后的状态：迁移前图片仍位于仓库根目录 `fc80198a8c7eccb229cc4b992fe85def.jpg`，`src/views/screen/data/taiziCity.vue` 仍通过相对路径直接引用该文件。
+- 本次迁移将图片移动到 `src/views/screen/assets/taizi_city/photovoltaic-green-power-mode.jpg`，并把页面引用改为 `@/views/screen/assets/taizi_city/photovoltaic-green-power-mode.jpg`。
+- 已先按 TDD 更新 `tests/taizi-city-layout.test.mjs`：要求目标资源文件存在于 `src/views/screen/assets/taizi_city/`，且源码不再引用仓库根目录图片。迁移前执行 `node --test tests/taizi-city-layout.test.mjs` 失败（1/3 fail，报 `ENOENT` 找不到目标资产），迁移后再次执行同命令通过（3/3 pass）。
+- 已执行 `npx eslint src/views/screen/data/taiziCity.vue tests/taizi-city-layout.test.mjs`，通过。
+
+## 2026-03-18 `taiziCity.vue` 页面背景改白
+- [x] 确认只修改 `taiziCity.vue` 页面背景，保持现有图片居中逻辑不变
+- [x] 先写失败测试，约束页面背景为白色
+- [x] 修改页面样式为白底
+- [x] 执行定向验证并回填 Review
+
+## Review（2026-03-18 `taiziCity.vue` 页面背景改白）
+- 直接原因：`src/views/screen/data/taiziCity.vue` 的 `.taizi-city` 根容器没有显式背景色，页面因此沿用了外层大屏默认深色背景，和当前图片的白底视觉风格不一致。
+- 设计层诱因：未发现明显系统设计缺陷；这是单页样式未显式声明背景色导致的局部视觉遗漏。
+- 当前修复：仅在 `.taizi-city` 上新增 `background-color: #fff;`，不改图片资源、不改居中布局。
+- 长期建议：以后这类独立展示页若有明确视觉底色，应在页面根容器显式声明背景，避免被外层主题色“继承”出风格偏差。
+- 验证：
+  - `node --test tests/taizi-city-layout.test.mjs`：先新增“背景应显式为白色”的断言后失败（4 个测试中 1 个失败），补白底样式后通过（4/4）
+  - `npx eslint src/views/screen/data/taiziCity.vue tests/taizi-city-layout.test.mjs`：通过
+
+## 2026-03-18 `depoly.sh` 构建失败（Table.vue lint）
+- [x] 复现 `src/components/Table/src/Table.vue` 的 `vue/no-ref-as-operand` 报错
+- [x] 对照仓库内可用的 Form 组件注册实现，定位最小修复点
+- [x] 修复 Table 注册逻辑并执行定向 lint / 构建验证
+- [x] 回填 Review，记录原因、设计诱因与证据
+
+## Review（2026-03-18 `depoly.sh` 构建失败 / Table.vue lint）
+- 直接原因：`src/components/Table/src/Table.vue` 在 `onMounted` 的 `emit('register', ...)` 中，把 `elTableRef` 这个 `ref` 容器本身作为第三个参数传出；`eslint-plugin-vue` 的 `vue/no-ref-as-operand` 规则要求这里必须传 `.value`（或等价的 `unref` 结果），否则会在构建阶段直接报错。
+- 证据：修复前执行 `npx eslint src/components/Table/src/Table.vue`，稳定报 `/src/components/Table/src/Table.vue:59:43  error  Must use .value to read or write the value wrapped by ref()  vue/no-ref-as-operand`。
+- 设计层诱因：未发现明显系统设计缺陷；这是单组件注册逻辑与仓库既有实现风格不一致导致的局部问题。对照 `src/components/Form/src/Form.vue` 可见，表单组件早已使用 `unref(elFormRef)` 传出真实实例。
+- 当前修复：沿用同仓库 `Form.vue` 的模式，把 `emit('register', tableRef?.$parent, elTableRef)` 改为 `emit('register', tableRef?.$parent, tableRef)`，只传递解包后的 `ElTable` 实例，不扩大修改范围。
+- 长期建议：这类 `register` / `expose` 组件可统一收敛为“内部一律只向外传真实实例，不传 Ref 容器”的约定，避免后续升级 ESLint 或 Vue 规则时再次被同类问题击中。
+- 验证：
+  - `npx eslint src/components/Table/src/Table.vue`：修复前失败，修复后通过。
+  - `pnpm build:prod`：通过，终端最终输出 `Build successful. Please see dist-prod directory`。
+  - 构建过程中仍有 Sass `legacy-js-api`、`@import` 以及 Vue `:deep` 组合子弃用警告，但它们不会再阻断本次构建成功。
