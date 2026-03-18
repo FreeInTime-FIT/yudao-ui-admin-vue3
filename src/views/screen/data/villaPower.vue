@@ -90,7 +90,7 @@
 
           <article class="panel-block villa-scene-panel">
             <div class="villa-scene-box">
-              <img class="villa-scene" :src="villaImage" alt="别墅微电网" />
+              <VillaModelViewer />
             </div>
           </article>
 
@@ -173,8 +173,8 @@ import { getPanelData } from '@/services/services/IotReportController'
 import { useProjectStore } from '@/store/modules/project'
 
 import CardHeader from '@/views/screen/components/CardHeader.vue'
+import VillaModelViewer from '@/views/screen/components/VillaModelViewer.vue'
 
-import villaImage from '@/views/screen/assets/villa_power/pics/图层 88@2x.png'
 import metricCardBg from '@/views/screen/assets/villa_power/pics/图层 97 拷贝@2x.png'
 import phasePillBg from '@/views/screen/assets/villa_power/pics/图层 99@2x.png'
 import leftPanelBg from '@/views/screen/assets/villa_power/pics/图层 100@2x.png'
@@ -808,13 +808,6 @@ onBeforeUnmount(() => {
   background: rgba(5, 19, 45, 0.8);
   padding: 6px;
   box-sizing: border-box;
-}
-
-.villa-scene {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #d9d9d9;
 }
 
 .pv-grid {
