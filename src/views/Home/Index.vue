@@ -203,7 +203,7 @@ let projects = reactive<Project[]>([])
 const getProject = async () => {
   const data = [
     {
-      name: '测试项目1',
+      name: '智能微电网',
       icon: 'akar-icons:airplay-video',
       message: '/screen/index',
       personal: '进入大屏',
