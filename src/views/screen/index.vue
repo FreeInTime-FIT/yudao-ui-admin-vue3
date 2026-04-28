@@ -8,8 +8,6 @@ import dayjs from "dayjs";
 import icon from '@/views/screen/assets/location.png'
 import styleJson from './config/custom_map_config.json'
 import {getPanelData} from "@/services/services/IotReportController";
-const echartsDomRef = ref<HTMLElement>()
-const chartRef = ref()
 const mapDomRef = ref();
 const drawer = ref(false)
 const keyValue = ref({});
@@ -20,7 +18,7 @@ let mapChart;
 console.log(mapStyle);
 const time = dayjs().format('YYYY-MM-DD HH:mm')
 const projectStore = useProjectStore();
-useResizeObserver(echartsDomRef, () => {
+useResizeObserver(mapDomRef, () => {
   if (mapChart) {
     mapChart.resize();
   }
@@ -225,145 +223,6 @@ onMounted(() => {
       ],
     })
   })
-  const myChart = echarts.init(echartsDomRef.value);
-  const gridValue = '55%';
-  const axisProps = {
-    nameTextStyle: {
-      color: '#fff',
-    },
-    axisLine: {
-      show: true,
-      lineStyle: {
-        color: '#409EFF',
-      },
-    },
-    axisTick: {
-      show: false,
-    },
-    axisLabel: {
-      color: '#fff',
-      show: false,
-    },
-    splitLine: {
-      show: false,
-    },
-  }
-  myChart.setOption({
-    grid: [
-      {
-        bottom: gridValue,
-        right: gridValue,
-        borderColor: 'yellow',
-      },
-      {
-        left: gridValue,
-        bottom: gridValue,
-      },
-      {
-        top: gridValue,
-        right: gridValue,
-      },
-      {
-        left: gridValue,
-        top: gridValue,
-      },
-    ],
-    title: [
-      {
-        text: '客户增长曲线',
-        textAlign: 'center',
-        left: '25%',
-        top: '45%',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14,
-        },
-      },
-      {
-        text: '设备增长曲线',
-        top: '45%',
-        left: '75%',
-        textAlign: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14,
-        },
-      },
-      {
-        text: '负荷增长曲线',
-        textAlign: 'center',
-        left: '25%',
-        top: '80%',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14,
-        },
-      },
-      {
-        text: '交易电量增长曲线',
-        top: '80%',
-        left: '75%',
-        textAlign: 'center',
-        textStyle: {
-          color: '#fff',
-          fontSize: 14,
-        },
-      },
-    ],
-    dataset: [
-      {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.5 + Math.random()]),
-      },
-      {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.6 + 1 + Math.random()]),
-      },
-      {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.7 + 1 + Math.random()]),
-      },
-      {
-        dimensions: ['time', 'value'],
-        source: Array(24).fill(1).map((_, i) => [i + 1, i * 0.4 + 1 + Math.random()]),
-      },
-    ],
-    xAxis: Array(4).fill(1).map((_, i) => ({
-      gridIndex: i,
-      ...axisProps,
-    })),
-    yAxis: Array(4).fill(1).map((_, i) => ({
-      gridIndex: i,
-      ...axisProps,
-    })),
-    series: [{
-      name: '客户增长曲线',
-    },{
-      name: '设备增长曲线',
-    },{
-      name: '负荷增长曲线',
-    },{
-      name: '交易电量增长曲线',
-    },].map((item, i) => ({
-      type: 'line',
-      yAxisIndex: i,
-      xAxisIndex: i,
-      datasetIndex: i,
-      smooth: true,
-      encode: {
-        x: 'time',
-        y: 'value',
-      },
-      labelLine: {
-        show: 0,
-      },
-      showSymbol: false,
-      itemStyle: {
-        color: '#409EFF',
-      },
-      ...item,
-    }))
-  });
 });
 
 onUnmounted(() => {
@@ -373,10 +232,6 @@ const userName = computed(() => userStore.user.nickname ?? 'Admin')
 
   const sex = '先生'
 const totalList = [{
-  label: '用户总量',
-  key: 'userCount',
-  unit: '个',
-}, {
   label: '项目总量',
   key: 'projectCount',
   unit: '个',
@@ -488,7 +343,6 @@ const handleHideProject = () => {
             <span>{{keyValue[item.key] || item.value}}{{item.unit}}</span>
           </div>
         </aside>
-        <div class="echarts" ref="echartsDomRef"></div>
       </section>
       <div class="mapCharts" ref="mapDomRef"></div>
       <!--    <baidu-map
@@ -582,10 +436,6 @@ const handleHideProject = () => {
     width: 240px;
     display: flex;
     justify-content: space-between;
-  }
-  .echarts{
-    width: 400px;
-    height: 50%;
   }
   .bm-view{
     position: absolute;
