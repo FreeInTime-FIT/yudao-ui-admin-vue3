@@ -61,9 +61,7 @@ watchEffect(() => {
 
           },
           colorBy: 'data',
-          data: [
-            {name: '河北', value: 1},
-          ],
+          data: [],
           markPoint: {
             symbol: `image://${icon}`,
             symbolSize: 24,
@@ -189,9 +187,7 @@ onMounted(() => {
 
           },
           colorBy: 'data',
-          data: [
-            {name: '河北', value: 1},
-          ],
+          data: [],
           markPoint: {
             symbol: `image://${icon}`,
             symbolSize: 24,
