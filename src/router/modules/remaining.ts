@@ -594,6 +594,18 @@ const remainingRouter: AppRouteRecordRaw[] = [
     meta: {hidden: true},
     children: [
       {
+        path: 'agent',
+        name: 'MicrogridAgent',
+        meta: {
+          title: '微电网智能体',
+          icon: 'ep:chat-dot-round',
+          noCache: true,
+          full: true,
+          activeMenu: '/screen/agent'
+        },
+        component: () => import('@/views/screen/agent/index.vue')
+      },
+      {
         path: 'data/publicity',
         name: 'ScreenDataPublicity',
         meta: {
