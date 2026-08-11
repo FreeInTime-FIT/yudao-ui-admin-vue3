@@ -1,7 +1,7 @@
 import ScreenLayout from '@/layout/SceenLayout/index.vue'
-import {Layout} from '@/utils/routerHelper'
+import { Layout } from '@/utils/routerHelper'
 
-const {t} = useI18n()
+const { t } = useI18n()
 /**
  * redirect: noredirect        当设置 noredirect 的时候该路由在面包屑导航中不可被点击
  * name:'router-name'          设定路由的名字，一定要填写不然使用<keep-alive>时会出现各种问题
@@ -402,13 +402,13 @@ const remainingRouter: AppRouteRecordRaw[] = [
         path: 'order/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/order/detail/index.vue'),
         name: 'TradeOrderDetail',
-        meta: {title: '订单详情', icon: 'ep:view', activeMenu: '/mall/trade/order'}
+        meta: { title: '订单详情', icon: 'ep:view', activeMenu: '/mall/trade/order' }
       },
       {
         path: 'after-sale/detail/:id(\\d+)',
         component: () => import('@/views/mall/trade/afterSale/detail/index.vue'),
         name: 'TradeAfterSaleDetail',
-        meta: {title: '退款详情', icon: 'ep:view', activeMenu: '/mall/trade/after-sale'}
+        meta: { title: '退款详情', icon: 'ep:view', activeMenu: '/mall/trade/after-sale' }
       }
     ]
   },
@@ -416,7 +416,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     path: '/member',
     component: Layout,
     name: 'MemberCenter',
-    meta: {hidden: true},
+    meta: { hidden: true },
     children: [
       {
         path: 'user/detail/:id',
@@ -434,7 +434,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     path: '/pay',
     component: Layout,
     name: 'pay',
-    meta: {hidden: true},
+    meta: { hidden: true },
     children: [
       {
         path: 'cashier',
@@ -451,7 +451,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/diy',
     name: 'DiyCenter',
-    meta: {hidden: true},
+    meta: { hidden: true },
     component: Layout,
     children: [
       {
@@ -482,7 +482,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
     path: '/crm',
     component: Layout,
     name: 'CrmCenter',
-    meta: {hidden: true},
+    meta: { hidden: true },
     children: [
       {
         path: 'clue/detail/:id',
@@ -578,20 +578,20 @@ const remainingRouter: AppRouteRecordRaw[] = [
     path: '/iot',
     component: Layout,
     name: 'IotCenter',
-    meta: {hidden: true},
+    meta: { hidden: true },
     children: [
       {
         path: 'deviceRealTime',
         name: 'DeviceRealTimeData',
         component: () => import('@/views/iot/devicemanagement/DeviceRealTimeData.vue')
-      },
+      }
     ]
   },
   {
     path: '/screen',
     component: ScreenLayout,
     name: 'ScreenCenter',
-    meta: {hidden: true},
+    meta: { hidden: true },
     children: [
       {
         path: 'agent',
@@ -604,6 +604,18 @@ const remainingRouter: AppRouteRecordRaw[] = [
           activeMenu: '/screen/agent'
         },
         component: () => import('@/views/screen/agent/index.vue')
+      },
+      {
+        path: 'planning-demo',
+        name: 'ScreenPlanningDemo',
+        meta: {
+          title: '台区微电网规划',
+          icon: 'ep:connection',
+          noCache: true,
+          full: true,
+          activeMenu: '/screen/planning-demo'
+        },
+        component: () => import('@/views/screen/planning/index.vue')
       },
       {
         path: 'data/publicity',
@@ -648,7 +660,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
           activeMenu: '/screen/data/wiring-diagram'
         },
         component: () => import('@/views/screen/data/wiringDiagram.vue')
-      },
+      }
     ]
   }
   // {
